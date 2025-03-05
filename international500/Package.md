@@ -8,7 +8,7 @@ compliant with http://hl7.org/fhir/ implementation guide.
 |                      |                      |
 |----------------------|----------------------|
 | FHIR version         | R5                   |
-| Implementation Guide | http://hl7.org/fhir/               |
+| Implementation Guide | http://hl7.org/fhir/R5               |
 
 
 **Note:**

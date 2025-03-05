@@ -153,6 +153,26 @@ public final readonly & map<CommonSearchParameterDefinition> COMMON_SEARCH_PARAM
         effectiveLevel: SEARCH_PARAM_CATEGORY_RESOURCE_COMMON,
         preProcessor: (),
         postProcessor: ()
+    },
+    "_filter": {
+        name: "_filter",
+        'type: COMPOSITE,
+        base: ["Resource"],
+        expression: (),
+        default: (),
+        effectiveLevel: SEARCH_PARAM_CATEGORY_RESOURCE_COMMON,
+        preProcessor: (),
+        postProcessor: ()
+    },
+    "_query": {
+        name: "_query",
+        'type: COMPOSITE,
+        base: ["Resource"],
+        expression: (),
+        default: (),
+        effectiveLevel: SEARCH_PARAM_CATEGORY_RESOURCE_COMMON,
+        preProcessor: (),
+        postProcessor: ()
     }
 };
 
@@ -230,6 +250,46 @@ public final readonly & map<CommonSearchParameterDefinition> CONTROL_SEARCH_PARA
     },
     "_containedType": {
         name: "_containedType",
+        'type: TOKEN,
+        base: ["Resource"],
+        expression: (),
+        default: (),
+        effectiveLevel: SEARCH_PARAM_CATEGORY_SEARCH_RESULT,
+        preProcessor: (),
+        postProcessor: ()
+    },
+    "_graph": {
+        name: "_graph",
+        'type: REFERENCE,
+        base: ["Resource"],
+        expression: (),
+        default: (),
+        effectiveLevel: SEARCH_PARAM_CATEGORY_SEARCH_RESULT,
+        preProcessor: (),
+        postProcessor: ()
+    },
+    "_maxresults": {
+        name: "_maxresults",
+        'type: NUMBER,
+        base: ["Resource"],
+        expression: (),
+        default: (),
+        effectiveLevel: SEARCH_PARAM_CATEGORY_SEARCH_RESULT,
+        preProcessor: (),
+        postProcessor: ()
+    },
+    "_score": {
+        name: "_score",
+        'type: TOKEN,
+        base: ["Resource"],
+        expression: (),
+        default: (),
+        effectiveLevel: SEARCH_PARAM_CATEGORY_SEARCH_RESULT,
+        preProcessor: (),
+        postProcessor: ()
+    },
+    "_total": {
+        name: "_total",
         'type: TOKEN,
         base: ["Resource"],
         expression: (),
