@@ -74,8 +74,8 @@
 }
 public type ExtendedContactDetail record {|
     CodeableConcept purpose?;
-    HumanName name?;
-    ContactPoint telecom?;
+    HumanName[] name?;
+    ContactPoint[] telecom?;
     Address address?;
     Reference organization?;
     Period period?;
