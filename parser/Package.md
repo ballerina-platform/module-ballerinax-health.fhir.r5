@@ -10,6 +10,6 @@ This package provides the following functionalities required for parsing FHIR re
 
 2. Validation: The parser performs validation checks to ensure that the parsed resource adheres to the FHIR specification's rules and constraints.
 
-3. In-Memory Representation: The parser creates an in-memory representation of the resource as a data model from Ballerina FHIR IG packages (i.e health.fhir.r4, health.fhir.r4.uscore501, etc.).
+3. In-Memory Representation: The parser creates an in-memory representation of the resource as a data model from Ballerina FHIR IG packages (i.e health.fhir.r5, health.fhir.r5.europebase, etc.).
 
-Refer [API Documentation](https://lib.ballerina.io/ballerinax/health.fhir.r4.parser) for sample usage.
+Refer [API Documentation](https://lib.ballerina.io/ballerinax/health.fhir.r5.parser) for sample usage.

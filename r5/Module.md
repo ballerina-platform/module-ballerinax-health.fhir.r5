@@ -9,7 +9,7 @@ This section focuses on samples depicting how to use this package to implement F
 1. Install Ballerina 2201.10.3 or later
 
 ### Parsing FHIR Resource payloads and access the parsed data
-Sample below is using the Patient resource in `health.fhir.r5.internationa500` package.
+Sample below is using the Patient resource in `health.fhir.r5.international500` package.
 
 ```ballerina
 import ballerina/io;
