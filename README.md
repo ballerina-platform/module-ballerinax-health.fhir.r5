@@ -1,2 +1,2 @@
 # module-ballerinax-health.fhir.r5
-FHIR R4 Ballerina packages
+FHIR R5 Ballerina packages
