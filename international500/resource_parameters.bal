@@ -156,6 +156,7 @@ public type Parameters record {|
 # + valueDuration - Conveys the content if the parameter is a data type.
 # + valueDataRequirement - Conveys the content if the parameter is a data type.
 # + valueAnnotation - Conveys the content if the parameter is a data type.
+# + part - Parts of a nested Parameter.
 @r5:DataTypeDefinition {
     name: "ParametersParameter",
     baseType: (),
@@ -690,6 +691,15 @@ public type Parameters record {|
             isArray: false,
             description: "Conveys the content if the parameter is a data type.",
             path: "Parameters.parameter.value[x]"
+        },
+        "part": {
+            name: "part",
+            dataType: ParametersParameter,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "Parts of a nested Parameter.",
+            path: "Parameters.parameter.part"
         }
     },
     serializers: {
@@ -759,5 +769,5 @@ public type ParametersParameter record {|
     r5:Duration valueDuration?;
     r5:DataRequirement valueDataRequirement?;
     r5:Annotation valueAnnotation?;
+    ParametersParameter[] part?;
 |};
-
