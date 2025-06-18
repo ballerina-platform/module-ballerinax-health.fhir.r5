@@ -1327,7 +1327,8 @@ public enum CapabilityStatementRestResourceSearchParamType {
    CODE_TYPE_STRING = "string",
    CODE_TYPE_COMPOSITE = "composite",
    CODE_TYPE_URI = "uri",
-   CODE_TYPE_TOKEN = "token"
+   CODE_TYPE_TOKEN = "token",
+   CODE_TYPE_QUANTITY = "Quantity"
 }
 
 # CapabilityStatementMessagingSupportedMessageMode enum
