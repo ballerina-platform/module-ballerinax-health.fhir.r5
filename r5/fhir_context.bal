@@ -20,6 +20,7 @@ public isolated class FHIRContext {
     private final FHIRRequest fhirRequest;
     private final readonly & FHIRSecurity fhirSecurity;
     private final readonly & HTTPRequest httpRequest;
+    private HTTPResponse? httpResponse = ();
     private FHIRResponse|FHIRContainerResponse? fhirResponse = ();
     private boolean inErrorState = false;
     private int errorCode = 500;
@@ -138,6 +139,24 @@ public isolated class FHIRContext {
     public isolated function getFHIRResponse() returns FHIRResponse|FHIRContainerResponse? {
         lock {
             return self.fhirResponse;
+        }
+    }
+
+    # Set custom HTTP response sent to client.
+    #
+    # + response - HTTP response object
+    public isolated function setHTTPResponse(HTTPResponse response) {
+        lock {
+            self.httpResponse = response.clone();
+        }
+    }
+
+    # Get custom HTTP response object.
+    #
+    # + return - HTTP response object in the context.
+    public isolated function getHTTPResponse() returns HTTPResponse? {
+        lock {
+            return self.httpResponse.clone();
         }
     }
 
