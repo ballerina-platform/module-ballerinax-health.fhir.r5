@@ -11,7 +11,7 @@ The package containing the FHIR R5 Data types, Base Resource Types, Error Types,
 
 This package includes,
 
-1. FHIR R4 Data types
+1. FHIR R5 Data types
 2. FHIR Base Resource types (Bundle, CodeSystem, OperationOutcome, ValueSet)
 3. FHIR resource serializers
 4. Miscellaneous utilities required to create, access elements, manipulate FHIR resources
