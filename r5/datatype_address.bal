@@ -136,7 +136,7 @@ public type Address record {|
     Extension[] extension?;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
 
-    AddressUse use?;
+    string | AddressUse use?;
     AddressType 'type?;
     string text?;
     string[] line?;

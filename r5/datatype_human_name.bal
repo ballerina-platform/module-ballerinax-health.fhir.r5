@@ -98,7 +98,7 @@ public type HumanName record {|
     Extension[] extension?;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
 
-    HumanNameUse use?;
+    string | HumanNameUse use?;
     string text?;
     string family?;
     string[] given?;
