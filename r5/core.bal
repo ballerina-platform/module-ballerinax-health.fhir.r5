@@ -356,6 +356,15 @@ public type HTTPRequest record {
     readonly & (json|xml|string)? payload;
 };
 
+# Record collecting information about the HTTP response.
+#
+# + headers - map of outgoing HTTP headers
+# + statusCode - HTTP status code
+public type HTTPResponse record {
+    map<string> headers;
+    int? statusCode;
+};
+
 # Class representing FHIR request
 public isolated class FHIRRequest {
     private final FHIRResourceEntity? resourceEntity;
