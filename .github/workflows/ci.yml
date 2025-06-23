@@ -92,10 +92,35 @@ jobs:
           version: $BALLERINA_VERSION
 
       - name: Ballerina Build
+        if: ${{ matrix.path != 'fhirr5' }}
         run: |
           pushd "${{ matrix.path }}"
           bal pack
           popd
+
+      - name: Setup Maven
+        if: ${{ matrix.path == 'fhirr5' }}
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Create settings.xml
+        if: ${{ matrix.path == 'fhirr5' }}
+        run: echo '<settings>
+              <servers>
+                <server>
+                  <id>ballerina-language-repo</id>
+                  <username>${{ github.actor }}</username>
+                  <password>${{ secrets.GITHUB_TOKEN }}</password>
+                </server>
+              </servers>
+            </settings>' > ~/.m2/settings.xml
+
+      - name: Run maven build
+        if: ${{ matrix.path == 'fhirr5' }}
+        run: |
+         mvn clean install -f fhirr5
 
   test:
     needs: [ setup ]
@@ -117,12 +142,38 @@ jobs:
           version: $BALLERINA_VERSION
 
       - name: Ballerina Test
+        if: ${{ matrix.path != 'fhirr5' }}
         run: |
           pushd "${{ matrix.path }}"
           bal test --code-coverage
           popd
 
+      - name: Setup Maven
+        if: ${{ matrix.path == 'fhirr5' }}
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Create settings.xml
+        if: ${{ matrix.path == 'fhirr5' }}
+        run: echo '<settings>
+              <servers>
+                <server>
+                  <id>ballerina-language-repo</id>
+                  <username>${{ github.actor }}</username>
+                  <password>${{ secrets.GITHUB_TOKEN }}</password>
+                </server>
+              </servers>
+            </settings>' > ~/.m2/settings.xml
+
+      - name: Run maven build
+        if: ${{ matrix.path == 'fhirr5' }}
+        run: |
+         mvn clean install -PrunBalTest -f fhirr5
+
       - name: Read Ballerina Test Results
+        if: ${{ matrix.path != 'fhirr5' }}
         id: test_results
         run: |
           if [ -f "./${{ matrix.path }}/target/report/test_results.json" ]; then
