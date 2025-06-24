@@ -87,10 +87,11 @@ public type Quantity record {|
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
 
     decimal value?;
-    @constraint:String{
+    @constraint:String {
         pattern: re `^(<|<=|>|>=)$`
     }
-    string | QuantityComparatorCode comparator?;
+    string|QuantityComparatorCode comparator?;
+
     string unit?;
     uri system?;
     code code?;

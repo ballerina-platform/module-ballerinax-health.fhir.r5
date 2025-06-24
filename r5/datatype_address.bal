@@ -13,7 +13,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
+import ballerina/constraint;
 
 # An address expressed using postal conventions
 #
@@ -33,7 +33,7 @@
     name: "Address",
     baseType: Element,
     elements: {
-        "use" : {
+        "use": {
             name: "use",
             dataType: code,
             min: 0,
@@ -42,7 +42,7 @@
             description: "[home | work | temp | old | billing] - purpose of this address AddressUse (Required)",
             path: "Patient.use"
         },
-        "type" : {
+        "type": {
             name: "type",
             dataType: code,
             min: 0,
@@ -51,7 +51,7 @@
             description: "[postal | physical | both] AddressType (Required)",
             path: "Patient.type"
         },
-        "text" : {
+        "text": {
             name: "text",
             dataType: string,
             min: 0,
@@ -60,7 +60,7 @@
             description: "Text representation of the address",
             path: "Patient.text"
         },
-        "line" : {
+        "line": {
             name: "line",
             dataType: string,
             min: 0,
@@ -69,7 +69,7 @@
             description: "Street name, number, direction & P.O. Box etc.",
             path: "Patient.line"
         },
-        "city" : {
+        "city": {
             name: "city",
             dataType: string,
             min: 0,
@@ -78,7 +78,7 @@
             description: "Name of city, town etc.",
             path: "Patient.city"
         },
-        "district" : {
+        "district": {
             name: "district",
             dataType: string,
             min: 0,
@@ -87,7 +87,7 @@
             description: "District name (aka county)",
             path: "Patient.district"
         },
-        "state" : {
+        "state": {
             name: "state",
             dataType: string,
             min: 0,
@@ -96,7 +96,7 @@
             description: "Sub-unit of country (abbreviations ok)",
             path: "Patient.state"
         },
-        "postalCode" : {
+        "postalCode": {
             name: "postalCode",
             dataType: string,
             min: 0,
@@ -105,7 +105,7 @@
             description: "Postal code for area",
             path: "Patient.postalCode"
         },
-        "country" : {
+        "country": {
             name: "country",
             dataType: string,
             min: 0,
@@ -114,7 +114,7 @@
             description: "Country (e.g. can be ISO 3166 2 or 3 letter code)",
             path: "Patient.country"
         },
-        "period" : {
+        "period": {
             name: "period",
             dataType: Period,
             min: 0,
@@ -125,7 +125,7 @@
         }
     },
     serializers: {
-        'xml: complexDataTypeXMLSerializer, 
+        'xml: complexDataTypeXMLSerializer,
         'json: complexDataTypeJsonSerializer
     }
 }
@@ -136,8 +136,16 @@ public type Address record {|
     Extension[] extension?;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
 
-    string | AddressUse use?;
-    AddressType 'type?;
+    @constraint:String {
+        pattern: re `^(home|work|temp|old|billing)$`
+    }
+    string|AddressUse use?;
+
+    @constraint:String {
+        pattern: re `^(postal|physical|both)$`
+    }
+    string|AddressType 'type?;
+
     string text?;
     string[] line?;
     string city?;

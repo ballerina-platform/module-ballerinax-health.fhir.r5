@@ -13,6 +13,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+import ballerina/constraint;
 
 # Contributor information Elements defined in Ancestors: id, extension.
 #
@@ -63,7 +64,11 @@ public type Contributor record {|
     Extension[] extension?;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
 
-    ContributorType 'type;
+    @constraint:String {
+        pattern: re `^(author|editor|reviewer|endorser)$`
+    }
+    string|ContributorType 'type;
+
     string name;
     ContactDetail[] contact?;
 |};

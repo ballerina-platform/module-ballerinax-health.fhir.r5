@@ -1,4 +1,5 @@
 // Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
+import ballerina/constraint;
 
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -76,6 +77,12 @@
         'json: complexDataTypeJsonSerializer
     }
 }
+
+@constraint:String {
+    pattern: re `^(contained|referenced|bundled)$`
+}
+type TypeAggregationTypes string;
+
 public type ElementType record {|
     *Element;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
@@ -86,8 +93,12 @@ public type ElementType record {|
     uri code;
     canonical[] profile?;
     canonical[] targetProfile?;
-    TypeAggregation[] aggregation?;
-    TypeVersioning versioning?;
+    TypeAggregationTypes|TypeAggregation[] aggregation?;
+
+    @constraint:String {
+        pattern: re `^(contained|referenced|bundled)$`
+    }
+    string|TypeVersioning versioning?;
 |};
 
 public enum TypeAggregation {

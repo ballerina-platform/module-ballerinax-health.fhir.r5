@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-
 # This is the default FHIR XML namespace
 public const FHIR_NAMESPACE = "http://hl7.org/fhir";
 

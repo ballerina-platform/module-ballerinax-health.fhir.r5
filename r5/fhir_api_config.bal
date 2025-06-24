@@ -52,7 +52,7 @@ public type ResourceAPIConfigType record {|
 |};
 
 # FHIR Server APIs configuration.
-# 
+#
 # + apis - FHIR APIs configuration
 # + paginationConfig - Pagination configuration
 # + basePath - Base path of the FHIR server

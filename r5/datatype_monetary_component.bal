@@ -13,12 +13,13 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+import ballerina/constraint;
 
 @DataTypeDefinition {
     name: "MonetaryComponent",
     baseType: (),
     elements: {
-    
+
         "amount": {
             name: "amount",
             dataType: Money,
@@ -27,7 +28,7 @@
             isArray: false,
             description: "Explicit value amount to be used.",
             path: "MonetaryComponent.amount"
-        },    
+        },
         "code": {
             name: "code",
             dataType: CodeableConcept,
@@ -36,7 +37,7 @@
             isArray: false,
             description: "Codes may be used to differentiate between kinds of taxes, surcharges, discounts etc.",
             path: "MonetaryComponent.code"
-        },    
+        },
         "factor": {
             name: "factor",
             dataType: decimal,
@@ -45,7 +46,7 @@
             isArray: false,
             description: "Factor used for calculating this component.",
             path: "MonetaryComponent.factor"
-        },    
+        },
         "'type": {
             name: "'type",
             dataType: MonetaryComponentType,
@@ -54,7 +55,8 @@
             isArray: false,
             description: "base | surcharge | deduction | discount | tax | informational.",
             path: "MonetaryComponent.type"
-        }        },
+        }
+    },
     serializers: {
         'xml: complexDataTypeXMLSerializer,
         'json: complexDataTypeJsonSerializer
@@ -70,7 +72,11 @@ public type MonetaryComponent record {|
     Money amount?;
     CodeableConcept code?;
     decimal factor?;
-    MonetaryComponentType 'type;
+
+    @constraint:String {
+        pattern: re `^(surcharge|deduction|discount|tax|informational|base)$`
+    }
+    string|MonetaryComponentType 'type;
 |};
 
 public enum MonetaryComponentType {

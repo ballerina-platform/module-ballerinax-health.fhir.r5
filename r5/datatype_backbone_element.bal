@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-
 # Base for elements defined inside a resource Elements defined in Ancestors: id, extension.
 #
 # + id - Unique id for inter-element referencing  

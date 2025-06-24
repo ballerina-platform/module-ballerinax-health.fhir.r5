@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-
 # Text node with attribution Elements defined in Ancestors: id, extension
 #
 # + authorReference - Individual responsible for the annotation  
@@ -86,7 +85,7 @@ public type Annotation record {|
 # + elementContextDefinition - Element definition of the data
 # + return - FHIRValidationError array if data is not valid or else nil
 public isolated function annotationDataTypeValidationFunction(anydata data,
-                    ElementAnnotationDefinition elementContextDefinition) returns FHIRValidationError? {
+        ElementAnnotationDefinition elementContextDefinition) returns FHIRValidationError? {
     DataTypeDefinitionRecord? dataTypeDefinition = (typeof data).@DataTypeDefinition;
     if dataTypeDefinition != () {
         map<anydata> mapObj = {};
@@ -96,7 +95,7 @@ public isolated function annotationDataTypeValidationFunction(anydata data,
             string diagnosticMsg = string `Error occurred while casting data of type: ${(typeof data).toBalString()} to map representation`;
             return <FHIRValidationError>createInternalFHIRError(
                             "Error occurred while casting data to map representation", FATAL, PROCESSING,
-                            diagnostic = diagnosticMsg, cause = e);
+                    diagnostic = diagnosticMsg, cause = e);
 
         }
 
@@ -105,7 +104,7 @@ public isolated function annotationDataTypeValidationFunction(anydata data,
 
         boolean authorReferenceValueCheck = authorReferenceVal is ();
         boolean authorStringValCheck = authorStringVal is ();
-        boolean expression = authorReferenceValueCheck && (!authorStringValCheck) || 
+        boolean expression = authorReferenceValueCheck && (!authorStringValCheck) ||
                         (!authorReferenceValueCheck) && authorStringValCheck;
 
         if (expression) {
@@ -115,7 +114,7 @@ public isolated function annotationDataTypeValidationFunction(anydata data,
             string diagnosticMsg = "Error occurred due to incorrect definition of author element according to FHIR Specification";
             return <FHIRValidationError>createInternalFHIRError(
                             "Error occurred due to incorrect data type definition", FATAL, PROCESSING,
-                            diagnostic = diagnosticMsg);
+                    diagnostic = diagnosticMsg);
         }
     }
 }

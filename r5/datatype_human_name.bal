@@ -1,4 +1,5 @@
 // Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
+import ballerina/constraint;
 
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -29,7 +30,7 @@
     name: "HumanName",
     baseType: Element,
     elements: {
-        "use" : {
+        "use": {
             name: "use",
             dataType: HumanNameUse,
             min: 0,
@@ -37,7 +38,7 @@
             isArray: false,
             description: "usual | official | temp | nickname | anonymous | old | maiden"
         },
-        "text" : {
+        "text": {
             name: "text",
             dataType: string,
             min: 0,
@@ -45,7 +46,7 @@
             isArray: false,
             description: "Text representation of the full name"
         },
-        "family" : {
+        "family": {
             name: "family",
             dataType: string,
             min: 0,
@@ -53,7 +54,7 @@
             isArray: false,
             description: "Family name (often called 'Surname')"
         },
-        "given" : {
+        "given": {
             name: "given",
             dataType: string,
             min: 0,
@@ -61,7 +62,7 @@
             isArray: true,
             description: "Given names (not always 'first'). Includes middle names. This repeating element order: Given Names appear in the correct order for presenting the name"
         },
-        "prefix" : {
+        "prefix": {
             name: "prefix",
             dataType: string,
             min: 0,
@@ -69,7 +70,7 @@
             isArray: true,
             description: "Parts that come before the name. This repeating element order: Prefixes appear in the correct order for presenting the name"
         },
-        "suffix" : {
+        "suffix": {
             name: "suffix",
             dataType: string,
             min: 0,
@@ -77,7 +78,7 @@
             isArray: true,
             description: "Parts that come after the name. This repeating element order: Suffixes appear in the correct order for presenting the name"
         },
-        "period" : {
+        "period": {
             name: "period",
             dataType: Period,
             min: 0,
@@ -87,7 +88,7 @@
         }
     },
     serializers: {
-        'xml: complexDataTypeXMLSerializer, 
+        'xml: complexDataTypeXMLSerializer,
         'json: complexDataTypeJsonSerializer
     }
 }
@@ -98,14 +99,18 @@ public type HumanName record {|
     Extension[] extension?;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
 
-    string | HumanNameUse use?;
+    @constraint:String {
+        pattern: re `^(usual|official|temp|nickname|anonymous|old|maiden)$`
+    }
+    string|HumanNameUse use?;
+
     string text?;
     string family?;
     string[] given?;
     string[] prefix?;
     string[] suffix?;
     Period period?;
-    
+
 |};
 
 public enum HumanNameUse {
