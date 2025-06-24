@@ -109,7 +109,7 @@ public const RESOURCE_NAME_CHARGEITEM = "ChargeItem";
         },
         "unitPriceComponent" : {
             name: "unitPriceComponent",
-            dataType: MonetaryComponent,
+            dataType: r5:MonetaryComponent,
             min: 0,
             max: 1,
             isArray: false,
@@ -281,7 +281,7 @@ public const RESOURCE_NAME_CHARGEITEM = "ChargeItem";
         },
         "totalPriceComponent" : {
             name: "totalPriceComponent",
-            dataType: MonetaryComponent,
+            dataType: r5:MonetaryComponent,
             min: 0,
             max: 1,
             isArray: false,
@@ -376,7 +376,7 @@ public type ChargeItem record {|
     r5:CodeableConcept[] reason?;
     r5:canonical[] definitionCanonical?;
     r5:Extension[] extension?;
-    MonetaryComponent unitPriceComponent?;
+    r5:MonetaryComponent unitPriceComponent?;
     r5:CodeableConcept code;
     r5:Reference subject;
     r5:Extension[] modifierExtension?;
@@ -397,7 +397,7 @@ public type ChargeItem record {|
     r5:Reference[] supportingInformation?;
     r5:Reference encounter?;
     r5:Timing occurrenceTiming?;
-    MonetaryComponent totalPriceComponent?;
+    r5:MonetaryComponent totalPriceComponent?;
     r5:Resource[] contained?;
     r5:Period occurrencePeriod?;
     r5:Meta meta?;

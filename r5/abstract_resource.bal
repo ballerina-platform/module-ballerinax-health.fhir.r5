@@ -14,6 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+
 # Base Resource.
 #
 # + resourceType - Type of resource
@@ -26,7 +27,7 @@
     profile: (),
     baseType: (),
     elements: {
-        "id": {
+        "id" : {
             name: "id",
             dataType: string,
             min: 0,
@@ -34,7 +35,7 @@
             isArray: false,
             description: "Logical id of this artifact"
         },
-        "meta": {
+        "meta" : {
             name: "meta",
             dataType: Meta,
             min: 0,
@@ -42,7 +43,7 @@
             isArray: false,
             description: "Metadata about the resource"
         },
-        "implicitRules": {
+        "implicitRules" : {
             name: "implicitRules",
             dataType: uri,
             min: 0,
@@ -50,7 +51,7 @@
             isArray: false,
             description: "A set of rules under which this content was created"
         },
-        "language": {
+        "language" : {
             name: "language",
             dataType: code,
             min: 0,
@@ -60,7 +61,7 @@
         }
     },
     serializers: {
-        'xml: fhirResourceXMLSerializer,
+        'xml: fhirResourceXMLSerializer, 
         'json: fhirResourceJsonSerializer
     }
 }

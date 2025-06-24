@@ -45,5 +45,5 @@ public type BackboneType record {|
     Extension[] extension?;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
 
-    Extension[] modifierExtension?;
+    Extension[] modifierExtension?; 
 |};

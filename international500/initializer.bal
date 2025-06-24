@@ -1043,7 +1043,7 @@ function init() returns r5:FHIRError? {
                 modelType: Claim
             }
         },
-        searchParameters: [FHIR_IG_SEARCH_PARAMS_1],
+        searchParameters: [FHIR_IG_SEARCH_PARAMS_1, FHIR_IG_SEARCH_PARAMS_2, FHIR_IG_SEARCH_PARAMS_3, FHIR_IG_SEARCH_PARAMS_4, FHIR_IG_SEARCH_PARAMS_5, FHIR_IG_SEARCH_PARAMS_6],
         operations: INTERNATIONAL_IG_OPERATIONS.cloneReadOnly()
     };
     r5:FHIRImplementationGuide baseImplementationGuide = new(baseIgRecord);

@@ -18,7 +18,7 @@
     name: "VirtualServiceDetail",
     baseType: (),
     elements: {
-
+    
         "sessionKey": {
             name: "sessionKey",
             dataType: string,
@@ -27,7 +27,7 @@
             isArray: false,
             description: "Session Key required by the virtual service.",
             path: "VirtualServiceDetail.sessionKey"
-        },
+        },    
         "addressUrl": {
             name: "addressUrl",
             dataType: urlType,
@@ -36,7 +36,7 @@
             isArray: false,
             description: "What address or number needs to be used for a user to connect to the virtual service to join. The channelType informs as to which datatype is appropriate to use (requires knowledge of the specific type).",
             path: "VirtualServiceDetail.address[x]"
-        },
+        },    
         "additionalInfo": {
             name: "additionalInfo",
             dataType: urlType,
@@ -45,7 +45,7 @@
             isArray: true,
             description: "Address to see alternative connection details.",
             path: "VirtualServiceDetail.additionalInfo"
-        },
+        },    
         "channelType": {
             name: "channelType",
             dataType: Coding,
@@ -54,7 +54,7 @@
             isArray: false,
             description: "The type of virtual service to connect to (i.e. Teams, Zoom, Specific VMR technology, WhatsApp).",
             path: "VirtualServiceDetail.channelType"
-        },
+        },    
         "maxParticipants": {
             name: "maxParticipants",
             dataType: positiveInt,
@@ -63,8 +63,7 @@
             isArray: false,
             description: "Maximum number of participants supported by the virtual service.",
             path: "VirtualServiceDetail.maxParticipants"
-        }
-    },
+        }        },
     serializers: {
         'xml: complexDataTypeXMLSerializer,
         'json: complexDataTypeJsonSerializer

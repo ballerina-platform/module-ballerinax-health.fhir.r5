@@ -188,7 +188,7 @@ public const RESOURCE_NAME_INVOICE = "Invoice";
         },
         "totalPriceComponent" : {
             name: "totalPriceComponent",
-            dataType: MonetaryComponent,
+            dataType: r5:MonetaryComponent,
             min: 0,
             max: int:MAX_VALUE,
             isArray: true,
@@ -302,7 +302,7 @@ public type Invoice record {|
     r5:dateTime creation?;
     r5:markdown paymentTerms?;
     r5:Identifier[] identifier?;
-    MonetaryComponent[] totalPriceComponent?;
+    r5:MonetaryComponent[] totalPriceComponent?;
     r5:date periodDate?;
     r5:Money totalNet?;
     r5:Period periodPeriod?;
@@ -459,7 +459,7 @@ public type InvoiceParticipant record {|
         },
         "priceComponent": {
             name: "priceComponent",
-            dataType: MonetaryComponent,
+            dataType: r5:MonetaryComponent,
             min: 0,
             max: int:MAX_VALUE,
             isArray: true,
@@ -499,7 +499,7 @@ public type InvoiceLineItem record {|
     r5:Extension[] modifierExtension?;
     string id?;
     r5:date servicedDate?;
-    MonetaryComponent[] priceComponent?;
+    r5:MonetaryComponent[] priceComponent?;
     r5:Period servicedPeriod?;
     r5:Reference chargeItemReference;
 |};

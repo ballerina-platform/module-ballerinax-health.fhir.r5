@@ -83,7 +83,7 @@ public const RESOURCE_NAME_LOCATION = "Location";
         },
         "virtualService" : {
             name: "virtualService",
-            dataType: VirtualServiceDetail,
+            dataType: r5:VirtualServiceDetail,
             min: 0,
             max: int:MAX_VALUE,
             isArray: true,
@@ -285,7 +285,7 @@ public type Location record {|
     r5:Coding operationalStatus?;
     r5:Reference partOf?;
     r5:Extension[] extension?;
-    VirtualServiceDetail[] virtualService?;
+    r5:VirtualServiceDetail[] virtualService?;
     r5:Extension[] modifierExtension?;
     r5:markdown description?;
     r5:Availability[] hoursOfOperation?;

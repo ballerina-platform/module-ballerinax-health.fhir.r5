@@ -14,6 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+
 @DataTypeDefinition {
     name: "Availability",
     baseType: Element,
@@ -40,7 +41,7 @@
         'json: complexDataTypeJsonSerializer
     }
 }
-public type Availability record {|
+public type Availability record{|
     AvailableTime[] availableTime?;
     NotAvailableTime[] notAvailableTime?;
 |};

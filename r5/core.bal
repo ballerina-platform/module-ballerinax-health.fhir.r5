@@ -14,9 +14,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
+
+import ballerinax/health.base.message;
 import ballerina/jwt;
 import ballerina/time;
-import ballerinax/health.base.message;
 
 # FHIR wire content type formats
 public type FHIRWireFormat xml|json;
@@ -304,7 +305,6 @@ public isolated class FHIRResourceEntity {
             return self.resourceRecord.clone();
         }
     }
-
     public isolated function toXml() returns xml|FHIRSerializerError {
         lock {
             return executeResourceXMLSerializer(self.resourceRecord.clone());

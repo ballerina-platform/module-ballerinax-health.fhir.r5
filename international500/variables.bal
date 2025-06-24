@@ -25,30 +25,74 @@ public final r5:TerminologyProcessor terminologyProcessor = r5:terminologyProces
 # FHIR registry instance
 public final r5:FHIRRegistry fhirRegistry = r5:fhirRegistry;
 
-//Number of search params in FHIR_IG_SEARCH_PARAMS_1  = 0
+//Number of search params in FHIR_IG_SEARCH_PARAMS_1  = 100
 final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1 = {
     "parent": [
         {
             name: "parent",
             'type: r5:REFERENCE,
-            base: ["Specimen", "DeviceMetric", "DeviceDefinition", "MessageDefinition"],
-            expression: "MessageDefinition.parent | DeviceDefinition.parentDevice | DeviceMetric.parent | Specimen.parent"
+            base: ["Specimen", "Device", "MessageDefinition"],
+            expression: "MessageDefinition.parent | Device.parent | Specimen.parent"
         }
     ],
     "modality": [
         {
             name: "modality",
             'type: r5:TOKEN,
-            base: ["ImagingStudy", "Media"],
-            expression: "Media.modality | ImagingStudy.series.modality"
+            base: ["ImagingStudy", "DocumentReference"],
+            expression: "DocumentReference.modality | ImagingStudy.series.modality"
         }
+    ],
+    "master-file": [
+        {
+            name: "master-file",
+            'type: r5:REFERENCE,
+            base: ["MedicinalProductDefinition"],
+            expression: "MedicinalProductDefinition.masterFile"
+        }
+
+    ],
+    "subscriberid": [
+        {
+            name: "subscriberid",
+            'type: r5:TOKEN,
+            base: ["Coverage"],
+            expression: "Coverage.subscriberId"
+        }
+
+    ],
+    "scope-artifact": [
+        {
+            name: "scope-artifact",
+            'type: r5:REFERENCE,
+            base: ["TestScript"],
+            expression: "TestScript.scope.artifact"
+        }
+
     ],
     "setting": [
         {
             name: "setting",
             'type: r5:TOKEN,
             base: ["DocumentReference"],
-            expression: "DocumentReference.context.practiceSetting"
+            expression: "DocumentReference.practiceSetting"
+        }
+    ],
+    "substance-definition": [
+        {
+            name: "substance-definition",
+            'type: r5:REFERENCE,
+            base: ["Ingredient"],
+            expression: "Ingredient.substance.code.reference"
+        }
+
+    ],
+    "_list": [
+        {
+            name: "_list",
+            'type: r5:SPECIAL,
+            base: ["Resource"],
+            expression: "$searchParam.getExpression()"
         }
     ],
     "path": [
@@ -57,6 +101,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             'type: r5:TOKEN,
             base: ["StructureDefinition"],
             expression: "StructureDefinition.snapshot.element.path | StructureDefinition.differential.element.path"
+        }
+    ],
+    "source-scope": [
+        {
+            name: "source-scope",
+            'type: r5:REFERENCE,
+            base: ["ConceptMap"],
+            expression: "(ConceptMap.sourceScope as canonical)"
         }
     ],
     "code-value-date": [
@@ -79,8 +131,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
         {
             name: "instantiates-uri",
             'type: r5:URI,
-            base: ["CarePlan", "Communication", "Procedure", "NutritionOrder", "DeviceRequest", "RequestGroup", "ServiceRequest", "FamilyMemberHistory"],
-            expression: "FamilyMemberHistory.instantiatesUri | ServiceRequest.instantiatesUri | RequestGroup.instantiatesUri | DeviceRequest.instantiatesUri | NutritionOrder.instantiatesUri | Procedure.instantiatesUri | Communication.instantiatesUri | CarePlan.instantiatesUri"
+            base: ["CarePlan", "Communication", "Procedure", "RequestOrchestration", "DeviceRequest", "ServiceRequest", "FamilyMemberHistory"],
+            expression: "FamilyMemberHistory.instantiatesUri | ServiceRequest.instantiatesUri | DeviceRequest.instantiatesUri | RequestOrchestration.instantiatesUri | Procedure.instantiatesUri | Communication.instantiatesUri | CarePlan.instantiatesUri"
         }
     ],
     "near": [
@@ -99,12 +151,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "Claim.item.udi | ExplanationOfBenefit.item.udi"
         }
     ],
-    "value-string": [
+    "strength-presentation-quantity": [
         {
-            name: "value-string",
-            'type: r5:STRING,
-            base: ["Observation"],
-            expression: "(Observation.value as string) | (Observation.value as CodeableConcept).text"
+            name: "strength-presentation-quantity",
+            'type: r5:QUANTITY,
+            base: ["Ingredient"],
+            expression: "Ingredient.substance.strength.presentation.ofType(Quantity)"
+        }
+    ],
+    "form-of": [
+        {
+            name: "form-of",
+            'type: r5:REFERENCE,
+            base: ["AdministrableProductDefinition"],
+            expression: "AdministrableProductDefinition.formOf"
+        }
+    ],
+    "ext-context-expression": [
+        {
+            name: "ext-context-expression",
+            'type: r5:TOKEN,
+            base: ["StructureDefinition"],
+            expression: "StructureDefinition.context.expression"
         }
     ],
     "finding-code": [
@@ -112,7 +180,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             name: "finding-code",
             'type: r5:TOKEN,
             base: ["ClinicalImpression"],
-            expression: "ClinicalImpression.finding.itemCodeableConcept"
+            expression: "ClinicalImpression.finding.item.concept"
         }
     ],
     "general-practitioner": [
@@ -131,47 +199,68 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "Practitioner.active | PractitionerRole.active | Organization.active | OrganizationAffiliation.active | Patient.active | Schedule.active | RelatedPerson.active | HealthcareService.active"
         }
     ],
-    "version": [
-        {
-            name: "version",
-            'type: r5:TOKEN,
-            base: ["ResearchDefinition", "PlanDefinition", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "Evidence", "Library", "ChargeItemDefinition", "Questionnaire", "EffectEvidenceSynthesis", "Measure", "ExampleScenario", "ActivityDefinition", "TestScript", "ResearchElementDefinition", "RiskEvidenceSynthesis", "EventDefinition", "EvidenceVariable"],
-            expression: "EvidenceVariable.version | EventDefinition.version | RiskEvidenceSynthesis.version | ResearchElementDefinition.version | TestScript.version | ActivityDefinition.version | ExampleScenario.version | Measure.version | EffectEvidenceSynthesis.version | Questionnaire.version | ChargeItemDefinition.version | Library.version | Evidence.version | CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version | PlanDefinition.version | ResearchDefinition.version"
-        }
-    ],
     "address-postalcode": [
         {
             name: "address-postalcode",
             'type: r5:STRING,
             base: ["Patient", "Person", "Practitioner", "RelatedPerson", "Organization", "Location", "InsurancePlan"],
-            expression: "InsurancePlan.contact.address.postalCode | Location.address.postalCode | Organization.address.postalCode | Patient.address.postalCode | Person.address.postalCode | Practitioner.address.postalCode | RelatedPerson.address.postalCode"
+            expression: "InsurancePlan.contact.address.postalCode | Location.address.postalCode | Organization.contact.address.postalCode | Patient.address.postalCode | Person.address.postalCode | Practitioner.address.postalCode | RelatedPerson.address.postalCode"
         }
+    ],
+    "version": [
+        {
+            name: "version",
+            'type: r5:STRING,
+            base: ["Device", "DocumentReference"],
+            expression: "DocumentReference.version | Device.version.value"
+        },
+        {
+            name: "version",
+            'type: r5:TOKEN,
+            base: ["ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "SubscriptionTopic", "TerminologyCapabilities", "TestScript", "Composition"],
+            expression: "Composition.version | ActivityDefinition.version | ActorDefinition.version | CapabilityStatement.version | ChargeItemDefinition.version | Citation.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | ConditionDefinition.version | EventDefinition.version | Evidence.version | EvidenceVariable.version | ExampleScenario.version | GraphDefinition.version | ImplementationGuide.version | Library.version | Measure.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | PlanDefinition.version | Questionnaire.version | Requirements.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | SubscriptionTopic.version | TerminologyCapabilities.version | TestScript.version | ValueSet.version"
+        }
+    ],
+    "scope-artifact-conformance": [
+        {
+            name: "scope-artifact-conformance",
+            'type: r5:COMPOSITE,
+            base: ["TestScript"],
+            expression: "TestScript.scope"
+        }
+    ],
+    "contains": [
+        {
+            name: "contains",
+            'type: r5:SPECIAL,
+            base: ["Location"],
+            expression: "Location.extension('http://hl7.org/fhir/StructureDefinition/location-boundary-geojson').value"
+        }
+
     ],
     "route": [
         {
             name: "route",
             'type: r5:TOKEN,
-            base: ["MedicinalProductPharmaceutical", "AllergyIntolerance"],
-            expression: "AllergyIntolerance.reaction.exposureRoute | MedicinalProductPharmaceutical.routeOfAdministration.code"
-        }
-    ],
-    "chromosome-variant-coordinate": [
-        {
-            name: "chromosome-variant-coordinate",
-            'type: r5:COMPOSITE,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.variant"
+            base: ["AllergyIntolerance", "AdministrableProductDefinition"],
+            expression: "AdministrableProductDefinition.routeOfAdministration.code | AllergyIntolerance.reaction.exposureRoute"
         }
     ],
     "sender": [
         {
             name: "sender",
             'type: r5:REFERENCE,
-            base: ["CommunicationRequest", "MessageHeader", "Communication"],
-            expression: "Communication.sender | MessageHeader.sender | CommunicationRequest.sender"
+            base: ["MessageHeader", "Communication"],
+            expression: "Communication.sender | MessageHeader.sender"
         }
     ],
     "domain": [
+        {
+            name: "domain",
+            'type: r5:TOKEN,
+            base: ["SubstanceDefinition", "MedicinalProductDefinition"],
+            expression: "MedicinalProductDefinition.domain | SubstanceDefinition.domain"
+        },
         {
             name: "domain",
             'type: r5:REFERENCE,
@@ -199,8 +288,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
         {
             name: "role",
             'type: r5:TOKEN,
-            base: ["PractitionerRole", "OrganizationAffiliation"],
-            expression: "OrganizationAffiliation.code | PractitionerRole.code"
+            base: ["PractitionerRole", "Ingredient", "OrganizationAffiliation"],
+            expression: "OrganizationAffiliation.code | Ingredient.role | PractitionerRole.code"
         }
     ],
     "authoredon": [
@@ -211,20 +300,37 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "MedicationRequest.authoredOn"
         }
     ],
-    "target-system": [
+    "objective-type": [
         {
-            name: "target-system",
-            'type: r5:URI,
-            base: ["ConceptMap"],
-            expression: "ConceptMap.group.target"
+            name: "objective-type",
+            'type: r5:TOKEN,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.objective.type"
+        }
+
+    ],
+    "is-derived": [
+        {
+            name: "is-derived",
+            'type: r5:TOKEN,
+            base: ["SpecimenDefinition"],
+            expression: "SpecimenDefinition.typeTested.isDerived"
         }
     ],
     "characteristic": [
         {
             name: "characteristic",
             'type: r5:TOKEN,
-            base: ["HealthcareService", "Group"],
-            expression: "Group.characteristic.code | HealthcareService.characteristic"
+            base: ["HealthcareService", "Group", "MedicinalProductDefinition", "PractitionerRole", "Location"],
+            expression: "Location.characteristic | PractitionerRole.characteristic | MedicinalProductDefinition.characteristic.value.ofType(Quantity) | MedicinalProductDefinition.characteristic.value.ofType(CodeableConcept) | Group.characteristic.code | HealthcareService.characteristic"
+        }
+    ],
+    "attestation-who": [
+        {
+            name: "attestation-who",
+            'type: r5:REFERENCE,
+            base: ["VerificationResult"],
+            expression: "VerificationResult.attestation.who"
         }
     ],
     "entered-date": [
@@ -234,6 +340,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             base: ["ChargeItem"],
             expression: "ChargeItem.enteredDate"
         }
+
     ],
     "result": [
         {
@@ -249,12 +356,21 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "TestReport.result"
         }
     ],
+    "ExampleSearchParameterOnAnExtension": [
+        {
+            name: "ExampleSearchParameterOnAnExtension",
+            'type: r5:REFERENCE,
+            base: ["Patient"],
+            expression: "Patient.extension('http://example.org/fhir/StructureDefinition/participation-agreement').value"
+        }
+
+    ],
     "insurer": [
         {
             name: "insurer",
             'type: r5:REFERENCE,
-            base: ["Claim", "ClaimResponse", "CoverageEligibilityResponse"],
-            expression: "CoverageEligibilityResponse.insurer | ClaimResponse.insurer | Claim.insurer"
+            base: ["Claim", "ClaimResponse", "Coverage", "CoverageEligibilityResponse"],
+            expression: "CoverageEligibilityResponse.insurer | Coverage.insurer | ClaimResponse.insurer | Claim.insurer"
         }
     ],
     "monitoring-program-name": [
@@ -273,6 +389,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "ConceptMap.group.element.target.code"
         }
     ],
+    "service-type-reference": [
+        {
+            name: "service-type-reference",
+            'type: r5:REFERENCE,
+            base: ["Slot", "Appointment", "Schedule"],
+            expression: "Schedule.serviceType.reference | Appointment.serviceType.reference | Slot.serviceType.reference"
+        }
+
+    ],
     "policy": [
         {
             name: "policy",
@@ -281,28 +406,12 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "AuditEvent.agent.policy"
         }
     ],
-    "related-id": [
-        {
-            name: "related-id",
-            'type: r5:TOKEN,
-            base: ["DocumentManifest", "Composition"],
-            expression: "(Composition.relatesTo.target as Identifier) | DocumentManifest.related.identifier"
-        }
-    ],
     "address": [
         {
             name: "address",
             'type: r5:STRING,
-            base: ["InsurancePlan", "Organization", "Location", "Patient", "Person", "Practitioner", "RelatedPerson", "AuditEvent"],
-            expression: "AuditEvent.agent.network.address | Patient.address | Person.address | Practitioner.address | RelatedPerson.address | Location.address | Organization.address | InsurancePlan.contact.address"
-        }
-    ],
-    "referenceseqid-variant-coordinate": [
-        {
-            name: "referenceseqid-variant-coordinate",
-            'type: r5:COMPOSITE,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.variant"
+            base: ["InsurancePlan", "Organization", "Location", "Patient", "Person", "Practitioner", "RelatedPerson"],
+            expression: "Patient.address | Person.address | Practitioner.address | RelatedPerson.address | Location.address | Organization.contact.address | InsurancePlan.contact.address"
         }
     ],
     "sex": [
@@ -318,7 +427,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             name: "component-value-quantity",
             'type: r5:QUANTITY,
             base: ["Observation"],
-            expression: "(Observation.component.value as Quantity) | (Observation.component.value as SampledData)"
+            expression: "Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)"
         }
     ],
     "episode-of-care": [
@@ -329,20 +438,36 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "Encounter.episodeOfCare"
         }
     ],
-    "onset": [
+    "derived-or-self": [
         {
-            name: "onset",
-            'type: r5:DATE,
-            base: ["AllergyIntolerance"],
-            expression: "AllergyIntolerance.reaction.onset"
+            name: "derived-or-self",
+            'type: r5:URI,
+            base: ["SubscriptionTopic"],
+            expression: "SubscriptionTopic.url | SubscriptionTopic.derivedFrom"
+        }
+    ],
+    "bodysite-reference": [
+        {
+            name: "bodysite-reference",
+            'type: r5:REFERENCE,
+            base: ["DocumentReference"],
+            expression: "DocumentReference.bodySite.reference"
+        }
+    ],
+    "procedure": [
+        {
+            name: "procedure",
+            'type: r5:REFERENCE,
+            base: ["Specimen"],
+            expression: "Specimen.collection.procedure"
         }
     ],
     "actor": [
         {
             name: "actor",
             'type: r5:REFERENCE,
-            base: ["Consent", "AppointmentResponse", "Appointment", "Schedule"],
-            expression: "Schedule.actor | Appointment.participant.actor | AppointmentResponse.actor | Consent.provision.actor.reference"
+            base: ["Consent", "Requirements", "AppointmentResponse", "Task", "Appointment", "Schedule"],
+            expression: "Schedule.actor | Appointment.participant.actor | Task.performer.actor | AppointmentResponse.actor | Requirements.actor | Consent.provision.actor.reference"
         }
     ],
     "input-profile": [
@@ -360,6 +485,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             base: ["SearchParameter"],
             expression: "SearchParameter.component.definition"
         }
+
     ],
     "source-code": [
         {
@@ -399,6 +525,22 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "Immunization.protocolApplied.series"
         }
     ],
+    "strength-presentation-ratio": [
+        {
+            name: "strength-presentation-ratio",
+            'type: r5:COMPOSITE,
+            base: ["Ingredient"],
+            expression: "Ingredient.substance.strength.presentation.ofType(Ratio)"
+        }
+    ],
+    "contained-item": [
+        {
+            name: "contained-item",
+            'type: r5:REFERENCE,
+            base: ["PackagedProductDefinition"],
+            expression: "PackagedProductDefinition.packaging.containedItem.item.reference"
+        }
+    ],
     "information": [
         {
             name: "information",
@@ -407,20 +549,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "ImmunizationRecommendation.recommendation.supportingPatientInformation"
         }
     ],
+    "characteristic-reference": [
+        {
+            name: "characteristic-reference",
+            'type: r5:REFERENCE,
+            base: ["Group"],
+            expression: "(Group.characteristic.value.ofType(Reference))"
+        }
+    ],
+    "trigger-description": [
+        {
+            name: "trigger-description",
+            'type: r5:STRING,
+            base: ["SubscriptionTopic"],
+            expression: "SubscriptionTopic.resourceTrigger.description"
+        }
+    ],
     "notes": [
         {
             name: "notes",
             'type: r5:STRING,
             base: ["List"],
             expression: "List.note.text"
-        }
-    ],
-    "amino-acid-change": [
-        {
-            name: "amino-acid-change",
-            'type: r5:STRING,
-            base: ["Observation"],
-            expression: "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')"
         }
     ],
     "service-category": [
@@ -436,16 +586,9 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             name: "evidence",
             'type: r5:TOKEN,
             base: ["Condition"],
-            expression: "Condition.evidence.code"
+            expression: "Condition.evidence.concept"
         }
-    ],
-    "din": [
-        {
-            name: "din",
-            'type: r5:TOKEN,
-            base: ["Device"],
-            expression: "Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')"
-        }
+
     ],
     "criticality": [
         {
@@ -467,8 +610,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
         {
             name: "name-language",
             'type: r5:TOKEN,
-            base: ["MedicinalProduct"],
-            expression: "MedicinalProduct.name.countryLanguage.language"
+            base: ["MedicinalProductDefinition"],
+            expression: "MedicinalProductDefinition.name.usage.language"
         }
     ],
     "payment-date": [
@@ -478,6 +621,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             base: ["ClaimResponse"],
             expression: "ClaimResponse.payment.date"
         }
+
     ],
     "component-code-value-quantity": [
         {
@@ -486,22 +630,16 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             base: ["Observation"],
             expression: "Observation.component"
         }
+
     ],
     "payload": [
         {
             name: "payload",
             'type: r5:TOKEN,
             base: ["Subscription"],
-            expression: "Subscription.channel.payload"
+            expression: "Subscription.contentType"
         }
-    ],
-    "effective-time": [
-        {
-            name: "effective-time",
-            'type: r5:DATE,
-            base: ["MedicationAdministration"],
-            expression: "MedicationAdministration.effective"
-        }
+
     ],
     "contact": [
         {
@@ -509,6 +647,12 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             'type: r5:TOKEN,
             base: ["Subscription"],
             expression: "Subscription.contact"
+        },
+        {
+            name: "contact",
+            'type: r5:REFERENCE,
+            base: ["MedicinalProductDefinition"],
+            expression: "MedicinalProductDefinition.contact.contact"
         },
         {
             name: "contact",
@@ -521,16 +665,16 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
         {
             name: "enterer",
             'type: r5:REFERENCE,
-            base: ["Claim", "ExplanationOfBenefit", "ChargeItem", "CoverageEligibilityRequest", "MessageHeader"],
-            expression: "MessageHeader.enterer | CoverageEligibilityRequest.enterer | ChargeItem.enterer | ExplanationOfBenefit.enterer | Claim.enterer"
+            base: ["Claim", "ExplanationOfBenefit", "ChargeItem", "CoverageEligibilityRequest"],
+            expression: "CoverageEligibilityRequest.enterer | ChargeItem.enterer | ExplanationOfBenefit.enterer | Claim.enterer"
         }
     ],
     "location-period": [
         {
             name: "location-period",
-            'type: r5:DATE,
+            'type: r5:COMPOSITE,
             base: ["Encounter"],
-            expression: "Encounter.location.period"
+            expression: "Encounter.location"
         }
     ],
     "exclude": [
@@ -541,6 +685,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "Group.characteristic.exclude"
         }
     ],
+    "information-provider": [
+        {
+            name: "information-provider",
+            'type: r5:REFERENCE,
+            base: ["CommunicationRequest"],
+            expression: "CommunicationRequest.informationProvider"
+        }
+    ],
     "care-manager": [
         {
             name: "care-manager",
@@ -549,20 +701,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "EpisodeOfCare.careManager.where(resolve() is Practitioner)"
         }
     ],
-    "manifestation": [
+    "performer-code": [
         {
-            name: "manifestation",
+            name: "performer-code",
             'type: r5:TOKEN,
-            base: ["AllergyIntolerance"],
-            expression: "AllergyIntolerance.reaction.manifestation"
+            base: ["DeviceRequest"],
+            expression: "DeviceRequest.performer.concept"
         }
     ],
-    "gene-dnavariant": [
+    "performer-device-code": [
         {
-            name: "gene-dnavariant",
-            'type: r5:STRING,
-            base: ["Observation"],
-            expression: "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')"
+            name: "performer-device-code",
+            'type: r5:TOKEN,
+            base: ["MedicationAdministration"],
+            expression: "MedicationAdministration.performer.actor.concept"
         }
     ],
     "part-status": [
@@ -572,6 +724,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             base: ["Appointment", "AppointmentResponse"],
             expression: "AppointmentResponse.participantStatus | Appointment.participant.status"
         }
+
     ],
     "appointment-type": [
         {
@@ -584,9 +737,9 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
     "reason-given": [
         {
             name: "reason-given",
-            'type: r5:TOKEN,
+            'type: r5:REFERENCE,
             base: ["MedicationAdministration"],
-            expression: "MedicationAdministration.reasonCode"
+            expression: "MedicationAdministration.reason.reference"
         }
     ],
     "dose-status": [
@@ -602,15 +755,31 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             name: "item-subject",
             'type: r5:REFERENCE,
             base: ["QuestionnaireResponse"],
-            expression: "QuestionnaireResponse.item.where(hasExtension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject')).answer.value.ofType(Reference)"
+            expression: "QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)"
         }
     ],
-    "Example Search Parameter": [
+    "status-date": [
         {
-            name: "Example Search Parameter",
+            name: "status-date",
+            'type: r5:DATE,
+            base: ["VerificationResult"],
+            expression: "VerificationResult.statusDate"
+        }
+    ],
+    "subject_state": [
+        {
+            name: "subject_state",
+            'type: r5:TOKEN,
+            base: ["ResearchSubject"],
+            expression: "ResearchSubject.progress.subjectState"
+        }
+    ],
+    "primarysource-who": [
+        {
+            name: "primarysource-who",
             'type: r5:REFERENCE,
-            base: ["Condition"],
-            expression: "Condition.subject"
+            base: ["VerificationResult"],
+            expression: "VerificationResult.primarySource.who"
         }
     ],
     "beneficiary": [
@@ -629,20 +798,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "Contract.authority"
         }
     ],
+    "filter-value": [
+        {
+            name: "filter-value",
+            'type: r5:STRING,
+            base: ["Subscription"],
+            expression: "Subscription.filterBy.value"
+        }
+    ],
+    "allocation-account": [
+        {
+            name: "allocation-account",
+            'type: r5:REFERENCE,
+            base: ["PaymentReconciliation"],
+            expression: "PaymentReconciliation.allocation.account"
+        }
+    ],
     "subdetail-udi": [
         {
             name: "subdetail-udi",
             'type: r5:REFERENCE,
             base: ["ExplanationOfBenefit", "Claim"],
             expression: "Claim.item.detail.subDetail.udi | ExplanationOfBenefit.item.detail.subDetail.udi"
-        }
-    ],
-    "Example Search Parameter on an extension": [
-        {
-            name: "Example Search Parameter on an extension",
-            'type: r5:REFERENCE,
-            base: ["Patient"],
-            expression: "DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement')"
         }
     ],
     "policy-holder": [
@@ -658,29 +835,29 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             name: "onset-info",
             'type: r5:STRING,
             base: ["Condition"],
-            expression: "Condition.onset.as(string)"
-        }
-    ],
-    "lot-number": [
-        {
-            name: "lot-number",
-            'type: r5:TOKEN,
-            base: ["Medication"],
-            expression: "Medication.batch.lotNumber"
-        },
-        {
-            name: "lot-number",
-            'type: r5:STRING,
-            base: ["Immunization"],
-            expression: "Immunization.lotNumber"
+            expression: "Condition.onset.ofType(string)"
         }
     ],
     "context-type-value": [
         {
             name: "context-type-value",
             'type: r5:COMPOSITE,
-            base: ["EvidenceVariable", "Measure", "TestScript", "ExampleScenario", "EventDefinition", "Library", "ActivityDefinition", "ResearchDefinition", "RiskEvidenceSynthesis", "ResearchElementDefinition", "ChargeItemDefinition", "Questionnaire", "EffectEvidenceSynthesis", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "PlanDefinition", "Evidence"],
-            expression: "Evidence.useContext | PlanDefinition.useContext | CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext | EffectEvidenceSynthesis.useContext | Questionnaire.useContext | ChargeItemDefinition.useContext | ResearchElementDefinition.useContext | RiskEvidenceSynthesis.useContext | ResearchDefinition.useContext | ActivityDefinition.useContext | Library.useContext | EventDefinition.useContext | ExampleScenario.useContext | TestScript.useContext | Measure.useContext | EvidenceVariable.useContext"
+            base: ["ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "TestScript"],
+            expression: "ActivityDefinition.useContext | ActorDefinition.useContext | CapabilityStatement.useContext | ChargeItemDefinition.useContext | Citation.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | ConditionDefinition.useContext | EventDefinition.useContext | Evidence.useContext | EvidenceReport.useContext | EvidenceVariable.useContext | ExampleScenario.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | Library.useContext | Measure.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | PlanDefinition.useContext | Questionnaire.useContext | Requirements.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | TestScript.useContext | ValueSet.useContext"
+        }
+    ],
+    "lot-number": [
+        {
+            name: "lot-number",
+            'type: r5:TOKEN,
+            base: ["NutritionProduct", "Medication"],
+            expression: "Medication.batch.lotNumber | NutritionProduct.instance.lotNumber"
+        },
+        {
+            name: "lot-number",
+            'type: r5:STRING,
+            base: ["Device", "Immunization"],
+            expression: "Immunization.lotNumber | Device.lotNumber"
         }
     ],
     "component-data-absent-reason": [
@@ -691,6 +868,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "Observation.component.dataAbsentReason"
         }
     ],
+    "for": [
+        {
+            name: "for",
+            'type: r5:REFERENCE,
+            base: ["Ingredient"],
+            expression: "Ingredient.for"
+        }
+    ],
     "medium": [
         {
             name: "medium",
@@ -698,21 +883,25 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             base: ["CommunicationRequest", "Communication"],
             expression: "Communication.medium | CommunicationRequest.medium"
         }
-    ],
+    ]
+};
+
+//Number of search params in FHIR_IG_SEARCH_PARAMS_2  = 100
+final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_2 = {
     "title": [
         {
             name: "title",
             'type: r5:STRING,
-            base: ["Questionnaire", "ActivityDefinition", "List", "TestScript", "RiskEvidenceSynthesis", "PlanDefinition", "CapabilityStatement", "ConceptMap", "ImplementationGuide", "MessageDefinition", "OperationDefinition", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "EvidenceVariable", "Library", "ResearchDefinition", "Evidence", "EffectEvidenceSynthesis", "Measure", "ChargeItemDefinition", "ResearchElementDefinition", "Composition", "EventDefinition", "ResearchStudy"],
-            expression: "ResearchStudy.title | EventDefinition.title | Composition.title | ResearchElementDefinition.title | ChargeItemDefinition.title | Measure.title | EffectEvidenceSynthesis.title | Evidence.title | ResearchDefinition.title | Library.title | EvidenceVariable.title | CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title | PlanDefinition.title | RiskEvidenceSynthesis.title | TestScript.title | List.title | ActivityDefinition.title | Questionnaire.title"
+            base: ["List", "ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceVariable", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "ObservationDefinition", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SpecimenDefinition", "StructureDefinition", "StructureMap", "SubscriptionTopic", "TerminologyCapabilities", "TestScript", "Composition", "ResearchStudy"],
+            expression: "ResearchStudy.title | Composition.title | ActivityDefinition.title | ActorDefinition.title | CapabilityStatement.title | ChargeItemDefinition.title | Citation.title | CodeSystem.title | ConceptMap.title | ConditionDefinition.title | EventDefinition.title | Evidence.title | EvidenceVariable.title | ImplementationGuide.title | Library.title | Measure.title | MessageDefinition.title | ObservationDefinition.title | OperationDefinition.title | PlanDefinition.title | Questionnaire.title | Requirements.title | SpecimenDefinition.title | StructureDefinition.title | StructureMap.title | SubscriptionTopic.title | TerminologyCapabilities.title | TestScript.title | ValueSet.title | List.title"
         }
     ],
     "collector": [
         {
             name: "collector",
             'type: r5:REFERENCE,
-            base: ["Specimen"],
-            expression: "Specimen.collection.collector"
+            base: ["Specimen", "BiologicallyDerivedProduct"],
+            expression: "BiologicallyDerivedProduct.collection.collector | Specimen.collection.collector"
         }
     ],
     "administered-by": [
@@ -735,16 +924,24 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
         {
             name: "related",
             'type: r5:REFERENCE,
-            base: ["DocumentReference"],
-            expression: "DocumentReference.context.related"
+            base: ["Composition"],
+            expression: "Composition.relatesTo.resourceReference"
         }
     ],
     "provider": [
         {
             name: "provider",
             'type: r5:REFERENCE,
-            base: ["ExplanationOfBenefit", "CoverageEligibilityRequest", "NutritionOrder", "Claim", "PaymentNotice"],
-            expression: "PaymentNotice.provider | Claim.provider | NutritionOrder.orderer | CoverageEligibilityRequest.provider | ExplanationOfBenefit.provider"
+            base: ["ExplanationOfBenefit", "CoverageEligibilityRequest", "NutritionOrder", "Claim"],
+            expression: "Claim.provider | NutritionOrder.orderer | CoverageEligibilityRequest.provider | ExplanationOfBenefit.provider"
+        }
+    ],
+    "resultingeffect": [
+        {
+            name: "resultingeffect",
+            'type: r5:REFERENCE,
+            base: ["AdverseEvent"],
+            expression: "AdverseEvent.resultingEffect"
         }
     ],
     "responsible": [
@@ -764,17 +961,17 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
     "scope": [
         {
             name: "scope",
-            'type: r5:TOKEN,
-            base: ["Consent"],
-            expression: "Consent.scope"
+            'type: r5:REFERENCE,
+            base: ["TestPlan"],
+            expression: "TestPlan.scope"
         }
     ],
-    "activity-date": [
+    "package-for": [
         {
-            name: "activity-date",
-            'type: r5:DATE,
-            base: ["CarePlan"],
-            expression: "CarePlan.activity.detail.scheduled"
+            name: "package-for",
+            'type: r5:REFERENCE,
+            base: ["PackagedProductDefinition"],
+            expression: "PackagedProductDefinition.packageFor"
         }
     ],
     "class": [
@@ -789,8 +986,16 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
         {
             name: "owner",
             'type: r5:REFERENCE,
-            base: ["Task", "Account"],
-            expression: "Account.owner | Task.owner"
+            base: ["Task", "Account", "Subscription"],
+            expression: "Subscription.managingEntity | Account.owner | Task.owner"
+        }
+    ],
+    "product-type": [
+        {
+            name: "product-type",
+            'type: r5:TOKEN,
+            base: ["MedicationKnowledge"],
+            expression: "MedicationKnowledge.productType"
         }
     ],
     "recorded-date": [
@@ -801,12 +1006,34 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "Condition.recordedDate"
         }
     ],
+    "source-scope-uri": [
+        {
+            name: "source-scope-uri",
+            'type: r5:URI,
+            base: ["ConceptMap"],
+            expression: "(ConceptMap.sourceScope as uri)"
+        }
+    ],
     "recorder": [
         {
             name: "recorder",
             'type: r5:REFERENCE,
-            base: ["AdverseEvent", "AllergyIntolerance"],
-            expression: "AllergyIntolerance.recorder | AdverseEvent.recorder"
+            base: ["AdverseEvent"],
+            expression: "AdverseEvent.recorder"
+        }
+    ],
+    "serial-number": [
+        {
+            name: "serial-number",
+            'type: r5:STRING,
+            base: ["Device"],
+            expression: "Device.serialNumber | Device.identifier.where(type='SNO')"
+        },
+        {
+            name: "serial-number",
+            'type: r5:TOKEN,
+            base: ["Medication", "BiologicallyDerivedProduct", "NutritionProduct"],
+            expression: "NutritionProduct.instance.identifier | BiologicallyDerivedProduct.identifier | Medication.identifier"
         }
     ],
     "event-date": [
@@ -814,7 +1041,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             name: "event-date",
             'type: r5:DATE,
             base: ["DeviceRequest"],
-            expression: "(DeviceRequest.occurrence as dateTime) | (DeviceRequest.occurrence as Period)"
+            expression: "(DeviceRequest.occurrence.ofType(dateTime)) | (DeviceRequest.occurrence.ofType(Period))"
+        }
+    ],
+    "strength-concentration-ratio": [
+        {
+            name: "strength-concentration-ratio",
+            'type: r5:COMPOSITE,
+            base: ["Ingredient"],
+            expression: "Ingredient.substance.strength.concentration.ofType(Ratio)"
         }
     ],
     "length": [
@@ -833,20 +1068,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             expression: "ImmunizationRecommendation.recommendation.vaccineCode"
         }
     ],
+    "specification": [
+        {
+            name: "specification",
+            'type: r5:TOKEN,
+            base: ["Device", "DeviceDefinition"],
+            expression: "DeviceDefinition.conformsTo.specification | Device.conformsTo.specification"
+        }
+    ],
+    "scope-artifact-phase": [
+        {
+            name: "scope-artifact-phase",
+            'type: r5:COMPOSITE,
+            base: ["TestScript"],
+            expression: "TestScript.scope"
+        }
+    ],
     "recorded": [
         {
             name: "recorded",
             'type: r5:DATE,
-            base: ["Provenance"],
-            expression: "Provenance.recorded"
-        }
-    ],
-    "window-start": [
-        {
-            name: "window-start",
-            'type: r5:NUMBER,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.referenceSeq.windowStart"
+            base: ["Provenance", "MedicationDispense"],
+            expression: "MedicationDispense.recorded | Provenance.recorded"
         }
     ],
     "whenhandedover": [
@@ -856,16 +1099,22 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_1
             base: ["MedicationDispense"],
             expression: "MedicationDispense.whenHandedOver"
         }
-    ]
-};
-//Number of search params in INTERNATIONAL_IG_SEARCH_PARAMS_2  = 100
-final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH_PARAMS_2 = {
+    ],
     "FilterSearchParameter": [
         {
             name: "FilterSearchParameter",
             'type: r5:SPECIAL,
             base: ["Resource"],
             expression: "$searchParam.getExpression()"
+        }
+
+    ],
+    "progress-status-state-period": [
+        {
+            name: "progress-status-state-period",
+            'type: r5:COMPOSITE,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.progressStatus"
         }
     ],
     "schedule": [
@@ -889,7 +1138,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "form",
             'type: r5:TOKEN,
             base: ["Medication"],
-            expression: "Medication.form"
+            expression: "$searchParam.getExpression()"
         }
     ],
     "service": [
@@ -897,15 +1146,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "service",
             'type: r5:REFERENCE,
             base: ["OrganizationAffiliation", "PractitionerRole", "ChargeItem"],
-            expression: "ChargeItem.service | PractitionerRole.healthcareService | OrganizationAffiliation.healthcareService"
+            expression: "ChargeItem.service.reference | PractitionerRole.healthcareService | OrganizationAffiliation.healthcareService"
         }
     ],
     "ext-context": [
         {
             name: "ext-context",
-            'type: r5:TOKEN,
+            'type: r5:COMPOSITE,
             base: ["StructureDefinition"],
-            expression: "StructureDefinition.context.type"
+            expression: "StructureDefinition.context"
         }
     ],
     "onset-age": [
@@ -913,7 +1162,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "onset-age",
             'type: r5:QUANTITY,
             base: ["Condition"],
-            expression: "Condition.onset.as(Age) | Condition.onset.as(Range)"
+            expression: "Condition.onset.ofType(Age) | Condition.onset.ofType(Range)"
         }
     ],
     "agent-role": [
@@ -928,8 +1177,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "family",
             'type: r5:STRING,
-            base: ["Patient", "Practitioner"],
-            expression: "Patient.name.family | Practitioner.name.family"
+            base: ["Patient", "Practitioner", "Person", "RelatedPerson"],
+            expression: "RelatedPerson.name.family | Person.name.family | Patient.name.family | Practitioner.name.family"
         }
     ],
     "prior-request": [
@@ -937,15 +1186,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "prior-request",
             'type: r5:REFERENCE,
             base: ["DeviceRequest"],
-            expression: "DeviceRequest.priorRequest"
-        }
-    ],
-    "age": [
-        {
-            name: "age",
-            'type: r5:NUMBER,
-            base: ["Patient"],
-            expression: "$searchParam.getExpression()"
+            expression: "DeviceRequest.replaces"
         }
     ],
     "results-interpreter": [
@@ -956,14 +1197,6 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "DiagnosticReport.resultsInterpreter"
         }
     ],
-    "basedon": [
-        {
-            name: "basedon",
-            'type: r5:REFERENCE,
-            base: ["ImagingStudy"],
-            expression: "ImagingStudy.basedOn"
-        }
-    ],
     "empty-reason": [
         {
             name: "empty-reason",
@@ -972,12 +1205,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "List.emptyReason"
         }
     ],
+    "indication-reference": [
+        {
+            name: "indication-reference",
+            'type: r5:REFERENCE,
+            base: ["ClinicalUseDefinition"],
+            expression: "ClinicalUseDefinition.indication.diseaseSymptomProcedure.reference"
+        }
+    ],
     "source-reference": [
         {
             name: "source-reference",
             'type: r5:REFERENCE,
             base: ["Consent"],
-            expression: "Consent.source"
+            expression: "Consent.sourceReference"
         }
     ],
     "value-concept": [
@@ -985,45 +1226,29 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "value-concept",
             'type: r5:TOKEN,
             base: ["Observation"],
-            expression: "(Observation.value as CodeableConcept)"
+            expression: "Observation.value.ofType(CodeableConcept)"
         }
     ],
     "focus": [
         {
             name: "focus",
             'type: r5:REFERENCE,
-            base: ["Observation", "MessageHeader", "Task"],
-            expression: "Task.focus | MessageHeader.focus | Observation.focus"
+            base: ["MolecularSequence", "Observation", "GenomicStudy", "MessageHeader", "Task"],
+            expression: "Task.focus | MessageHeader.focus | GenomicStudy.analysis.focus | Observation.focus | MolecularSequence.focus"
         },
         {
             name: "focus",
             'type: r5:TOKEN,
-            base: ["ResearchStudy", "MessageDefinition"],
-            expression: "MessageDefinition.focus.code | ResearchStudy.focus"
+            base: ["MessageDefinition"],
+            expression: "MessageDefinition.focus.code"
         }
     ],
     "classification-type": [
         {
             name: "classification-type",
             'type: r5:TOKEN,
-            base: ["MedicationKnowledge"],
-            expression: "MedicationKnowledge.medicineClassification.type"
-        }
-    ],
-    "principalinvestigator": [
-        {
-            name: "principalinvestigator",
-            'type: r5:REFERENCE,
-            base: ["ResearchStudy"],
-            expression: "ResearchStudy.principalInvestigator"
-        }
-    ],
-    "altid": [
-        {
-            name: "altid",
-            'type: r5:TOKEN,
-            base: ["AuditEvent"],
-            expression: "AuditEvent.agent.altId"
+            base: ["MedicationKnowledge", "Citation"],
+            expression: "(Citation.classification.type) | MedicationKnowledge.medicineClassification.type"
         }
     ],
     "payee": [
@@ -1034,18 +1259,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "ExplanationOfBenefit.payee.party | Claim.payee.party"
         }
     ],
-    "source-uri": [
+    "output": [
         {
-            name: "source-uri",
-            'type: r5:URI,
-            base: ["MessageHeader"],
-            expression: "MessageHeader.source.endpoint"
-        },
-        {
-            name: "source-uri",
+            name: "output",
             'type: r5:REFERENCE,
-            base: ["ConceptMap"],
-            expression: "(ConceptMap.source as uri)"
+            base: ["Task"],
+            expression: "Task.output.value.ofType(Reference)"
+        }
+    ],
+    "included_structure": [
+        {
+            name: "included_structure",
+            'type: r5:TOKEN,
+            base: ["BodyStructure"],
+            expression: "BodyStructure.includedStructure.structure"
         }
     ],
     "supplier": [
@@ -1056,20 +1283,6 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "SupplyRequest.supplier | SupplyDelivery.supplier"
         }
     ],
-    "context": [
-        {
-            name: "context",
-            'type: r5:REFERENCE,
-            base: ["MedicationDispense", "MedicationStatement", "ChargeItem", "MedicationAdministration"],
-            expression: "MedicationAdministration.context | ChargeItem.context | MedicationStatement.context | MedicationDispense.context"
-        },
-        {
-            name: "context",
-            'type: r5:TOKEN,
-            base: ["Measure", "ExampleScenario", "RiskEvidenceSynthesis", "PlanDefinition", "EvidenceVariable", "ResearchElementDefinition", "ActivityDefinition", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "Questionnaire", "ResearchDefinition", "EventDefinition", "ChargeItemDefinition", "Composition", "Library", "TestScript", "EffectEvidenceSynthesis", "Evidence"],
-            expression: "(Evidence.useContext.value as CodeableConcept) | (EffectEvidenceSynthesis.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | Composition.event.code | (ChargeItemDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (ResearchDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept) | (ActivityDefinition.useContext.value as CodeableConcept) | (ResearchElementDefinition.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (RiskEvidenceSynthesis.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept)"
-        }
-    ],
     "code-value-quantity": [
         {
             name: "code-value-quantity",
@@ -1078,12 +1291,35 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Observation"
         }
     ],
+    "classifier": [
+        {
+            name: "classifier",
+            'type: r5:TOKEN,
+            base: ["ResearchStudy", "Citation"],
+            expression: "(Citation.classification.classifier) | ResearchStudy.classifier"
+        }
+
+    ],
+    "context": [
+        {
+            name: "context",
+            'type: r5:REFERENCE,
+            base: ["DocumentReference"],
+            expression: "DocumentReference.context"
+        },
+        {
+            name: "context",
+            'type: r5:TOKEN,
+            base: ["ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "TestScript"],
+            expression: "(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))"
+        }
+    ],
     "substance-reference": [
         {
             name: "substance-reference",
             'type: r5:REFERENCE,
             base: ["Substance"],
-            expression: "(Substance.ingredient.substance as Reference)"
+            expression: "(Substance.ingredient.substance.ofType(Reference))"
         }
     ],
     "action": [
@@ -1106,8 +1342,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "target-species",
             'type: r5:TOKEN,
-            base: ["MedicinalProductPharmaceutical"],
-            expression: "MedicinalProductPharmaceutical.routeOfAdministration.targetSpecies.code"
+            base: ["AdministrableProductDefinition"],
+            expression: "AdministrableProductDefinition.routeOfAdministration.targetSpecies.code"
         }
     ],
     "signer": [
@@ -1123,7 +1359,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "period",
             'type: r5:DATE,
             base: ["Task", "Account", "Consent", "NamingSystem", "MeasureReport", "DocumentReference", "Composition"],
-            expression: "Composition.event.period | DocumentReference.context.period | MeasureReport.period | NamingSystem.uniqueId.period | Consent.provision.period | Account.servicePeriod | Task.executionPeriod"
+            expression: "Composition.event.period | DocumentReference.period | MeasureReport.period | NamingSystem.uniqueId.period | Consent.provision.period | Account.servicePeriod | Task.executionPeriod"
         }
     ],
     "morphology": [
@@ -1139,15 +1375,21 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "practitioner",
             'type: r5:REFERENCE,
             base: ["Encounter", "PractitionerRole", "AppointmentResponse", "Person", "Appointment"],
-            expression: "Appointment.participant.actor.where(resolve() is Practitioner) | Person.link.target.where(resolve() is Practitioner) | AppointmentResponse.actor.where(resolve() is Practitioner) | PractitionerRole.practitioner | Encounter.participant.individual.where(resolve() is Practitioner)"
+            expression: "Appointment.participant.actor.where(resolve() is Practitioner) | Person.link.target.where(resolve() is Practitioner) | AppointmentResponse.actor.where(resolve() is Practitioner) | PractitionerRole.practitioner | Encounter.participant.actor.where(resolve() is Practitioner)"
         }
     ],
     "classification": [
         {
             name: "classification",
+            'type: r5:COMPOSITE,
+            base: ["Citation"],
+            expression: "Citation.classification"
+        },
+        {
+            name: "classification",
             'type: r5:TOKEN,
-            base: ["MedicationKnowledge"],
-            expression: "MedicationKnowledge.medicineClassification.classification"
+            base: ["SubstanceDefinition", "MedicationKnowledge"],
+            expression: "MedicationKnowledge.medicineClassification.classification | SubstanceDefinition.classification"
         }
     ],
     "payment-status": [
@@ -1158,12 +1400,36 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "PaymentNotice.paymentStatus"
         }
     ],
+    "container-device": [
+        {
+            name: "container-device",
+            'type: r5:REFERENCE,
+            base: ["Specimen"],
+            expression: "Specimen.container.device.where(resolve() is Device)"
+        }
+    ],
+    "effect-reference": [
+        {
+            name: "effect-reference",
+            'type: r5:REFERENCE,
+            base: ["ClinicalUseDefinition"],
+            expression: "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.reference"
+        }
+    ],
+    "study-uid": [
+        {
+            name: "study-uid",
+            'type: r5:TOKEN,
+            base: ["ImagingSelection"],
+            expression: "ImagingSelection.studyUid"
+        }
+    ],
     "additive": [
         {
             name: "additive",
             'type: r5:TOKEN,
             base: ["NutritionOrder"],
-            expression: "NutritionOrder.enteralFormula.additiveType"
+            expression: "NutritionOrder.enteralFormula.additive.type.concept"
         }
     ],
     "system": [
@@ -1179,7 +1445,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "supplement",
             'type: r5:TOKEN,
             base: ["NutritionOrder"],
-            expression: "NutritionOrder.supplement.type"
+            expression: "NutritionOrder.supplement.type.concept"
         }
     ],
     "security-service": [
@@ -1190,6 +1456,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "CapabilityStatement.rest.security.service"
         }
     ],
+    "biological": [
+        {
+            name: "biological",
+            'type: r5:REFERENCE,
+            base: ["PackagedProductDefinition"],
+            expression: "PackagedProductDefinition.packaging.containedItem.item.reference"
+        }
+    ],
     "_source": [
         {
             name: "_source",
@@ -1198,29 +1472,40 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Resource.meta.source"
         }
     ],
+    "indication": [
+        {
+            name: "indication",
+            'type: r5:TOKEN,
+            base: ["ClinicalUseDefinition"],
+            expression: "ClinicalUseDefinition.indication.diseaseSymptomProcedure.concept"
+        }
+    ],
     "status": [
         {
             name: "status",
             'type: r5:TOKEN,
-            base: ["RiskEvidenceSynthesis", "ImmunizationEvaluation", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "Appointment", "EffectEvidenceSynthesis", "Task", "EpisodeOfCare", "Procedure", "ActivityDefinition", "MedicationKnowledge", "ResearchElementDefinition", "Medication", "CarePlan", "Location", "DeviceRequest", "QuestionnaireResponse", "SupplyDelivery", "Claim", "DiagnosticReport", "DocumentReference", "EventDefinition", "Endpoint", "EnrollmentResponse", "EvidenceVariable", "Library", "SupplyRequest", "ResearchSubject", "FamilyMemberHistory", "List", "Composition", "Questionnaire", "PlanDefinition", "Communication", "ExampleScenario", "ServiceRequest", "DocumentManifest", "Encounter", "MeasureReport", "TestScript", "Media", "InsurancePlan", "Contract", "Specimen", "Substance", "CoverageEligibilityRequest", "MedicinalProductAuthorization", "ImagingStudy", "Immunization", "VisionPrescription", "ImmunizationRecommendation", "CareTeam", "Measure", "Subscription", "ClaimResponse", "PaymentNotice", "EnrollmentRequest", "ExplanationOfBenefit", "RequestGroup", "NutritionOrder", "Account", "Consent", "PaymentReconciliation", "Evidence", "ResearchDefinition", "ClinicalImpression", "Observation", "ChargeItemDefinition", "ResearchStudy", "Device", "Coverage", "Invoice", "Slot", "CoverageEligibilityResponse", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "CommunicationRequest"],
-            expression: "CommunicationRequest.status | CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status | CoverageEligibilityResponse.status | Slot.status | Invoice.status | Coverage.status | Device.status | ResearchStudy.status | ChargeItemDefinition.status | Observation.status | ClinicalImpression.status | ResearchDefinition.status | Evidence.status | PaymentReconciliation.status | Consent.status | Account.status | NutritionOrder.status | RequestGroup.status | ExplanationOfBenefit.status | EnrollmentRequest.status | PaymentNotice.status | ClaimResponse.status | Subscription.status | Measure.status | CareTeam.status | ImmunizationRecommendation.recommendation.forecastStatus | VisionPrescription.status | Immunization.status | ImagingStudy.status | MedicinalProductAuthorization.status | CoverageEligibilityRequest.status | Substance.status | Specimen.status | Contract.status | InsurancePlan.status | Media.status | TestScript.status | MeasureReport.status | Encounter.status | DocumentManifest.status | ServiceRequest.status | ExampleScenario.status | Communication.status | PlanDefinition.status | Questionnaire.status | Composition.status | List.status | FamilyMemberHistory.status | ResearchSubject.status | SupplyRequest.status | Library.status | EvidenceVariable.status | EnrollmentResponse.status | Endpoint.status | EventDefinition.status | DocumentReference.status | DiagnosticReport.status | Claim.status | SupplyDelivery.status | QuestionnaireResponse.status | DeviceRequest.status | Location.status | CarePlan.status | Medication.status | ResearchElementDefinition.status | MedicationKnowledge.status | ActivityDefinition.status | Procedure.status | EpisodeOfCare.status | Task.status | EffectEvidenceSynthesis.status | Appointment.status | MedicationAdministration.status | MedicationDispense.status | MedicationRequest.status | MedicationStatement.status | ImmunizationEvaluation.status | RiskEvidenceSynthesis.status"
+            base: ["ImmunizationEvaluation", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "Appointment", "Task", "InventoryReport", "NutritionProduct", "DeviceAssociation", "EpisodeOfCare", "ClinicalUseDefinition", "Procedure", "ImagingSelection", "Medication", "CarePlan", "Location", "AdverseEvent", "DeviceRequest", "SupplyDelivery", "QuestionnaireResponse", "Claim", "DiagnosticReport", "DocumentReference", "VerificationResult", "Endpoint", "EnrollmentResponse", "DeviceUsage", "Transport", "SupplyRequest", "ResearchSubject", "FamilyMemberHistory", "List", "Composition", "Flag", "ManufacturedItemDefinition", "Communication", "ServiceRequest", "InventoryItem", "ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MedicationKnowledge", "MessageDefinition", "NamingSystem", "ObservationDefinition", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "SpecimenDefinition", "StructureDefinition", "StructureMap", "SubscriptionTopic", "TerminologyCapabilities", "TestPlan", "TestScript", "Ingredient", "Encounter", "GenomicStudy", "MeasureReport", "AdministrableProductDefinition", "InsurancePlan", "Contract", "Specimen", "Substance", "CoverageEligibilityRequest", "ChargeItem", "ImagingStudy", "Immunization", "VisionPrescription", "ImmunizationRecommendation", "Permission", "CareTeam", "RequestOrchestration", "DetectedIssue", "Subscription", "ClaimResponse", "BiologicallyDerivedProductDispense", "EncounterHistory", "PaymentNotice", "EnrollmentRequest", "DeviceDispense", "ExplanationOfBenefit", "NutritionOrder", "Account", "Consent", "NutritionIntake", "PaymentReconciliation", "ClinicalImpression", "Observation", "GuidanceResponse", "TestReport", "ResearchStudy", "Device", "Coverage", "Invoice", "Slot", "RegulatedAuthorization", "CoverageEligibilityResponse", "MedicinalProductDefinition", "PackagedProductDefinition", "CommunicationRequest"],
+            expression: "CommunicationRequest.status | PackagedProductDefinition.status | MedicinalProductDefinition.status | CoverageEligibilityResponse.status | RegulatedAuthorization.status | Slot.status | Invoice.status | Coverage.status | Device.status | ResearchStudy.status | TestReport.status | GuidanceResponse.status | Observation.status | ClinicalImpression.status | PaymentReconciliation.status | NutritionIntake.status | Consent.status | Account.status | NutritionOrder.status | ExplanationOfBenefit.status | DeviceDispense.status | EnrollmentRequest.status | PaymentNotice.status | EncounterHistory.status | BiologicallyDerivedProductDispense.status | ClaimResponse.status | Subscription.status | DetectedIssue.status | RequestOrchestration.status | CareTeam.status | Permission.status | ImmunizationRecommendation.recommendation.forecastStatus | VisionPrescription.status | Immunization.status | ImagingStudy.status | ChargeItem.status | CoverageEligibilityRequest.status | Substance.status | Specimen.status | Contract.status | InsurancePlan.status | AdministrableProductDefinition.status | MeasureReport.status | GenomicStudy.status | Encounter.status | Ingredient.status | ActivityDefinition.status | ActorDefinition.status | CapabilityStatement.status | ChargeItemDefinition.status | Citation.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | ConditionDefinition.status | EventDefinition.status | Evidence.status | EvidenceReport.status | EvidenceVariable.status | ExampleScenario.status | GraphDefinition.status | ImplementationGuide.status | Library.status | Measure.status | MedicationKnowledge.status | MessageDefinition.status | NamingSystem.status | ObservationDefinition.status | OperationDefinition.status | PlanDefinition.status | Questionnaire.status | Requirements.status | SearchParameter.status | SpecimenDefinition.status | StructureDefinition.status | StructureMap.status | SubscriptionTopic.status | TerminologyCapabilities.status | TestPlan.status | TestScript.status | ValueSet.status | InventoryItem.status | ServiceRequest.status | Communication.status | ManufacturedItemDefinition.status | Flag.status | Composition.status | List.status | FamilyMemberHistory.status | ResearchSubject.status | SupplyRequest.status | Transport.status | DeviceUsage.status | EnrollmentResponse.status | Endpoint.status | VerificationResult.status | DocumentReference.status | DiagnosticReport.status | Claim.status | QuestionnaireResponse.status | SupplyDelivery.status | DeviceRequest.status | AdverseEvent.status | Location.status | CarePlan.status | Medication.status | ImagingSelection.status | Procedure.status | ClinicalUseDefinition.status | EpisodeOfCare.status | DeviceAssociation.status | NutritionProduct.category | InventoryReport.status | Task.status | Appointment.status | MedicationAdministration.status | MedicationDispense.status | MedicationRequest.status | MedicationStatement.status | ImmunizationEvaluation.status"
         }
-    ],
-    "other": [
-        {
-            name: "other",
-            'type: r5:REFERENCE,
-            base: ["ConceptMap"],
-            expression: "ConceptMap.group.unmapped.url"
-        }
+
     ],
     "successor": [
         {
             name: "successor",
             'type: r5:REFERENCE,
-            base: ["Library", "ResearchDefinition", "PlanDefinition", "Evidence", "EvidenceVariable", "ActivityDefinition", "ResearchElementDefinition", "Measure", "EventDefinition"],
-            expression: "EventDefinition.relatedArtifact.where(type='successor').resource | Measure.relatedArtifact.where(type='successor').resource | ResearchElementDefinition.relatedArtifact.where(type='successor').resource | ActivityDefinition.relatedArtifact.where(type='successor').resource | EvidenceVariable.relatedArtifact.where(type='successor').resource | Evidence.relatedArtifact.where(type='successor').resource | PlanDefinition.relatedArtifact.where(type='successor').resource | ResearchDefinition.relatedArtifact.where(type='successor').resource | Library.relatedArtifact.where(type='successor').resource"
+            base: ["ActivityDefinition", "EventDefinition", "EvidenceVariable", "Library", "Measure", "PlanDefinition"],
+            expression: "ActivityDefinition.relatedArtifact.where(type='successor').resource | EventDefinition.relatedArtifact.where(type='successor').resource | EvidenceVariable.relatedArtifact.where(type='successor').resource | Library.relatedArtifact.where(type='successor').resource | Measure.relatedArtifact.where(type='successor').resource | PlanDefinition.relatedArtifact.where(type='successor').resource"
         }
+
+    ],
+    "participant-function": [
+        {
+            name: "participant-function",
+            'type: r5:TOKEN,
+            base: ["Condition"],
+            expression: "Condition.participant.function"
+        }
+
     ],
     "combo-code-value-quantity": [
         {
@@ -1228,6 +1513,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:COMPOSITE,
             base: ["Observation"],
             expression: "Observation | Observation.component"
+        }
+    ],
+    "study-design": [
+        {
+            name: "study-design",
+            'type: r5:TOKEN,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.studyDesign"
         }
     ],
     "operational-status": [
@@ -1242,8 +1535,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "part-of",
             'type: r5:REFERENCE,
-            base: ["CarePlan", "Procedure", "MedicationStatement", "Observation", "QuestionnaireResponse", "Task", "Encounter", "Communication"],
-            expression: "Communication.partOf | Encounter.partOf | Task.partOf | QuestionnaireResponse.partOf | Observation.partOf | MedicationStatement.partOf | Procedure.partOf | CarePlan.partOf"
+            base: ["CarePlan", "Procedure", "ResearchStudy", "Observation", "QuestionnaireResponse", "Task", "Encounter", "Communication"],
+            expression: "Communication.partOf | Encounter.partOf | Task.partOf | QuestionnaireResponse.partOf | Observation.partOf | ResearchStudy.partOf | Procedure.partOf | CarePlan.partOf"
         }
     ],
     "start-date": [
@@ -1251,7 +1544,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "start-date",
             'type: r5:DATE,
             base: ["Goal"],
-            expression: "(Goal.start as date)"
+            expression: "(Goal.start.ofType(date))"
         }
     ],
     "occurrence": [
@@ -1259,7 +1552,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "occurrence",
             'type: r5:DATE,
             base: ["CommunicationRequest", "ServiceRequest", "ChargeItem"],
-            expression: "ChargeItem.occurrence | ServiceRequest.occurrence | (CommunicationRequest.occurrence as dateTime)"
+            expression: "ChargeItem.occurrence.ofType(dateTime) | ChargeItem.occurrence.ofType(Period) | ChargeItem.occurrence.ofType(Timing) | ServiceRequest.occurrence.ofType(dateTime) | ServiceRequest.occurrence.ofType(Period) | ServiceRequest.occurrence.ofType(Timing) | CommunicationRequest.occurrence.ofType(dateTime) | CommunicationRequest.occurrence.ofType(Period)"
         }
     ],
     "fhirversion": [
@@ -1267,7 +1560,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "fhirversion",
             'type: r5:TOKEN,
             base: ["CapabilityStatement"],
-            expression: "CapabilityStatement.version"
+            expression: "CapabilityStatement.fhirVersion"
         }
     ],
     "manufacturer": [
@@ -1280,8 +1573,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "manufacturer",
             'type: r5:REFERENCE,
-            base: ["MedicationKnowledge", "Medication", "Immunization"],
-            expression: "Immunization.manufacturer | Medication.manufacturer | MedicationKnowledge.manufacturer"
+            base: ["Immunization", "DeviceDefinition", "Ingredient"],
+            expression: "Ingredient.manufacturer.manufacturer | DeviceDefinition.manufacturer | Immunization.manufacturer.reference"
         }
     ],
     "base-path": [
@@ -1300,12 +1593,12 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Group.member.entity"
         }
     ],
-    "authenticator": [
+    "code-concept": [
         {
-            name: "authenticator",
-            'type: r5:REFERENCE,
-            base: ["DocumentReference"],
-            expression: "DocumentReference.authenticator"
+            name: "code-concept",
+            'type: r5:TOKEN,
+            base: ["ServiceRequest"],
+            expression: "ServiceRequest.code.concept"
         }
     ],
     "outcome": [
@@ -1313,7 +1606,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "outcome",
             'type: r5:TOKEN,
             base: ["PaymentReconciliation", "AuditEvent", "CoverageEligibilityResponse", "ClaimResponse"],
-            expression: "ClaimResponse.outcome | CoverageEligibilityResponse.outcome | AuditEvent.outcome | PaymentReconciliation.outcome"
+            expression: "ClaimResponse.outcome | CoverageEligibilityResponse.outcome | AuditEvent.outcome.code | PaymentReconciliation.outcome"
         }
     ],
     "evidence-detail": [
@@ -1321,15 +1614,23 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "evidence-detail",
             'type: r5:REFERENCE,
             base: ["Condition"],
-            expression: "Condition.evidence.detail"
+            expression: "Condition.evidence.reference"
         }
     ],
     "product": [
         {
             name: "product",
-            'type: r5:URI,
-            base: ["ConceptMap"],
-            expression: "ConceptMap.group.element.target.product.property"
+            'type: r5:REFERENCE,
+            base: ["BiologicallyDerivedProductDispense", "ClinicalUseDefinition"],
+            expression: "ClinicalUseDefinition.subject.where(resolve() is MedicinalProductDefinition) | BiologicallyDerivedProductDispense.product"
+        }
+    ],
+    "focus-reference": [
+        {
+            name: "focus-reference",
+            'type: r5:REFERENCE,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.focus.reference"
         }
     ],
     "_security": [
@@ -1340,12 +1641,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Resource.meta.security"
         }
     ],
+    "_type": [
+        {
+            name: "_type",
+            'type: r5:SPECIAL,
+            base: ["Resource"],
+            expression: "$searchParam.getExpression()"
+        }
+    ],
     "url": [
         {
             name: "url",
             'type: r5:URI,
-            base: ["ResearchElementDefinition", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "EventDefinition", "Subscription", "RiskEvidenceSynthesis", "ActivityDefinition", "Library", "PlanDefinition", "Contract", "ResearchDefinition", "Device", "Measure", "ExampleScenario", "EvidenceVariable", "EffectEvidenceSynthesis", "ChargeItemDefinition", "Questionnaire", "Evidence", "TestScript"],
-            expression: "TestScript.url | Evidence.url | Questionnaire.url | ChargeItemDefinition.url | EffectEvidenceSynthesis.url | EvidenceVariable.url | ExampleScenario.url | Measure.url | Device.url | ResearchDefinition.url | Contract.url | PlanDefinition.url | Library.url | ActivityDefinition.url | RiskEvidenceSynthesis.url | Subscription.channel.endpoint | EventDefinition.url | CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url | ResearchElementDefinition.url"
+            base: ["ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "ObservationDefinition", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "SpecimenDefinition", "StructureDefinition", "StructureMap", "SubscriptionTopic", "TerminologyCapabilities", "TestPlan", "TestScript", "Subscription", "Contract", "Device", "Composition"],
+            expression: "Composition.url | Device.url | Contract.url | Subscription.endpoint | ActivityDefinition.url | ActorDefinition.url | CapabilityStatement.url | ChargeItemDefinition.url | Citation.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | ConditionDefinition.url | EventDefinition.url | Evidence.url | EvidenceReport.url | EvidenceVariable.url | ExampleScenario.url | GraphDefinition.url | ImplementationGuide.url | Library.url | Measure.url | MessageDefinition.url | NamingSystem.url | ObservationDefinition.url | OperationDefinition.url | PlanDefinition.url | Questionnaire.url | Requirements.url | SearchParameter.url | SpecimenDefinition.url | StructureDefinition.url | StructureMap.url | SubscriptionTopic.url | TerminologyCapabilities.url | TestPlan.url | TestScript.url | ValueSet.url"
+        }
+    ],
+    "end-date": [
+        {
+            name: "end-date",
+            'type: r5:DATE,
+            base: ["Encounter"],
+            expression: "Encounter.actualPeriod.end"
         }
     ],
     "disposition": [
@@ -1355,6 +1672,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             base: ["ClaimResponse", "PaymentReconciliation", "CoverageEligibilityResponse", "ExplanationOfBenefit"],
             expression: "ExplanationOfBenefit.disposition | CoverageEligibilityResponse.disposition | PaymentReconciliation.disposition | ClaimResponse.disposition"
         }
+
     ],
     "lifecycle-status": [
         {
@@ -1376,16 +1694,24 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "reason-reference",
             'type: r5:REFERENCE,
-            base: ["Immunization", "Procedure", "Appointment", "Encounter"],
-            expression: "Encounter.reasonReference | Appointment.reasonReference | Procedure.reasonReference | Immunization.reasonReference"
+            base: ["Immunization", "EpisodeOfCare", "Procedure", "Appointment", "Encounter"],
+            expression: "Encounter.reason.value.reference | Appointment.reason.reference | Procedure.reason.reference | EpisodeOfCare.reason.value.reference | Immunization.reason.reference"
         }
     ],
-    "consentor": [
+    "report": [
         {
-            name: "consentor",
+            name: "report",
             'type: r5:REFERENCE,
-            base: ["Consent"],
-            expression: "Consent.performer"
+            base: ["Procedure"],
+            expression: "Procedure.report"
+        }
+    ],
+    "paymentby-party": [
+        {
+            name: "paymentby-party",
+            'type: r5:REFERENCE,
+            base: ["Coverage"],
+            expression: "Coverage.paymentBy.party"
         }
     ],
     "entity": [
@@ -1403,13 +1729,33 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             base: ["ChargeItem"],
             expression: "ChargeItem.requestingOrganization"
         }
-    ],
+    ]
+};
+//Number of search params in FHIR_IG_SEARCH_PARAMS_3  = 100
+final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_3 = {
     "evaluated-resource": [
         {
             name: "evaluated-resource",
             'type: r5:REFERENCE,
             base: ["MeasureReport"],
             expression: "MeasureReport.evaluatedResource"
+        }
+    ],
+    "_language": [
+        {
+            name: "_language",
+            'type: r5:TOKEN,
+            base: ["Resource"],
+            expression: "Resource.language"
+        }
+
+    ],
+    "manufacture-date": [
+        {
+            name: "manufacture-date",
+            'type: r5:DATE,
+            base: ["Device"],
+            expression: "Device.manufactureDate"
         }
     ],
     "instance": [
@@ -1440,16 +1786,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "subject",
             'type: r5:REFERENCE,
-            base: ["RiskAssessment", "Observation", "ServiceRequest", "Contract", "List", "MedicationDispense", "QuestionnaireResponse", "DocumentReference", "CommunicationRequest", "DiagnosticReport", "CareTeam", "Communication", "Condition", "Media", "MedicinalProductIndication", "Goal", "Encounter", "Invoice", "MedicinalProductContraindication", "MedicationStatement", "ChargeItem", "DocumentManifest", "Specimen", "Procedure", "RequestGroup", "SupplyRequest", "EnrollmentRequest", "MedicinalProductInteraction", "ClinicalImpression", "MedicinalProductUndesirableEffect", "Basic", "AdverseEvent", "Task", "CarePlan", "MeasureReport", "MedicationAdministration", "MedicinalProductPackaged", "MedicinalProductAuthorization", "DeviceUseStatement", "ImagingStudy", "Composition", "DeviceRequest", "Flag", "MedicationRequest", "Account", "GuidanceResponse"],
-            expression: "GuidanceResponse.subject | Account.subject | MedicationRequest.subject | Flag.subject | DeviceRequest.subject | Composition.subject | ImagingStudy.subject | DeviceUseStatement.subject | MedicinalProductAuthorization.subject | MedicinalProductPackaged.subject | MedicationAdministration.subject | MeasureReport.subject | CarePlan.subject | Task.for | AdverseEvent.subject | Basic.subject | MedicinalProductUndesirableEffect.subject | ClinicalImpression.subject | MedicinalProductInteraction.subject | EnrollmentRequest.candidate | SupplyRequest.deliverTo | RequestGroup.subject | Procedure.subject | Specimen.subject | DocumentManifest.subject | ChargeItem.subject | MedicationStatement.subject | MedicinalProductContraindication.subject | Invoice.subject | Encounter.subject | Goal.subject | MedicinalProductIndication.subject | Media.subject | Condition.subject | Communication.subject | CareTeam.subject | DiagnosticReport.subject | CommunicationRequest.subject | DocumentReference.subject | QuestionnaireResponse.subject | MedicationDispense.subject | List.subject | Contract.subject | ServiceRequest.subject | Observation.subject | RiskAssessment.subject"
-        }
-    ],
-    "assessor": [
-        {
-            name: "assessor",
-            'type: r5:REFERENCE,
-            base: ["ClinicalImpression"],
-            expression: "ClinicalImpression.assessor"
+            base: ["RiskAssessment", "Observation", "ServiceRequest", "Contract", "MolecularSequence", "List", "ResearchSubject", "MedicationDispense", "QuestionnaireResponse", "RequestOrchestration", "DocumentReference", "CommunicationRequest", "DiagnosticReport", "GenomicStudy", "CareTeam", "Communication", "Condition", "NutritionIntake", "Goal", "Encounter", "Invoice", "Appointment", "ClinicalUseDefinition", "MedicationStatement", "EncounterHistory", "Consent", "ChargeItem", "DetectedIssue", "Specimen", "Procedure", "SupplyRequest", "EnrollmentRequest", "ClinicalImpression", "NutritionOrder", "Basic", "RegulatedAuthorization", "AdverseEvent", "Task", "CarePlan", "MeasureReport", "MedicationAdministration", "ImagingStudy", "Composition", "InventoryItem", "DeviceRequest", "DeviceDispense", "Flag", "MedicationRequest", "Account", "DeviceAssociation", "ImagingSelection", "GuidanceResponse"],
+            expression: "GuidanceResponse.subject | ImagingSelection.subject | DeviceAssociation.subject.where(resolve() is Patient) | Account.subject | MedicationRequest.subject | Flag.subject | DeviceDispense.subject | DeviceRequest.subject | InventoryItem.instance.subject | Composition.subject | ImagingStudy.subject | MedicationAdministration.subject | MeasureReport.subject | CarePlan.subject | Task.for | AdverseEvent.subject | RegulatedAuthorization.subject | Basic.subject | NutritionOrder.subject | ClinicalImpression.subject | EnrollmentRequest.candidate | SupplyRequest.deliverTo | Procedure.subject | Specimen.subject | DetectedIssue.subject | ChargeItem.subject | Consent.subject | EncounterHistory.subject | MedicationStatement.subject | ClinicalUseDefinition.subject | Appointment.subject | Invoice.subject | Encounter.subject | Goal.subject | NutritionIntake.subject | Condition.subject | Communication.subject | CareTeam.subject | GenomicStudy.subject | DiagnosticReport.subject | CommunicationRequest.subject | DocumentReference.subject | RequestOrchestration.subject | QuestionnaireResponse.subject | MedicationDispense.subject | ResearchSubject.subject | List.subject | MolecularSequence.subject | Contract.subject | ServiceRequest.subject | Observation.subject | RiskAssessment.subject"
         }
     ],
     "value-date": [
@@ -1457,7 +1795,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "value-date",
             'type: r5:DATE,
             base: ["Observation"],
-            expression: "(Observation.value as dateTime) | (Observation.value as Period)"
+            expression: "Observation.value.ofType(dateTime) | Observation.value.ofType(Period)"
+        }
+    ],
+    "target-group-system": [
+        {
+            name: "target-group-system",
+            'type: r5:REFERENCE,
+            base: ["ConceptMap"],
+            expression: "ConceptMap.group.target"
         }
     ],
     "testscript-capability": [
@@ -1467,6 +1813,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             base: ["TestScript"],
             expression: "TestScript.metadata.capability.description"
         }
+
     ],
     "mode": [
         {
@@ -1476,12 +1823,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "CapabilityStatement.rest.mode"
         }
     ],
+    "recruitment-target": [
+        {
+            name: "recruitment-target",
+            'type: r5:NUMBER,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.recruitment.targetNumber"
+        }
+    ],
     "abatement-date": [
         {
             name: "abatement-date",
             'type: r5:DATE,
             base: ["Condition"],
-            expression: "Condition.abatement.as(dateTime) | Condition.abatement.as(Period)"
+            expression: "Condition.abatement.ofType(dateTime) | Condition.abatement.ofType(Period)"
         }
     ],
     "datetime": [
@@ -1497,15 +1852,24 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "factor-override",
             'type: r5:NUMBER,
             base: ["ChargeItem"],
-            expression: "ChargeItem.factorOverride"
+            expression: "ChargeItem.totalPriceComponent.factor"
         }
+    ],
+    "function": [
+        {
+            name: "function",
+            'type: r5:TOKEN,
+            base: ["Ingredient"],
+            expression: "Ingredient.function"
+        }
+
     ],
     "abatement-age": [
         {
             name: "abatement-age",
             'type: r5:QUANTITY,
             base: ["Condition"],
-            expression: "Condition.abatement.as(Age) | Condition.abatement.as(Range)"
+            expression: "Condition.abatement.ofType(Age) | Condition.abatement.ofType(Range)"
         }
     ],
     "modified": [
@@ -1528,8 +1892,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "communication",
             'type: r5:TOKEN,
-            base: ["Practitioner"],
-            expression: "Practitioner.communication"
+            base: ["PractitionerRole", "HealthcareService", "Practitioner"],
+            expression: "Practitioner.communication.language | HealthcareService.communication | PractitionerRole.communication"
         }
     ],
     "combo-code-value-concept": [
@@ -1552,24 +1916,40 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "partof",
             'type: r5:REFERENCE,
-            base: ["ResearchStudy", "Organization", "Location"],
-            expression: "Location.partOf | Organization.partOf | ResearchStudy.partOf"
+            base: ["Organization", "Location"],
+            expression: "Location.partOf | Organization.partOf"
+        }
+    ],
+    "combo-date": [
+        {
+            name: "combo-date",
+            'type: r5:DATE,
+            base: ["MedicationRequest"],
+            expression: "MedicationRequest.dosageInstruction.timing.event | (MedicationRequest.dosageInstruction.timing.repeat.bounds.ofType(Period))"
         }
     ],
     "author": [
         {
             name: "author",
             'type: r5:REFERENCE,
-            base: ["Composition", "RequestGroup", "DetectedIssue", "DocumentManifest", "Flag", "Basic", "QuestionnaireResponse", "DocumentReference", "Linkage", "MessageHeader"],
-            expression: "MessageHeader.author | Linkage.author | DocumentReference.author | QuestionnaireResponse.author | Basic.author | Flag.author | DocumentManifest.author | DetectedIssue.author | RequestGroup.author | Composition.author"
+            base: ["Composition", "DetectedIssue", "Flag", "Basic", "QuestionnaireResponse", "DocumentReference", "Linkage", "RequestOrchestration", "MessageHeader"],
+            expression: "MessageHeader.author | RequestOrchestration.author | Linkage.author | DocumentReference.author | QuestionnaireResponse.author | Basic.author | Flag.author | DetectedIssue.author | Composition.author"
         }
     ],
-    "diagnosis": [
+    "format-uri": [
         {
-            name: "diagnosis",
-            'type: r5:REFERENCE,
-            base: ["Encounter"],
-            expression: "Encounter.diagnosis.condition"
+            name: "format-uri",
+            'type: r5:URI,
+            base: ["DocumentReference"],
+            expression: "(DocumentReference.content.profile.value.ofType(uri))"
+        }
+    ],
+    "product-classification": [
+        {
+            name: "product-classification",
+            'type: r5:TOKEN,
+            base: ["MedicinalProductDefinition"],
+            expression: "MedicinalProductDefinition.classification"
         }
     ],
     "entry": [
@@ -1584,16 +1964,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "condition",
             'type: r5:REFERENCE,
-            base: ["CarePlan", "EpisodeOfCare", "RiskAssessment"],
-            expression: "RiskAssessment.condition | EpisodeOfCare.diagnosis.condition | CarePlan.addresses"
-        }
-    ],
-    "related-ref": [
+            base: ["CarePlan", "RiskAssessment"],
+            expression: "RiskAssessment.condition | CarePlan.addresses.reference"
+        },
         {
-            name: "related-ref",
-            'type: r5:REFERENCE,
-            base: ["DocumentManifest", "Composition"],
-            expression: "(Composition.relatesTo.target as Reference) | DocumentManifest.related.ref"
+            name: "condition",
+            'type: r5:TOKEN,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.condition"
         }
     ],
     "monograph": [
@@ -1602,6 +1980,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:REFERENCE,
             base: ["MedicationKnowledge"],
             expression: "MedicationKnowledge.monograph.source"
+        }
+    ],
+    "requested-period": [
+        {
+            name: "requested-period",
+            'type: r5:DATE,
+            base: ["Appointment"],
+            expression: "requestedPeriod"
         }
     ],
     "service-provider": [
@@ -1620,6 +2006,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Resource.id"
         }
     ],
+    "relatedaccount": [
+        {
+            name: "relatedaccount",
+            'type: r5:REFERENCE,
+            base: ["Account"],
+            expression: "Account.relatedAccount.account"
+        }
+    ],
     "last-date": [
         {
             name: "last-date",
@@ -1636,12 +2030,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Observation.dataAbsentReason | Observation.component.dataAbsentReason"
         }
     ],
+    "target-scope": [
+        {
+            name: "target-scope",
+            'type: r5:REFERENCE,
+            base: ["ConceptMap"],
+            expression: "(ConceptMap.targetScope as canonical)"
+        }
+    ],
     "code": [
         {
             name: "code",
             'type: r5:TOKEN,
-            base: ["OperationDefinition", "Substance", "MedicationKnowledge", "ChargeItem", "SearchParameter", "CompartmentDefinition", "RequestGroup", "Task", "SubstanceSpecification", "DetectedIssue", "MessageHeader", "Basic", "AllergyIntolerance", "Condition", "DeviceRequest", "DiagnosticReport", "FamilyMemberHistory", "List", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "Observation", "Procedure", "ServiceRequest", "Group", "Questionnaire"],
-            expression: "Questionnaire.item.code | Group.code | AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | (DeviceRequest.code as CodeableConcept) | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | (MedicationAdministration.medication as CodeableConcept) | (MedicationDispense.medication as CodeableConcept) | (MedicationRequest.medication as CodeableConcept) | (MedicationStatement.medication as CodeableConcept) | Observation.code | Procedure.code | ServiceRequest.code | Basic.code | MessageHeader.response.code | DetectedIssue.code | SubstanceSpecification.code.code | Task.code | RequestGroup.code | CompartmentDefinition.code | SearchParameter.code | ChargeItem.code | MedicationKnowledge.code | Substance.code | (Substance.ingredient.substance as CodeableConcept) | OperationDefinition.code"
+            base: ["OperationDefinition", "Substance", "FormularyItem", "SubstanceDefinition", "MedicationKnowledge", "InventoryItem", "ObservationDefinition", "SearchParameter", "Device", "CompartmentDefinition", "NutritionProduct", "DeviceDispense", "BiologicallyDerivedProduct", "MessageHeader", "AdverseEvent", "AllergyIntolerance", "AuditEvent", "Basic", "ChargeItem", "Condition", "DetectedIssue", "DeviceRequest", "DiagnosticReport", "FamilyMemberHistory", "ImagingSelection", "List", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "NutritionIntake", "Observation", "Procedure", "RequestOrchestration", "Task", "Group"],
+            expression: "Group.code | AdverseEvent.code | AllergyIntolerance.code | AllergyIntolerance.reaction.substance | AuditEvent.code | Basic.code | ChargeItem.code | Condition.code | DetectedIssue.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | ImagingSelection.status | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationStatement.medication.concept | NutritionIntake.code | Observation.code | Procedure.code | RequestOrchestration.code | Task.code | MessageHeader.response.code | BiologicallyDerivedProduct.productCode | DeviceDispense.device.concept | NutritionProduct.code | CompartmentDefinition.code | Device.definition.concept | SearchParameter.code | ObservationDefinition.code | InventoryItem.code | MedicationKnowledge.code | SubstanceDefinition.code.code | FormularyItem.code | Substance.code.concept | (Substance.ingredient.substance.ofType(CodeableConcept)) | OperationDefinition.code"
+        }
+    ],
+    "excluded_structure": [
+        {
+            name: "excluded_structure",
+            'type: r5:TOKEN,
+            base: ["BodyStructure"],
+            expression: "BodyStructure.excludedStructure.structure"
         }
     ],
     "participant-type": [
@@ -1650,6 +2060,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:TOKEN,
             base: ["Encounter"],
             expression: "Encounter.participant.type"
+        }
+    ],
+    "_in": [
+        {
+            name: "_in",
+            'type: r5:REFERENCE,
+            base: ["Resource"],
+            expression: "Resource.id"
         }
     ],
     "slot": [
@@ -1680,41 +2098,54 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "composed-of",
             'type: r5:REFERENCE,
-            base: ["EvidenceVariable", "PlanDefinition", "ResearchElementDefinition", "EventDefinition", "Library", "Measure", "Evidence", "ResearchDefinition", "ActivityDefinition"],
-            expression: "ActivityDefinition.relatedArtifact.where(type='composed-of').resource | ResearchDefinition.relatedArtifact.where(type='composed-of').resource | Evidence.relatedArtifact.where(type='composed-of').resource | Measure.relatedArtifact.where(type='composed-of').resource | Library.relatedArtifact.where(type='composed-of').resource | EventDefinition.relatedArtifact.where(type='composed-of').resource | ResearchElementDefinition.relatedArtifact.where(type='composed-of').resource | PlanDefinition.relatedArtifact.where(type='composed-of').resource | EvidenceVariable.relatedArtifact.where(type='composed-of').resource"
-        }
-    ]
-};
-//Number of search params in INTERNATIONAL_IG_SEARCH_PARAMS_3  = 100
-final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH_PARAMS_3 = {
-    "context-quantity": [
-        {
-            name: "context-quantity",
-            'type: r5:QUANTITY,
-            base: ["RiskEvidenceSynthesis", "TestScript", "Questionnaire", "Evidence", "EventDefinition", "EvidenceVariable", "Measure", "PlanDefinition", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "Library", "ActivityDefinition", "ResearchElementDefinition", "ChargeItemDefinition", "ResearchDefinition", "EffectEvidenceSynthesis", "ExampleScenario"],
-            expression: "(ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (EffectEvidenceSynthesis.useContext.value as Quantity) | (EffectEvidenceSynthesis.useContext.value as Range) | (ResearchDefinition.useContext.value as Quantity) | (ResearchDefinition.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (ResearchElementDefinition.useContext.value as Quantity) | (ResearchElementDefinition.useContext.value as Range) | (ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (RiskEvidenceSynthesis.useContext.value as Quantity) | (RiskEvidenceSynthesis.useContext.value as Range)"
+            base: ["ActivityDefinition", "EventDefinition", "EvidenceVariable", "Library", "Measure", "PlanDefinition"],
+            expression: "ActivityDefinition.relatedArtifact.where(type='composed-of').resource | EventDefinition.relatedArtifact.where(type='composed-of').resource | EvidenceVariable.relatedArtifact.where(type='composed-of').resource | Library.relatedArtifact.where(type='composed-of').resource | Measure.relatedArtifact.where(type='composed-of').resource | PlanDefinition.relatedArtifact.where(type='composed-of').resource"
         }
     ],
     "effective": [
         {
             name: "effective",
             'type: r5:DATE,
-            base: ["ResearchElementDefinition", "Library", "EffectEvidenceSynthesis", "MedicationStatement", "ResearchDefinition", "Evidence", "Measure", "EventDefinition", "RiskEvidenceSynthesis", "ActivityDefinition", "Questionnaire", "ChargeItemDefinition", "PlanDefinition", "EvidenceVariable"],
-            expression: "EvidenceVariable.effectivePeriod | PlanDefinition.effectivePeriod | ChargeItemDefinition.effectivePeriod | Questionnaire.effectivePeriod | ActivityDefinition.effectivePeriod | RiskEvidenceSynthesis.effectivePeriod | EventDefinition.effectivePeriod | Measure.effectivePeriod | Evidence.effectivePeriod | ResearchDefinition.effectivePeriod | MedicationStatement.effective | EffectEvidenceSynthesis.effectivePeriod | Library.effectivePeriod | ResearchElementDefinition.effectivePeriod"
+            base: ["SubscriptionTopic", "MedicationStatement", "ActivityDefinition", "ChargeItemDefinition", "Citation", "ConceptMap", "EventDefinition", "Library", "Measure", "NamingSystem", "PlanDefinition", "Questionnaire"],
+            expression: "ActivityDefinition.effectivePeriod | ChargeItemDefinition.applicability.effectivePeriod | Citation.effectivePeriod | CodeSystem.effectivePeriod | ConceptMap.effectivePeriod | EventDefinition.effectivePeriod | Library.effectivePeriod | Measure.effectivePeriod | NamingSystem.effectivePeriod | PlanDefinition.effectivePeriod | Questionnaire.effectivePeriod | ValueSet.effectivePeriod | MedicationStatement.effective.ofType(dateTime) | MedicationStatement.effective.ofType(Period) | SubscriptionTopic.effectivePeriod"
         }
     ],
-    "subtype": [
+    "context-quantity": [
         {
-            name: "subtype",
-            'type: r5:TOKEN,
-            base: ["AuditEvent"],
-            expression: "AuditEvent.subtype"
+            name: "context-quantity",
+            'type: r5:QUANTITY,
+            base: ["ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "TestScript"],
+            expression: "(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))"
         }
     ],
-    "source-system": [
+    "offered-in": [
         {
-            name: "source-system",
-            'type: r5:URI,
+            name: "offered-in",
+            'type: r5:REFERENCE,
+            base: ["HealthcareService"],
+            expression: "HealthcareService.offeredIn"
+        }
+    ],
+    "packaging-cost": [
+        {
+            name: "packaging-cost",
+            'type: r5:QUANTITY,
+            base: ["MedicationKnowledge"],
+            expression: "$searchParam.getExpression()"
+        }
+    ],
+    "component-value-reference": [
+        {
+            name: "component-value-reference",
+            'type: r5:REFERENCE,
+            base: ["Observation"],
+            expression: "Observation.component.value.ofType(Reference)"
+        }
+    ],
+    "source-group-system": [
+        {
+            name: "source-group-system",
+            'type: r5:REFERENCE,
             base: ["ConceptMap"],
             expression: "ConceptMap.group.source"
         }
@@ -1723,8 +2154,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "custodian",
             'type: r5:REFERENCE,
-            base: ["DocumentReference"],
-            expression: "DocumentReference.custodian"
+            base: ["CarePlan", "DocumentReference"],
+            expression: "DocumentReference.custodian | CarePlan.custodian"
         }
     ],
     "service-type": [
@@ -1732,15 +2163,23 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "service-type",
             'type: r5:TOKEN,
             base: ["Slot", "HealthcareService", "Schedule", "Appointment"],
-            expression: "Appointment.serviceType | Schedule.serviceType | HealthcareService.type | Slot.serviceType"
+            expression: "Appointment.serviceType.concept | Schedule.serviceType.concept | HealthcareService.type | Slot.serviceType.concept"
+        }
+    ],
+    "mapping-property": [
+        {
+            name: "mapping-property",
+            'type: r5:URI,
+            base: ["ConceptMap"],
+            expression: "ConceptMap.property.uri"
         }
     ],
     "medication": [
         {
             name: "medication",
             'type: r5:REFERENCE,
-            base: ["MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement"],
-            expression: "(MedicationAdministration.medication as Reference) | (MedicationDispense.medication as Reference) | (MedicationRequest.medication as Reference) | (MedicationStatement.medication as Reference)"
+            base: ["PackagedProductDefinition", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement"],
+            expression: "MedicationAdministration.medication.reference | MedicationDispense.medication.reference | MedicationRequest.medication.reference | MedicationStatement.medication.reference | PackagedProductDefinition.packaging.containedItem.item.reference"
         }
     ],
     "authored-on": [
@@ -1749,6 +2188,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:DATE,
             base: ["DeviceRequest", "Task"],
             expression: "Task.authoredOn | DeviceRequest.authoredOn"
+        }
+    ],
+    "objective-description": [
+        {
+            name: "objective-description",
+            'type: r5:STRING,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.objective.description"
         }
     ],
     "performer-type": [
@@ -1767,12 +2214,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "PaymentReconciliation.requestor | ClaimResponse.requestor | CoverageEligibilityResponse.requestor"
         }
     ],
-    "destination-uri": [
+    "_filter": [
         {
-            name: "destination-uri",
-            'type: r5:URI,
-            base: ["MessageHeader"],
-            expression: "MessageHeader.destination.endpoint"
+            name: "_filter",
+            'type: r5:SPECIAL,
+            base: ["Resource"],
+            expression: "$searchParam.getExpression()"
+        }
+    ],
+    "marketingauthorizationholder": [
+        {
+            name: "marketingauthorizationholder",
+            'type: r5:REFERENCE,
+            base: ["Medication"],
+            expression: "Medication.marketingAuthorizationHolder"
+        }
+    ],
+    "_has": [
+        {
+            name: "_has",
+            'type: r5:SPECIAL,
+            base: ["Resource"],
+            expression: "$searchParam.getExpression()"
         }
     ],
     "address-use": [
@@ -1780,7 +2243,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "address-use",
             'type: r5:TOKEN,
             base: ["Location", "InsurancePlan", "Patient", "Person", "Practitioner", "RelatedPerson", "Organization"],
-            expression: "Organization.address.use | Patient.address.use | Person.address.use | Practitioner.address.use | RelatedPerson.address.use | InsurancePlan.contact.address.use | Location.address.use"
+            expression: "Organization.contact.address.use | Patient.address.use | Person.address.use | Practitioner.address.use | RelatedPerson.address.use | InsurancePlan.contact.address.use | Location.address.use"
         }
     ],
     "implicated": [
@@ -1791,13 +2254,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "DetectedIssue.implicated"
         }
     ],
-    "assessed-condition": [
+    "biological-source-event": [
         {
-            name: "assessed-condition",
-            'type: r5:REFERENCE,
-            base: ["DiagnosticReport"],
-            expression: "DiagnosticReport.extension('http://hl7.org/fhir/StructureDefinition/DiagnosticReport-geneticsAssessedCondition')"
+            name: "biological-source-event",
+            'type: r5:TOKEN,
+            base: ["BiologicallyDerivedProduct", "Device"],
+            expression: "Device.biologicalSourceEvent | BiologicallyDerivedProduct.biologicalSourceEvent"
         }
+
     ],
     "participating-organization": [
         {
@@ -1807,12 +2271,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "OrganizationAffiliation.participatingOrganization"
         }
     ],
+    "recruitment-actual": [
+        {
+            name: "recruitment-actual",
+            'type: r5:NUMBER,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.recruitment.actualNumber"
+        }
+    ],
+    "item-code": [
+        {
+            name: "item-code",
+            'type: r5:TOKEN,
+            base: ["Questionnaire"],
+            expression: "Questionnaire.item.code"
+        }
+    ],
     "authored": [
         {
             name: "authored",
             'type: r5:DATE,
-            base: ["CommunicationRequest", "ServiceRequest", "QuestionnaireResponse", "RequestGroup"],
-            expression: "RequestGroup.authoredOn | QuestionnaireResponse.authored | ServiceRequest.authoredOn | CommunicationRequest.authoredOn"
+            base: ["RequestOrchestration", "CommunicationRequest", "ServiceRequest", "QuestionnaireResponse"],
+            expression: "QuestionnaireResponse.authored | ServiceRequest.authoredOn | CommunicationRequest.authoredOn | RequestOrchestration.authoredOn"
         }
     ],
     "reason": [
@@ -1820,7 +2300,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "reason",
             'type: r5:TOKEN,
             base: ["ImagingStudy"],
-            expression: "ImagingStudy.reasonCode"
+            expression: "$searchParam.getExpression()"
         }
     ],
     "specialty": [
@@ -1835,8 +2315,24 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "deceased",
             'type: r5:TOKEN,
-            base: ["Patient"],
-            expression: "Patient.deceased.exists() and Patient.deceased != false"
+            base: ["Practitioner", "Patient", "Person"],
+            expression: "Person.deceased.exists() and Person.deceased != false | Patient.deceased.exists() and Patient.deceased != false | Practitioner.deceased.exists() and Practitioner.deceased != false"
+        }
+    ],
+    "ext-context-type": [
+        {
+            name: "ext-context-type",
+            'type: r5:TOKEN,
+            base: ["StructureDefinition"],
+            expression: "StructureDefinition.context.type"
+        }
+    ],
+    "grantee": [
+        {
+            name: "grantee",
+            'type: r5:REFERENCE,
+            base: ["Consent"],
+            expression: "Consent.grantee"
         }
     ],
     "clinical-status": [
@@ -1847,12 +2343,12 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Condition.clinicalStatus | AllergyIntolerance.clinicalStatus"
         }
     ],
-    "mothersMaidenName": [
+    "content-level": [
         {
-            name: "mothersMaidenName",
-            'type: r5:STRING,
-            base: ["Patient"],
-            expression: "Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-extensions-Patient-mothersMaidenName')"
+            name: "content-level",
+            'type: r5:TOKEN,
+            base: ["Subscription"],
+            expression: "Subscription.content"
         }
     ],
     "address-country": [
@@ -1860,7 +2356,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "address-country",
             'type: r5:STRING,
             base: ["Organization", "InsurancePlan", "Patient", "Person", "Practitioner", "RelatedPerson", "Location"],
-            expression: "Location.address.country | Patient.address.country | Person.address.country | Practitioner.address.country | RelatedPerson.address.country | InsurancePlan.contact.address.country | Organization.address.country"
+            expression: "Location.address.country | Patient.address.country | Person.address.country | Practitioner.address.country | RelatedPerson.address.country | InsurancePlan.contact.address.country | Organization.contact.address.country"
         }
     ],
     "ingredient-code": [
@@ -1868,7 +2364,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "ingredient-code",
             'type: r5:TOKEN,
             base: ["Medication", "MedicationKnowledge"],
-            expression: "(MedicationKnowledge.ingredient.item as CodeableConcept) | (Medication.ingredient.item as CodeableConcept)"
+            expression: "MedicationKnowledge.definitional.ingredient.item.concept | Medication.ingredient.item.concept"
+        }
+    ],
+    "packaging-cost-concept": [
+        {
+            name: "packaging-cost-concept",
+            'type: r5:TOKEN,
+            base: ["MedicationKnowledge"],
+            expression: "$searchParam.getExpression()"
         }
     ],
     "source-cost": [
@@ -1903,20 +2407,12 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "ClinicalImpression.supportingInfo | Appointment.supportingInformation"
         }
     ],
-    "variant-start": [
-        {
-            name: "variant-start",
-            'type: r5:NUMBER,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.variant.start"
-        }
-    ],
     "expiry": [
         {
             name: "expiry",
             'type: r5:DATE,
             base: ["Substance"],
-            expression: "Substance.instance.expiry"
+            expression: "Substance.expiry"
         }
     ],
     "special-arrangement": [
@@ -1924,8 +2420,17 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "special-arrangement",
             'type: r5:TOKEN,
             base: ["Encounter"],
-            expression: "Encounter.hospitalization.specialArrangement"
+            expression: "Encounter.specialArrangement"
         }
+    ],
+    "section-code-text": [
+        {
+            name: "section-code-text",
+            'type: r5:COMPOSITE,
+            base: ["Composition"],
+            expression: "Composition.section"
+        }
+
     ],
     "requester": [
         {
@@ -1941,6 +2446,23 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:STRING,
             base: ["Device"],
             expression: "Device.udiCarrier.deviceIdentifier"
+        }
+
+    ],
+    "progress-status-state-actual": [
+        {
+            name: "progress-status-state-actual",
+            'type: r5:COMPOSITE,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.progressStatus"
+        }
+    ],
+    "diagnosis-code": [
+        {
+            name: "diagnosis-code",
+            'type: r5:TOKEN,
+            base: ["Encounter", "EpisodeOfCare"],
+            expression: "EpisodeOfCare.diagnosis.condition.concept | Encounter.diagnosis.condition.concept"
         }
     ],
     "receiver": [
@@ -1974,13 +2496,23 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             base: ["Person"],
             expression: "Person.link.target.where(resolve() is RelatedPerson)"
         }
+
     ],
-    "interpreter": [
+    "format-code": [
         {
-            name: "interpreter",
-            'type: r5:REFERENCE,
-            base: ["ImagingStudy"],
-            expression: "ImagingStudy.interpreter"
+            name: "format-code",
+            'type: r5:TOKEN,
+            base: ["DocumentReference"],
+            expression: "(DocumentReference.content.profile.value.ofType(Coding))"
+        }
+
+    ],
+    "manifestation-code": [
+        {
+            name: "manifestation-code",
+            'type: r5:TOKEN,
+            base: ["AllergyIntolerance"],
+            expression: "AllergyIntolerance.reaction.manifestation.concept"
         }
     ],
     "target-disease": [
@@ -1991,28 +2523,18 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "ImmunizationEvaluation.targetDisease | ImmunizationRecommendation.recommendation.targetDisease | Immunization.protocolApplied.targetDisease"
         }
     ],
-    "gene-amino-acid-change": [
-        {
-            name: "gene-amino-acid-change",
-            'type: r5:STRING,
-            base: ["Observation"],
-            expression: "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')"
-        }
-    ],
     "device": [
         {
             name: "device",
             'type: r5:REFERENCE,
-            base: ["Media", "DeviceUseStatement", "MedicationAdministration", "Observation", "DeviceRequest"],
-            expression: "(DeviceRequest.code as Reference) | Observation.device | MedicationAdministration.device | DeviceUseStatement.device | Media.device"
-        }
-    ],
-    "container-id": [
+            base: ["AdministrableProductDefinition", "DeviceMetric", "DeviceAssociation", "MedicationAdministration", "Observation", "DeviceRequest", "PackagedProductDefinition"],
+            expression: "PackagedProductDefinition.packaging.containedItem.item.reference | DeviceRequest.code.reference | Observation.device | MedicationAdministration.device.reference | DeviceAssociation.device | DeviceMetric.device | AdministrableProductDefinition.device"
+        },
         {
-            name: "container-id",
+            name: "device",
             'type: r5:TOKEN,
-            base: ["Specimen"],
-            expression: "Specimen.container.identifier"
+            base: ["DeviceUsage"],
+            expression: "DeviceUsage.device.concept"
         }
     ],
     "dicom-class": [
@@ -2023,28 +2545,32 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "ImagingStudy.series.instance.sopClass"
         }
     ],
-    "container-identifier": [
+    "activity": [
         {
-            name: "container-identifier",
+            name: "activity",
             'type: r5:TOKEN,
-            base: ["Substance"],
-            expression: "Substance.instance.identifier"
+            base: ["Provenance"],
+            expression: "Provenance.activity"
         }
-    ],
-    "dependson": [
+    ]
+
+};
+//Number of search params in FHIR_IG_SEARCH_PARAMS_4  = 100
+final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_4 = {
+    "subject-status": [
         {
-            name: "dependson",
-            'type: r5:URI,
-            base: ["ConceptMap"],
-            expression: "ConceptMap.group.element.target.dependsOn.property"
+            name: "subject-status",
+            'type: r5:TOKEN,
+            base: ["Encounter"],
+            expression: "Encounter.subjectStatus"
         }
     ],
     "jurisdiction": [
         {
             name: "jurisdiction",
             'type: r5:TOKEN,
-            base: ["RiskEvidenceSynthesis", "EffectEvidenceSynthesis", "EvidenceVariable", "Library", "ResearchElementDefinition", "EventDefinition", "ActivityDefinition", "Evidence", "PlanDefinition", "TestScript", "CapabilityStatement", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "ChargeItemDefinition", "Questionnaire", "ResearchDefinition", "Measure", "ExampleScenario"],
-            expression: "ExampleScenario.jurisdiction | Measure.jurisdiction | ResearchDefinition.jurisdiction | Questionnaire.jurisdiction | ChargeItemDefinition.jurisdiction | CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction | TestScript.jurisdiction | PlanDefinition.jurisdiction | Evidence.jurisdiction | ActivityDefinition.jurisdiction | EventDefinition.jurisdiction | ResearchElementDefinition.jurisdiction | Library.jurisdiction | EvidenceVariable.jurisdiction | EffectEvidenceSynthesis.jurisdiction | RiskEvidenceSynthesis.jurisdiction"
+            base: ["ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "ConceptMap", "ConditionDefinition", "EventDefinition", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "TestScript"],
+            expression: "ActivityDefinition.jurisdiction | ActorDefinition.jurisdiction | CapabilityStatement.jurisdiction | ChargeItemDefinition.jurisdiction | Citation.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | ConditionDefinition.jurisdiction | EventDefinition.jurisdiction | ExampleScenario.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | Library.jurisdiction | Measure.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | PlanDefinition.jurisdiction | Questionnaire.jurisdiction | Requirements.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | TestScript.jurisdiction | ValueSet.jurisdiction"
         }
     ],
     "global": [
@@ -2059,16 +2585,17 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "predecessor",
             'type: r5:REFERENCE,
-            base: ["ResearchDefinition", "PlanDefinition", "EventDefinition", "Measure", "Evidence", "ActivityDefinition", "EvidenceVariable", "Library", "ResearchElementDefinition"],
-            expression: "ResearchElementDefinition.relatedArtifact.where(type='predecessor').resource | Library.relatedArtifact.where(type='predecessor').resource | EvidenceVariable.relatedArtifact.where(type='predecessor').resource | ActivityDefinition.relatedArtifact.where(type='predecessor').resource | Evidence.relatedArtifact.where(type='predecessor').resource | Measure.relatedArtifact.where(type='predecessor').resource | EventDefinition.relatedArtifact.where(type='predecessor').resource | PlanDefinition.relatedArtifact.where(type='predecessor').resource | ResearchDefinition.relatedArtifact.where(type='predecessor').resource"
+            base: ["ActivityDefinition", "ConceptMap", "EventDefinition", "EvidenceVariable", "Library", "Measure", "NamingSystem", "PlanDefinition"],
+            expression: "ActivityDefinition.relatedArtifact.where(type='predecessor').resource | CodeSystem.relatedArtifact.where(type='predecessor').resource | ConceptMap.relatedArtifact.where(type='predecessor').resource | EventDefinition.relatedArtifact.where(type='predecessor').resource | EvidenceVariable.relatedArtifact.where(type='predecessor').resource | Library.relatedArtifact.where(type='predecessor').resource | Measure.relatedArtifact.where(type='predecessor').resource | NamingSystem.relatedArtifact.where(type='predecessor').resource | PlanDefinition.relatedArtifact.where(type='predecessor').resource | ValueSet.relatedArtifact.where(type='predecessor').resource"
         }
+
     ],
-    "dna-variant": [
+    "value-reference": [
         {
-            name: "dna-variant",
-            'type: r5:STRING,
+            name: "value-reference",
+            'type: r5:REFERENCE,
             base: ["Observation"],
-            expression: "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')"
+            expression: "Observation.value.ofType(Reference)"
         }
     ],
     "endpoint": [
@@ -2130,23 +2657,53 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "email",
             'type: r5:TOKEN,
             base: ["Patient", "Person", "Practitioner", "PractitionerRole", "RelatedPerson", "OrganizationAffiliation"],
-            expression: "OrganizationAffiliation.telecom.where(system='email') | Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')"
+            expression: "OrganizationAffiliation.contact.telecom.where(system='email') | Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')"
         }
+
     ],
-    "bodysite": [
+    "creation": [
         {
-            name: "bodysite",
-            'type: r5:TOKEN,
-            base: ["ImagingStudy", "Specimen"],
-            expression: "Specimen.collection.bodySite | ImagingStudy.series.bodySite"
+            name: "creation",
+            'type: r5:DATE,
+            base: ["DocumentReference"],
+            expression: "DocumentReference.content.attachment.creation"
+        }
+
+    ],
+    "controller": [
+        {
+            name: "controller",
+            'type: r5:REFERENCE,
+            base: ["Consent"],
+            expression: "Consent.controller"
         }
     ],
     "ingredient": [
         {
             name: "ingredient",
+            'type: r5:TOKEN,
+            base: ["ManufacturedItemDefinition", "AdministrableProductDefinition", "MedicinalProductDefinition"],
+            expression: "MedicinalProductDefinition.ingredient | AdministrableProductDefinition.ingredient | ManufacturedItemDefinition.ingredient"
+        },
+        {
+            name: "ingredient",
             'type: r5:REFERENCE,
             base: ["Medication", "MedicationKnowledge"],
-            expression: "(MedicationKnowledge.ingredient.item as Reference) | (Medication.ingredient.item as Reference)"
+            expression: "MedicationKnowledge.definitional.ingredient.item.reference | Medication.ingredient.item.reference"
+        }
+    ],
+    "bodysite": [
+        {
+            name: "bodysite",
+            'type: r5:REFERENCE,
+            base: ["Specimen"],
+            expression: "Specimen.collection.bodySite.reference"
+        },
+        {
+            name: "bodysite",
+            'type: r5:TOKEN,
+            base: ["DocumentReference"],
+            expression: "DocumentReference.bodySite.concept"
         }
     ],
     "reaction": [
@@ -2154,7 +2711,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "reaction",
             'type: r5:REFERENCE,
             base: ["Immunization"],
-            expression: "Immunization.reaction.detail"
+            expression: "Immunization.reaction.manifestation.reference"
+        }
+    ],
+    "manager": [
+        {
+            name: "manager",
+            'type: r5:REFERENCE,
+            base: ["Consent"],
+            expression: "Consent.manager"
         }
     ],
     "replaces": [
@@ -2177,16 +2742,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "reporter",
             'type: r5:REFERENCE,
-            base: ["MeasureReport"],
-            expression: "MeasureReport.reporter"
-        }
-    ],
-    "holder": [
-        {
-            name: "holder",
-            'type: r5:REFERENCE,
-            base: ["MedicinalProductAuthorization"],
-            expression: "MedicinalProductAuthorization.holder"
+            base: ["PaymentNotice", "MeasureReport"],
+            expression: "MeasureReport.reporter | PaymentNotice.reporter"
         }
     ],
     "started": [
@@ -2197,12 +2754,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "ImagingStudy.started"
         }
     ],
+    "holder": [
+        {
+            name: "holder",
+            'type: r5:REFERENCE,
+            base: ["RegulatedAuthorization"],
+            expression: "RegulatedAuthorization.holder"
+        }
+    ],
+    "strength-concentration-quantity": [
+        {
+            name: "strength-concentration-quantity",
+            'type: r5:QUANTITY,
+            base: ["Ingredient"],
+            expression: "Ingredient.substance.strength.concentration.ofType(Quantity)"
+        }
+    ],
     "activity-reference": [
         {
             name: "activity-reference",
             'type: r5:REFERENCE,
             base: ["CarePlan"],
-            expression: "CarePlan.activity.reference"
+            expression: "CarePlan.activity.plannedActivityReference"
         }
     ],
     "characteristic-value": [
@@ -2213,10 +2786,18 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Group.characteristic"
         }
     ],
+    "diagnosis-reference": [
+        {
+            name: "diagnosis-reference",
+            'type: r5:REFERENCE,
+            base: ["EpisodeOfCare", "Encounter"],
+            expression: "Encounter.diagnosis.condition.reference | EpisodeOfCare.diagnosis.condition.reference"
+        }
+    ],
     "_profile": [
         {
             name: "_profile",
-            'type: r5:URI,
+            'type: r5:REFERENCE,
             base: ["Resource"],
             expression: "Resource.meta.profile"
         }
@@ -2232,9 +2813,25 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
     "_content": [
         {
             name: "_content",
-            'type: r5:STRING,
+            'type: r5:SPECIAL,
             base: ["Resource"],
             expression: "$searchParam.getExpression()"
+        }
+    ],
+    "specification-version": [
+        {
+            name: "specification-version",
+            'type: r5:COMPOSITE,
+            base: ["DeviceDefinition", "Device"],
+            expression: "Device.conformsTo | DeviceDefinition.conformsTo"
+        }
+    ],
+    "requestedperformer-reference": [
+        {
+            name: "requestedperformer-reference",
+            'type: r5:REFERENCE,
+            base: ["Task"],
+            expression: "Task.requestedPerformer.reference"
         }
     ],
     "insurance": [
@@ -2245,12 +2842,12 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "DeviceRequest.insurance"
         }
     ],
-    "country": [
+    "item-reference": [
         {
-            name: "country",
-            'type: r5:TOKEN,
-            base: ["MedicinalProductAuthorization"],
-            expression: "MedicinalProductAuthorization.country"
+            name: "item-reference",
+            'type: r5:REFERENCE,
+            base: ["InventoryReport"],
+            expression: "InventoryReport.inventoryListing.item.item.reference"
         }
     ],
     "agent": [
@@ -2261,12 +2858,12 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "AuditEvent.agent.who | Provenance.agent.who"
         }
     ],
-    "gene-identifier": [
+    "product-status": [
         {
-            name: "gene-identifier",
+            name: "product-status",
             'type: r5:TOKEN,
-            base: ["Observation"],
-            expression: "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsGene')"
+            base: ["BiologicallyDerivedProduct"],
+            expression: "BiologicallyDerivedProduct.productStatus"
         }
     ],
     "participant-role": [
@@ -2277,18 +2874,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Invoice.participant.role"
         }
     ],
+    "case-type": [
+        {
+            name: "case-type",
+            'type: r5:TOKEN,
+            base: ["RegulatedAuthorization"],
+            expression: "RegulatedAuthorization.case.type"
+        }
+    ],
     "source": [
         {
             name: "source",
-            'type: r5:URI,
-            base: ["DocumentManifest"],
-            expression: "DocumentManifest.source"
-        },
-        {
-            name: "source",
             'type: r5:REFERENCE,
-            base: ["AuditEvent", "QuestionnaireResponse", "List", "DeviceMetric", "ConceptMap", "Linkage", "MedicationStatement"],
-            expression: "MedicationStatement.informationSource | Linkage.item.resource | (ConceptMap.source as canonical) | DeviceMetric.source | List.source | QuestionnaireResponse.source | AuditEvent.source.observer"
+            base: ["AuditEvent", "QuestionnaireResponse", "List", "Linkage", "NutritionIntake", "MedicationStatement"],
+            expression: "MedicationStatement.informationSource | (NutritionIntake.reported as Reference) | Linkage.item.resource | List.source | QuestionnaireResponse.source | AuditEvent.source.observer"
         },
         {
             name: "source",
@@ -2313,14 +2912,6 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Invoice.totalNet"
         }
     ],
-    "operator": [
-        {
-            name: "operator",
-            'type: r5:REFERENCE,
-            base: ["Media"],
-            expression: "Media.operator"
-        }
-    ],
     "participant": [
         {
             name: "participant",
@@ -2331,16 +2922,16 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "participant",
             'type: r5:REFERENCE,
-            base: ["CareTeam", "Encounter", "RequestGroup", "Invoice"],
-            expression: "Invoice.participant.actor | RequestGroup.action.participant | Encounter.participant.individual | CareTeam.participant.member"
+            base: ["CareTeam", "Encounter", "Invoice", "AllergyIntolerance", "RequestOrchestration"],
+            expression: "RequestOrchestration.action.participant.actor.ofType(Reference) | RequestOrchestration.action.participant.actor.ofType(canonical) | AllergyIntolerance.participant.actor | Invoice.participant.actor | Encounter.participant.actor | CareTeam.participant.member"
         }
     ],
-    "view": [
+    "operator": [
         {
-            name: "view",
-            'type: r5:TOKEN,
-            base: ["Media"],
-            expression: "Media.view"
+            name: "operator",
+            'type: r5:REFERENCE,
+            base: ["DeviceAssociation"],
+            expression: "DeviceAssociation.operation.operator"
         }
     ],
     "output-profile": [
@@ -2349,30 +2940,6 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:REFERENCE,
             base: ["OperationDefinition"],
             expression: "OperationDefinition.outputProfile"
-        }
-    ],
-    "agent-name": [
-        {
-            name: "agent-name",
-            'type: r5:STRING,
-            base: ["AuditEvent"],
-            expression: "AuditEvent.agent.name"
-        }
-    ],
-    "chromosome-window-coordinate": [
-        {
-            name: "chromosome-window-coordinate",
-            'type: r5:COMPOSITE,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.referenceSeq"
-        }
-    ],
-    "referenceseqid": [
-        {
-            name: "referenceseqid",
-            'type: r5:TOKEN,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.referenceSeq.referenceSeqId"
         }
     ],
     "keyword": [
@@ -2388,31 +2955,23 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "target-date",
             'type: r5:DATE,
             base: ["Goal"],
-            expression: "(Goal.target.due as date)"
+            expression: "(Goal.target.due.ofType(date))"
         }
     ],
-    "activity-code": [
+    "contraindication": [
         {
-            name: "activity-code",
+            name: "contraindication",
             'type: r5:TOKEN,
-            base: ["CarePlan"],
-            expression: "CarePlan.activity.detail.code"
-        }
-    ],
-    "actual": [
-        {
-            name: "actual",
-            'type: r5:TOKEN,
-            base: ["Group"],
-            expression: "Group.actual"
+            base: ["ClinicalUseDefinition"],
+            expression: "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.concept"
         }
     ],
     "given": [
         {
             name: "given",
             'type: r5:STRING,
-            base: ["Patient", "Practitioner"],
-            expression: "Patient.name.given | Practitioner.name.given"
+            base: ["Person", "RelatedPerson", "Patient", "Practitioner"],
+            expression: "Patient.name.given | Practitioner.name.given | RelatedPerson.name.given | Person.name.given"
         }
     ],
     "valueset": [
@@ -2423,12 +2982,12 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "StructureDefinition.snapshot.element.binding.valueSet"
         }
     ],
-    "birthOrderBoolean": [
+    "event-code": [
         {
-            name: "birthOrderBoolean",
+            name: "event-code",
             'type: r5:TOKEN,
-            base: ["Patient"],
-            expression: "$searchParam.getExpression()"
+            base: ["Composition", "DocumentReference"],
+            expression: "DocumentReference.event.concept | Composition.event.detail.concept"
         }
     ],
     "value-quantity": [
@@ -2436,7 +2995,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "value-quantity",
             'type: r5:QUANTITY,
             base: ["Observation"],
-            expression: "(Observation.value as Quantity) | (Observation.value as SampledData)"
+            expression: "Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData)"
         }
     ],
     "combo-value-quantity": [
@@ -2444,7 +3003,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "combo-value-quantity",
             'type: r5:QUANTITY,
             base: ["Observation"],
-            expression: "(Observation.value as Quantity) | (Observation.value as SampledData) | (Observation.component.value as Quantity) | (Observation.component.value as SampledData)"
+            expression: "Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData) | Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)"
         }
     ],
     "incoming-referral": [
@@ -2454,6 +3013,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             base: ["EpisodeOfCare"],
             expression: "EpisodeOfCare.referralRequest"
         }
+
     ],
     "measure": [
         {
@@ -2466,17 +3026,31 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
     "name": [
         {
             name: "name",
+            'type: r5:TOKEN,
+            base: ["ManufacturedItemDefinition", "PackagedProductDefinition"],
+            expression: "PackagedProductDefinition.name | ManufacturedItemDefinition.name"
+        },
+        {
+            name: "name",
             'type: r5:STRING,
-            base: ["EventDefinition", "PlanDefinition", "Organization", "InsurancePlan", "Location", "Measure", "RelatedPerson", "ResearchDefinition", "Questionnaire", "Patient", "Evidence", "Library", "MedicinalProduct", "TestScript", "Endpoint", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "RiskEvidenceSynthesis", "ResearchElementDefinition", "EffectEvidenceSynthesis", "HealthcareService", "Account", "ExampleScenario", "ActivityDefinition", "EvidenceVariable", "Practitioner", "Person"],
-            expression: "Person.name | Practitioner.name | EvidenceVariable.name | ActivityDefinition.name | ExampleScenario.name | Account.name | HealthcareService.name | EffectEvidenceSynthesis.name | ResearchElementDefinition.name | RiskEvidenceSynthesis.name | CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name | Endpoint.name | TestScript.name | MedicinalProduct.name.productName | Library.name | Evidence.name | Patient.name | Questionnaire.name | ResearchDefinition.name | RelatedPerson.name | Measure.name | Location.name | Location.alias | name | alias | Organization.name | Organization.alias | PlanDefinition.name | EventDefinition.name"
+            base: ["Schedule", "Group", "Organization", "InsurancePlan", "Subscription", "Location", "RelatedPerson", "Patient", "ActivityDefinition", "CapabilityStatement", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "TestScript", "Endpoint", "SubstanceDefinition", "CareTeam", "HealthcareService", "Account", "ResearchStudy", "Practitioner", "MedicinalProductDefinition", "Person"],
+            expression: "Person.name | MedicinalProductDefinition.name.productName | Practitioner.name | ResearchStudy.name | Account.name | HealthcareService.name | CareTeam.name | CareTeam.extension('http://hl7.org/fhir/StructureDefinition/careteam-alias').value | SubstanceDefinition.name.name | Endpoint.name | ActivityDefinition.name | CapabilityStatement.name | Citation.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | ConditionDefinition.name | EventDefinition.name | EvidenceVariable.name | ExampleScenario.name | GraphDefinition.name | ImplementationGuide.name | Library.name | Measure.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | PlanDefinition.name | Questionnaire.name | Requirements.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | TestScript.name | ValueSet.name | Patient.name | RelatedPerson.name | Location.name | Location.alias | Subscription.name | InsurancePlan.name | InsurancePlan.alias | Organization.name | Organization.alias | Group.name | Schedule.name"
         }
     ],
     "class-value": [
         {
             name: "class-value",
-            'type: r5:STRING,
+            'type: r5:TOKEN,
             base: ["Coverage"],
             expression: "Coverage.class.value"
+        }
+    ],
+    "region": [
+        {
+            name: "region",
+            'type: r5:TOKEN,
+            base: ["RegulatedAuthorization", "ResearchStudy"],
+            expression: "ResearchStudy.region | RegulatedAuthorization.region"
         }
     ],
     "support": [
@@ -2510,30 +3084,42 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             base: ["MedicationDispense"],
             expression: "MedicationDispense.destination"
         },
+
         {
             name: "destination",
             'type: r5:STRING,
             base: ["MessageHeader"],
             expression: "MessageHeader.destination.name"
         }
-    ]
-};
-//Number of search params in INTERNATIONAL_IG_SEARCH_PARAMS_4  = 100
-final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH_PARAMS_4 = {
+    ],
     "description": [
         {
             name: "description",
+            'type: r5:TOKEN,
+            base: ["Goal"],
+            expression: "Goal.description"
+        },
+        {
+            name: "description",
             'type: r5:STRING,
-            base: ["EventDefinition", "Evidence", "Measure", "ChargeItemDefinition", "ActivityDefinition", "PlanDefinition", "ResearchDefinition", "Library", "DocumentReference", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "Questionnaire", "ResearchElementDefinition", "DocumentManifest", "EffectEvidenceSynthesis", "EvidenceVariable", "TestScript", "RiskEvidenceSynthesis"],
-            expression: "RiskEvidenceSynthesis.description | TestScript.description | EvidenceVariable.description | EffectEvidenceSynthesis.description | DocumentManifest.description | ResearchElementDefinition.description | Questionnaire.description | CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description | DocumentReference.description | Library.description | ResearchDefinition.description | PlanDefinition.description | ActivityDefinition.description | ChargeItemDefinition.description | Measure.description | Evidence.description | EventDefinition.description"
+            base: ["ResearchStudy", "DocumentReference", "ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceVariable", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "TestScript"],
+            expression: "ActivityDefinition.description | ActorDefinition.description | CapabilityStatement.description | ChargeItemDefinition.description | Citation.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | ConditionDefinition.description | EventDefinition.description | Evidence.description | EvidenceVariable.description | GraphDefinition.description | ImplementationGuide.description | Library.description | Measure.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | PlanDefinition.description | Questionnaire.description | Requirements.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | TestScript.description | ValueSet.description | DocumentReference.description | ResearchStudy.description"
         }
     ],
     "reason-code": [
         {
             name: "reason-code",
             'type: r5:TOKEN,
-            base: ["Appointment", "Immunization", "Encounter", "Procedure"],
-            expression: "Procedure.reasonCode | Encounter.reasonCode | Immunization.reasonCode | Appointment.reasonCode"
+            base: ["Appointment", "Immunization", "Encounter", "EpisodeOfCare", "Procedure"],
+            expression: "Procedure.reason.concept | EpisodeOfCare.reason.value.concept | Encounter.reason.value.concept | Immunization.reason.concept | Appointment.reason.concept"
+        }
+    ],
+    "product-category": [
+        {
+            name: "product-category",
+            'type: r5:TOKEN,
+            base: ["BiologicallyDerivedProduct"],
+            expression: "BiologicallyDerivedProduct.productCategory"
         }
     ],
     "finding-ref": [
@@ -2541,7 +3127,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "finding-ref",
             'type: r5:REFERENCE,
             base: ["ClinicalImpression"],
-            expression: "ClinicalImpression.finding.itemReference"
+            expression: "ClinicalImpression.finding.item.reference"
+        }
+    ],
+    "progress-status-state-period-actual": [
+        {
+            name: "progress-status-state-period-actual",
+            'type: r5:COMPOSITE,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.progressStatus"
         }
     ],
     "conclusion": [
@@ -2550,14 +3144,6 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:TOKEN,
             base: ["DiagnosticReport"],
             expression: "DiagnosticReport.conclusionCode"
-        }
-    ],
-    "payor": [
-        {
-            name: "payor",
-            'type: r5:REFERENCE,
-            base: ["Coverage"],
-            expression: "Coverage.payor"
         }
     ],
     "coverage-area": [
@@ -2578,8 +3164,16 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "definition",
             'type: r5:REFERENCE,
-            base: ["PlanDefinition"],
-            expression: "PlanDefinition.action.definition"
+            base: ["Device", "PlanDefinition"],
+            expression: "PlanDefinition.action.definition.ofType(canonical) | PlanDefinition.action.definition.ofType(uri) | Device.definition.reference"
+        }
+    ],
+    "attestation-method": [
+        {
+            name: "attestation-method",
+            'type: r5:TOKEN,
+            base: ["VerificationResult"],
+            expression: "VerificationResult.attestation.communicationMethod"
         }
     ],
     "content-type": [
@@ -2590,21 +3184,30 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Library.content.contentType"
         }
     ],
-    "referenceseqid-window-coordinate": [
+    "questionnaire-code": [
         {
-            name: "referenceseqid-window-coordinate",
-            'type: r5:COMPOSITE,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.referenceSeq"
+            name: "questionnaire-code",
+            'type: r5:TOKEN,
+            base: ["Questionnaire"],
+            expression: "Questionnaire.code"
         }
     ],
-    "severity": [
+    "value-markdown": [
         {
-            name: "severity",
-            'type: r5:TOKEN,
-            base: ["Condition", "AllergyIntolerance", "AdverseEvent"],
-            expression: "AdverseEvent.severity | AllergyIntolerance.reaction.severity | Condition.severity"
+            name: "value-markdown",
+            'type: r5:STRING,
+            base: ["Observation"],
+            expression: "Observation.value.ofType(markdown) | Observation.value.ofType(CodeableConcept).text"
         }
+    ],
+    "focus-code": [
+        {
+            name: "focus-code",
+            'type: r5:TOKEN,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.focus.concept"
+        }
+
     ],
     "coverage": [
         {
@@ -2612,6 +3215,22 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:REFERENCE,
             base: ["ExplanationOfBenefit"],
             expression: "ExplanationOfBenefit.insurance.coverage"
+        }
+    ],
+    "severity": [
+        {
+            name: "severity",
+            'type: r5:TOKEN,
+            base: ["Condition", "AllergyIntolerance"],
+            expression: "AllergyIntolerance.reaction.severity | Condition.severity"
+        }
+    ],
+    "target-measure": [
+        {
+            name: "target-measure",
+            'type: r5:TOKEN,
+            base: ["Goal"],
+            expression: "Goal.target.measure"
         }
     ],
     "business-status": [
@@ -2634,16 +3253,16 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "device-name",
             'type: r5:STRING,
-            base: ["Device"],
-            expression: "Device.deviceName.name | Device.type.coding.display | Device.type.text"
+            base: ["DeviceDefinition", "Device"],
+            expression: "Device.name.value | Device.type.coding.display | Device.type.text | DeviceDefinition.deviceName.name | DeviceDefinition.classification.type.coding.display | DeviceDefinition.classification.type.text"
         }
     ],
     "substance": [
         {
             name: "substance",
             'type: r5:REFERENCE,
-            base: ["AdverseEvent"],
-            expression: "AdverseEvent.suspectEntity.instance"
+            base: ["Ingredient", "AdverseEvent"],
+            expression: "(AdverseEvent.suspectEntity.instance as Reference) | Ingredient.substance.code.reference"
         }
     ],
     "start": [
@@ -2660,6 +3279,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Slot.start"
         }
     ],
+    "type-tested": [
+        {
+            name: "type-tested",
+            'type: r5:TOKEN,
+            base: ["SpecimenDefinition"],
+            expression: "SpecimenDefinition.typeTested.type"
+        }
+
+    ],
     "primary-organization": [
         {
             name: "primary-organization",
@@ -2668,20 +3296,36 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "OrganizationAffiliation.organization"
         }
     ],
+    "other-map": [
+        {
+            name: "other-map",
+            'type: r5:REFERENCE,
+            base: ["ConceptMap"],
+            expression: "ConceptMap.group.unmapped.otherMap"
+        }
+    ],
     "attester": [
         {
             name: "attester",
             'type: r5:REFERENCE,
-            base: ["Composition"],
-            expression: "Composition.attester.party"
+            base: ["DocumentReference", "Composition"],
+            expression: "Composition.attester.party | DocumentReference.attester.party"
+        }
+    ],
+    "event-reference": [
+        {
+            name: "event-reference",
+            'type: r5:REFERENCE,
+            base: ["Composition", "DocumentReference"],
+            expression: "DocumentReference.event.reference | Composition.event.detail.reference"
         }
     ],
     "target": [
         {
             name: "target",
             'type: r5:REFERENCE,
-            base: ["MessageHeader", "VerificationResult", "ConceptMap", "Provenance"],
-            expression: "Provenance.target | (ConceptMap.target as canonical) | VerificationResult.target | MessageHeader.destination.target"
+            base: ["MessageHeader", "VerificationResult", "Provenance"],
+            expression: "Provenance.target | VerificationResult.target | MessageHeader.destination.target"
         },
         {
             name: "target",
@@ -2702,8 +3346,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "recipient",
             'type: r5:REFERENCE,
-            base: ["DocumentManifest", "Communication", "CommunicationRequest", "Invoice"],
-            expression: "Invoice.recipient | CommunicationRequest.recipient | Communication.recipient | DocumentManifest.recipient"
+            base: ["Communication", "CommunicationRequest", "Invoice"],
+            expression: "Invoice.recipient | CommunicationRequest.recipient | Communication.recipient"
         }
     ],
     "formula": [
@@ -2711,21 +3355,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "formula",
             'type: r5:TOKEN,
             base: ["NutritionOrder"],
-            expression: "NutritionOrder.enteralFormula.baseFormulaType"
+            expression: "NutritionOrder.enteralFormula.baseFormulaType.concept"
         }
     ],
     "location": [
         {
             name: "location",
             'type: r5:REFERENCE,
-            base: ["Procedure", "Immunization", "Device", "Provenance", "Encounter", "AdverseEvent", "PractitionerRole", "OrganizationAffiliation", "Appointment", "HealthcareService", "AppointmentResponse"],
-            expression: "AppointmentResponse.actor.where(resolve() is Location) | HealthcareService.location | Appointment.participant.actor.where(resolve() is Location) | OrganizationAffiliation.location | PractitionerRole.location | AdverseEvent.location | Encounter.location.location | Provenance.location | Device.location | Immunization.location | Procedure.location"
-        },
-        {
-            name: "location",
-            'type: r5:TOKEN,
-            base: ["BodyStructure", "ResearchStudy"],
-            expression: "ResearchStudy.location | BodyStructure.location"
+            base: ["Procedure", "Immunization", "Device", "Provenance", "MeasureReport", "Encounter", "AdverseEvent", "PractitionerRole", "OrganizationAffiliation", "Appointment", "HealthcareService", "AppointmentResponse", "MedicationDispense"],
+            expression: "MedicationDispense.location | AppointmentResponse.actor.where(resolve() is Location) | HealthcareService.location | Appointment.participant.actor.where(resolve() is Location) | OrganizationAffiliation.location | PractitionerRole.location | AdverseEvent.location | Encounter.location.location | MeasureReport.location | Provenance.location | Device.location | Immunization.location | Procedure.location"
         },
         {
             name: "location",
@@ -2754,8 +3392,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "expiration-date",
             'type: r5:DATE,
-            base: ["Medication"],
-            expression: "Medication.batch.expirationDate"
+            base: ["Device", "Medication"],
+            expression: "Medication.batch.expirationDate | Device.expirationDate"
         }
     ],
     "base": [
@@ -2776,8 +3414,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "container",
             'type: r5:TOKEN,
-            base: ["Specimen", "SpecimenDefinition"],
-            expression: "SpecimenDefinition.typeTested.container.type | Specimen.container.type"
+            base: ["SpecimenDefinition"],
+            expression: "SpecimenDefinition.typeTested.container.type"
         }
     ],
     "udi-carrier": [
@@ -2803,29 +3441,17 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             base: ["CapabilityStatement"],
             expression: "CapabilityStatement.software.name"
         }
-    ],
+    ]
+};
+
+//Number of search params in FHIR_IG_SEARCH_PARAMS_5  = 100
+final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_5 = {
     "requisition": [
         {
             name: "requisition",
             'type: r5:TOKEN,
             base: ["ServiceRequest"],
             expression: "ServiceRequest.requisition"
-        }
-    ],
-    "criteria": [
-        {
-            name: "criteria",
-            'type: r5:STRING,
-            base: ["Subscription"],
-            expression: "Subscription.criteria"
-        }
-    ],
-    "resultingcondition": [
-        {
-            name: "resultingcondition",
-            'type: r5:REFERENCE,
-            base: ["AdverseEvent"],
-            expression: "AdverseEvent.resultingCondition"
         }
     ],
     "tester": [
@@ -2840,16 +3466,38 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "derived-from",
             'type: r5:REFERENCE,
-            base: ["EvidenceVariable", "Measure", "Library", "ResearchDefinition", "Observation", "ActivityDefinition", "Evidence", "EventDefinition", "PlanDefinition", "ResearchElementDefinition", "SearchParameter"],
-            expression: "SearchParameter.derivedFrom | ResearchElementDefinition.relatedArtifact.where(type='derived-from').resource | PlanDefinition.relatedArtifact.where(type='derived-from').resource | EventDefinition.relatedArtifact.where(type='derived-from').resource | Evidence.relatedArtifact.where(type='derived-from').resource | ActivityDefinition.relatedArtifact.where(type='derived-from').resource | Observation.derivedFrom | ResearchDefinition.relatedArtifact.where(type='derived-from').resource | Library.relatedArtifact.where(type='derived-from').resource | Measure.relatedArtifact.where(type='derived-from').resource | EvidenceVariable.relatedArtifact.where(type='derived-from').resource"
+            base: ["ActivityDefinition", "ConceptMap", "EventDefinition", "EvidenceVariable", "Library", "Measure", "NamingSystem", "PlanDefinition", "Observation", "ImagingSelection", "Requirements", "SearchParameter"],
+            expression: "SearchParameter.derivedFrom | Requirements.derivedFrom | ImagingSelection.derivedFrom | Observation.derivedFrom | ActivityDefinition.relatedArtifact.where(type='derived-from').resource | CodeSystem.relatedArtifact.where(type='derived-from').resource | ConceptMap.relatedArtifact.where(type='derived-from').resource | EventDefinition.relatedArtifact.where(type='derived-from').resource | EvidenceVariable.relatedArtifact.where(type='derived-from').resource | Library.relatedArtifact.where(type='derived-from').resource | Measure.relatedArtifact.where(type='derived-from').resource | NamingSystem.relatedArtifact.where(type='derived-from').resource | PlanDefinition.relatedArtifact.where(type='derived-from').resource | ValueSet.relatedArtifact.where(type='derived-from').resource"
+        }
+    ],
+    "eligibility": [
+        {
+            name: "eligibility",
+            'type: r5:TOKEN,
+            base: ["HealthcareService"],
+            expression: "HealthcareService.eligibility.code"
+        },
+        {
+            name: "eligibility",
+            'type: r5:REFERENCE,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.recruitment.eligibility"
         }
     ],
     "experimental": [
         {
             name: "experimental",
             'type: r5:TOKEN,
-            base: ["ImplementationGuide", "StructureDefinition"],
-            expression: "StructureDefinition.experimental | ImplementationGuide.experimental"
+            base: ["SpecimenDefinition", "ImplementationGuide", "ObservationDefinition", "StructureDefinition"],
+            expression: "StructureDefinition.experimental | ObservationDefinition.experimental | ImplementationGuide.experimental | SpecimenDefinition.experimental"
+        }
+    ],
+    "guarantor": [
+        {
+            name: "guarantor",
+            'type: r5:REFERENCE,
+            base: ["Account"],
+            expression: "Account.guarantor.party"
         }
     ],
     "status-reason": [
@@ -2865,7 +3513,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "collected",
             'type: r5:DATE,
             base: ["Specimen"],
-            expression: "Specimen.collection.collected"
+            expression: "Specimen.collection.collected.ofType(dateTime) | Specimen.collection.collected.ofType(Period)"
         }
     ],
     "program": [
@@ -2894,8 +3542,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "type",
             'type: r5:TOKEN,
-            base: ["Device", "SearchParameter", "NamingSystem", "DeviceDefinition", "SpecimenDefinition", "Account", "OperationDefinition", "Specimen", "Group", "Invoice", "AllergyIntolerance", "Composition", "DocumentManifest", "DocumentReference", "Encounter", "EpisodeOfCare", "MedicationDispense", "Organization", "PlanDefinition", "Subscription", "Location", "InsurancePlan", "AuditEvent", "MolecularSequence", "Library", "Coverage", "Media", "DeviceMetric"],
-            expression: "DeviceMetric.type | Media.type | Coverage.type | Library.type | MolecularSequence.type | AuditEvent.type | InsurancePlan.type | Location.type | Subscription.channel.type | PlanDefinition.type | Organization.type | MedicationDispense.type | AllergyIntolerance.type | Composition.type | DocumentManifest.type | DocumentReference.type | Encounter.type | EpisodeOfCare.type | Invoice.type | Group.type | Specimen.type | OperationDefinition.type | Account.type | SpecimenDefinition.typeCollected | DeviceDefinition.type | NamingSystem.type | SearchParameter.type | Device.type"
+            base: ["Device", "MedicinalProductDefinition", "SearchParameter", "NamingSystem", "DeviceDefinition", "ClinicalUseDefinition", "SpecimenDefinition", "OperationDefinition", "Group", "ActorDefinition", "Account", "AllergyIntolerance", "Composition", "Coverage", "DocumentReference", "Encounter", "EpisodeOfCare", "Invoice", "MedicationDispense", "MolecularSequence", "Specimen", "Organization", "PlanDefinition", "Subscription", "Location", "InsurancePlan", "Library", "DeviceMetric"],
+            expression: "DeviceMetric.type | Library.type | InsurancePlan.type | Location.type | Subscription.channelType | PlanDefinition.type | Organization.type | Account.type | AllergyIntolerance.type | Composition.type | Coverage.type | DocumentReference.type | Encounter.type | EpisodeOfCare.type | Invoice.type | MedicationDispense.type | MolecularSequence.type | Specimen.type | ActorDefinition.type | Group.type | OperationDefinition.type | SpecimenDefinition.typeCollected | ClinicalUseDefinition.type | DeviceDefinition.conformsTo.category | NamingSystem.type | SearchParameter.type | MedicinalProductDefinition.type | Device.type"
         }
     ],
     "when": [
@@ -2903,7 +3551,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "when",
             'type: r5:DATE,
             base: ["Provenance"],
-            expression: "(Provenance.occurred as dateTime)"
+            expression: "(Provenance.occurred.ofType(dateTime))"
         }
     ],
     "issuer": [
@@ -2922,12 +3570,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "DocumentReference.relatesTo.code"
         }
     ],
+    "section-text": [
+        {
+            name: "section-text",
+            'type: r5:SPECIAL,
+            base: ["Composition"],
+            expression: "Composition.section.text | Composition.section.section.text"
+        }
+    ],
     "death-date": [
         {
             name: "death-date",
             'type: r5:DATE,
-            base: ["Patient"],
-            expression: "(Patient.deceased as dateTime)"
+            base: ["Patient", "Practitioner", "Person"],
+            expression: "(Person.deceased.ofType(dateTime)) | (Practitioner.deceased.ofType(dateTime)) | (Patient.deceased.ofType(dateTime))"
         }
     ],
     "problem": [
@@ -2943,7 +3599,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "identified",
             'type: r5:DATE,
             base: ["DetectedIssue"],
-            expression: "DetectedIssue.identified"
+            expression: "DetectedIssue.identified.ofType(dateTime) | DetectedIssue.identified.ofType(Period)"
         }
     ],
     "reason-not-given": [
@@ -2958,8 +3614,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "issued",
             'type: r5:DATE,
-            base: ["TestReport", "DiagnosticReport", "Contract"],
-            expression: "Contract.issued | DiagnosticReport.issued | TestReport.issued"
+            base: ["TestReport", "ImagingSelection", "DiagnosticReport", "Contract"],
+            expression: "Contract.issued | DiagnosticReport.issued | ImagingSelection.issued | TestReport.issued"
         }
     ],
     "dependent": [
@@ -2970,12 +3626,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Coverage.dependent"
         }
     ],
-    "context-type-quantity": [
+    "attestation-onbehalfof": [
         {
-            name: "context-type-quantity",
-            'type: r5:COMPOSITE,
-            base: ["EffectEvidenceSynthesis", "PlanDefinition", "ActivityDefinition", "ChargeItemDefinition", "ExampleScenario", "TestScript", "Evidence", "RiskEvidenceSynthesis", "Library", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "ResearchElementDefinition", "Measure", "EventDefinition", "Questionnaire", "ResearchDefinition", "EvidenceVariable"],
-            expression: "EvidenceVariable.useContext | ResearchDefinition.useContext | Questionnaire.useContext | EventDefinition.useContext | Measure.useContext | ResearchElementDefinition.useContext | CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext | Library.useContext | RiskEvidenceSynthesis.useContext | Evidence.useContext | TestScript.useContext | ExampleScenario.useContext | ChargeItemDefinition.useContext | ActivityDefinition.useContext | PlanDefinition.useContext | EffectEvidenceSynthesis.useContext"
+            name: "attestation-onbehalfof",
+            'type: r5:REFERENCE,
+            base: ["VerificationResult"],
+            expression: "VerificationResult.attestation.onBehalfOf"
+        }
+    ],
+    "case": [
+        {
+            name: "case",
+            'type: r5:TOKEN,
+            base: ["RegulatedAuthorization"],
+            expression: "RegulatedAuthorization.case.identifier"
         }
     ],
     "guide": [
@@ -2986,20 +3650,42 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "CapabilityStatement.implementationGuide"
         }
     ],
+    "context-type-quantity": [
+        {
+            name: "context-type-quantity",
+            'type: r5:COMPOSITE,
+            base: ["ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "TestScript"],
+            expression: "ActivityDefinition.useContext | ActorDefinition.useContext | CapabilityStatement.useContext | ChargeItemDefinition.useContext | Citation.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | ConditionDefinition.useContext | EventDefinition.useContext | Evidence.useContext | EvidenceReport.useContext | EvidenceVariable.useContext | ExampleScenario.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | Library.useContext | Measure.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | PlanDefinition.useContext | Questionnaire.useContext | Requirements.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | TestScript.useContext | ValueSet.useContext"
+        }
+    ],
+    "phase": [
+        {
+            name: "phase",
+            'type: r5:TOKEN,
+            base: ["ResearchStudy"],
+            expression: "ResearchStudy.phase"
+        }
+    ],
     "identifier": [
         {
             name: "identifier",
             'type: r5:TOKEN,
-            base: ["PractitionerRole", "ExplanationOfBenefit", "ActivityDefinition", "Patient", "ResearchDefinition", "Group", "Task", "TestScript", "Device", "Location", "ConceptMap", "MessageDefinition", "StructureDefinition", "StructureMap", "Coverage", "MedicinalProductPackaged", "ResearchStudy", "Media", "ResearchSubject", "Medication", "Appointment", "MedicinalProductAuthorization", "OrganizationAffiliation", "Communication", "SpecimenDefinition", "Questionnaire", "Invoice", "ResearchElementDefinition", "Measure", "Specimen", "Organization", "Claim", "InsurancePlan", "HealthcareService", "ClinicalImpression", "ClaimResponse", "CoverageEligibilityResponse", "RelatedPerson", "Schedule", "DeviceUseStatement", "EffectEvidenceSynthesis", "EnrollmentRequest", "PlanDefinition", "Flag", "Account", "PaymentNotice", "CommunicationRequest", "Evidence", "Person", "ImmunizationEvaluation", "CoverageEligibilityRequest", "EventDefinition", "EnrollmentResponse", "Practitioner", "DeviceMetric", "ImmunizationRecommendation", "Basic", "Slot", "AppointmentResponse", "RiskEvidenceSynthesis", "EvidenceVariable", "AllergyIntolerance", "CarePlan", "CareTeam", "Composition", "Condition", "Consent", "DetectedIssue", "DeviceRequest", "DiagnosticReport", "DocumentManifest", "DocumentReference", "Encounter", "EpisodeOfCare", "FamilyMemberHistory", "Goal", "ImagingStudy", "Immunization", "List", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "NutritionOrder", "Observation", "Procedure", "RiskAssessment", "ServiceRequest", "SupplyDelivery", "SupplyRequest", "VisionPrescription", "ExampleScenario", "Contract", "BodyStructure", "MedicinalProduct", "RequestGroup", "QuestionnaireResponse", "ChargeItem", "MedicinalProductPharmaceutical", "MolecularSequence", "Substance", "Endpoint", "DeviceDefinition", "GuidanceResponse", "ChargeItemDefinition", "Library", "MeasureReport", "TestReport", "PaymentReconciliation"],
-            expression: "PaymentReconciliation.identifier | TestReport.identifier | MeasureReport.identifier | Library.identifier | ChargeItemDefinition.identifier | GuidanceResponse.identifier | DeviceDefinition.identifier | Endpoint.identifier | Substance.identifier | MolecularSequence.identifier | MedicinalProductPharmaceutical.identifier | ChargeItem.identifier | QuestionnaireResponse.identifier | RequestGroup.identifier | MedicinalProduct.identifier | BodyStructure.identifier | Contract.identifier | ExampleScenario.identifier | AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier | EvidenceVariable.identifier | RiskEvidenceSynthesis.identifier | AppointmentResponse.identifier | Slot.identifier | Basic.identifier | ImmunizationRecommendation.identifier | DeviceMetric.identifier | Practitioner.identifier | EnrollmentResponse.identifier | EventDefinition.identifier | CoverageEligibilityRequest.identifier | ImmunizationEvaluation.identifier | Person.identifier | Evidence.identifier | CommunicationRequest.identifier | PaymentNotice.identifier | Account.identifier | Flag.identifier | PlanDefinition.identifier | EnrollmentRequest.identifier | EffectEvidenceSynthesis.identifier | DeviceUseStatement.identifier | Schedule.identifier | RelatedPerson.identifier | CoverageEligibilityResponse.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | HealthcareService.identifier | InsurancePlan.identifier | Claim.identifier | Organization.identifier | Specimen.identifier | Measure.identifier | ResearchElementDefinition.identifier | Invoice.identifier | Questionnaire.identifier | SpecimenDefinition.identifier | Communication.identifier | OrganizationAffiliation.identifier | MedicinalProductAuthorization.identifier | Appointment.identifier | Medication.identifier | ResearchSubject.identifier | Media.identifier | ResearchStudy.identifier | MedicinalProductPackaged.identifier | Coverage.identifier | CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | ValueSet.identifier | Location.identifier | Device.identifier | TestScript.identifier | Task.identifier | Group.identifier | ResearchDefinition.identifier | Patient.identifier | ActivityDefinition.identifier | ExplanationOfBenefit.identifier | PractitionerRole.identifier"
+            base: ["PractitionerRole", "Patient", "Group", "RegulatedAuthorization", "InventoryReport", "Device", "BiologicallyDerivedProductDispense", "Location", "ResearchStudy", "ManufacturedItemDefinition", "OrganizationAffiliation", "NutritionProduct", "Organization", "FormularyItem", "InsurancePlan", "HealthcareService", "Schedule", "Subscription", "EncounterHistory", "ClinicalUseDefinition", "BiologicallyDerivedProduct", "PaymentNotice", "SubstanceDefinition", "PackagedProductDefinition", "GenomicStudy", "EnrollmentResponse", "Practitioner", "DeviceAssociation", "DeviceMetric", "AdministrableProductDefinition", "Transport", "Slot", "DeviceDispense", "Account", "AdverseEvent", "AllergyIntolerance", "Appointment", "AppointmentResponse", "Basic", "BodyStructure", "CarePlan", "CareTeam", "ChargeItem", "Claim", "ClaimResponse", "ClinicalImpression", "Communication", "CommunicationRequest", "Composition", "Condition", "Consent", "Contract", "Coverage", "CoverageEligibilityRequest", "CoverageEligibilityResponse", "DetectedIssue", "DeviceRequest", "DeviceUsage", "DiagnosticReport", "DocumentReference", "Encounter", "EnrollmentRequest", "EpisodeOfCare", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "Goal", "GuidanceResponse", "ImagingSelection", "ImagingStudy", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation", "Invoice", "List", "MeasureReport", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "MolecularSequence", "NutritionIntake", "NutritionOrder", "Observation", "Person", "Procedure", "QuestionnaireResponse", "RelatedPerson", "RequestOrchestration", "ResearchSubject", "RiskAssessment", "ServiceRequest", "Specimen", "SupplyDelivery", "SupplyRequest", "Task", "VisionPrescription", "InventoryItem", "Ingredient", "Substance", "Endpoint", "ArtifactAssessment", "DeviceDefinition", "MedicinalProductDefinition", "ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MedicationKnowledge", "MessageDefinition", "NamingSystem", "ObservationDefinition", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "SpecimenDefinition", "StructureDefinition", "StructureMap", "SubscriptionTopic", "TerminologyCapabilities", "TestPlan", "TestScript", "TestReport", "PaymentReconciliation"],
+            expression: "PaymentReconciliation.identifier | TestReport.identifier | ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestPlan.identifier | TestScript.identifier | ValueSet.identifier | MedicinalProductDefinition.identifier | DeviceDefinition.identifier | ArtifactAssessment.identifier | Endpoint.identifier | Substance.identifier | Ingredient.identifier | InventoryItem.identifier | Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier | DeviceDispense.identifier | Slot.identifier | Transport.identifier | AdministrableProductDefinition.identifier | DeviceMetric.identifier | DeviceAssociation.identifier | Practitioner.identifier | Practitioner.qualification.identifier | EnrollmentResponse.identifier | GenomicStudy.identifier | PackagedProductDefinition.identifier | SubstanceDefinition.identifier | PaymentNotice.identifier | BiologicallyDerivedProduct.identifier | ClinicalUseDefinition.identifier | EncounterHistory.identifier | Subscription.identifier | Schedule.identifier | HealthcareService.identifier | InsurancePlan.identifier | FormularyItem.identifier | Organization.identifier | Organization.qualification.identifier | NutritionProduct.instance.identifier | OrganizationAffiliation.identifier | ManufacturedItemDefinition.identifier | ResearchStudy.identifier | Location.identifier | BiologicallyDerivedProductDispense.identifier | Device.identifier | InventoryReport.identifier | RegulatedAuthorization.identifier | Group.identifier | Patient.identifier | PractitionerRole.identifier"
         }
     ],
     "item": [
         {
             name: "item",
+            'type: r5:TOKEN,
+            base: ["InventoryReport"],
+            expression: "InventoryReport.inventoryListing.item.item.concept"
+        },
+        {
+            name: "item",
             'type: r5:REFERENCE,
-            base: ["DocumentManifest", "Linkage", "List"],
-            expression: "List.entry.item | Linkage.item.resource | DocumentManifest.content"
+            base: ["Linkage", "List"],
+            expression: "List.entry.item | Linkage.item.resource"
         }
     ],
     "intended-dispenser": [
@@ -3007,7 +3693,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "intended-dispenser",
             'type: r5:REFERENCE,
             base: ["MedicationRequest"],
-            expression: "MedicationRequest.dispenseRequest.performer"
+            expression: "MedicationRequest.dispenseRequest.dispenser"
         }
     ],
     "goal": [
@@ -3030,8 +3716,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "method",
             'type: r5:TOKEN,
-            base: ["Observation", "RiskAssessment"],
-            expression: "RiskAssessment.method | Observation.method"
+            base: ["Observation", "RiskAssessment", "ObservationDefinition"],
+            expression: "ObservationDefinition.method | RiskAssessment.method | Observation.method"
         }
     ],
     "probability": [
@@ -3039,23 +3725,23 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "probability",
             'type: r5:NUMBER,
             base: ["RiskAssessment"],
-            expression: "RiskAssessment.prediction.probability"
+            expression: "RiskAssessment.prediction.probability.ofType(decimal)"
         }
     ],
     "priority": [
         {
             name: "priority",
             'type: r5:TOKEN,
-            base: ["CommunicationRequest", "Task", "Claim", "MedicationRequest", "RequestGroup", "ServiceRequest"],
-            expression: "ServiceRequest.priority | RequestGroup.priority | MedicationRequest.priority | Claim.priority | Task.priority | CommunicationRequest.priority"
+            base: ["CommunicationRequest", "Task", "Claim", "RequestOrchestration", "MedicationRequest", "ServiceRequest"],
+            expression: "ServiceRequest.priority | MedicationRequest.priority | RequestOrchestration.priority | Claim.priority | Task.priority | CommunicationRequest.priority"
         }
     ],
-    "ID-SEARCH-PARAMETER": [
+    "primarysource-type": [
         {
-            name: "ID-SEARCH-PARAMETER",
+            name: "primarysource-type",
             'type: r5:TOKEN,
-            base: ["Resource"],
-            expression: "id"
+            base: ["VerificationResult"],
+            expression: "VerificationResult.primarySource.type"
         }
     ],
     "payload-type": [
@@ -3063,7 +3749,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "payload-type",
             'type: r5:TOKEN,
             base: ["Endpoint"],
-            expression: "Endpoint.payloadType"
+            expression: "Endpoint.payload.type"
         }
     ],
     "security-label": [
@@ -3079,7 +3765,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "phone",
             'type: r5:TOKEN,
             base: ["OrganizationAffiliation", "Patient", "Person", "Practitioner", "PractitionerRole", "RelatedPerson"],
-            expression: "Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone') | OrganizationAffiliation.telecom.where(system='phone')"
+            expression: "Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone') | OrganizationAffiliation.contact.telecom.where(system='phone')"
         }
     ],
     "abatement-string": [
@@ -3087,29 +3773,29 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "abatement-string",
             'type: r5:STRING,
             base: ["Condition"],
-            expression: "Condition.abatement.as(string)"
+            expression: "Condition.abatement.ofType(string)"
         }
     ],
-    "entity-type": [
+    "IDSEARCHPARAMETER": [
         {
-            name: "entity-type",
+            name: "IDSEARCHPARAMETER",
             'type: r5:TOKEN,
-            base: ["AuditEvent"],
-            expression: "AuditEvent.entity.type"
+            base: ["Resource"],
+            expression: "id"
         }
     ],
     "study": [
         {
             name: "study",
             'type: r5:REFERENCE,
-            base: ["ResearchSubject", "AdverseEvent"],
-            expression: "AdverseEvent.study | ResearchSubject.study"
+            base: ["ResearchSubject", "AdverseEvent", "DiagnosticReport"],
+            expression: "DiagnosticReport.study | AdverseEvent.study | ResearchSubject.study"
         }
     ],
     "_query": [
         {
             name: "_query",
-            'type: r5:TOKEN,
+            'type: r5:SPECIAL,
             base: ["Resource"],
             expression: "$searchParam.getExpression()"
         }
@@ -3130,36 +3816,52 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Patient.gender | Person.gender | Practitioner.gender | RelatedPerson.gender"
         }
     ],
-    "confidentiality": [
+    "manifestation-reference": [
         {
-            name: "confidentiality",
-            'type: r5:TOKEN,
-            base: ["Composition"],
-            expression: "Composition.confidentiality"
+            name: "manifestation-reference",
+            'type: r5:REFERENCE,
+            base: ["AllergyIntolerance"],
+            expression: "AllergyIntolerance.reaction.manifestation.reference"
+        }
+    ],
+    "component-value-canonical": [
+        {
+            name: "component-value-canonical",
+            'type: r5:URI,
+            base: ["Observation"],
+            expression: "Observation.component.value.ofType(canonical)"
         }
     ],
     "context-type": [
         {
             name: "context-type",
             'type: r5:TOKEN,
-            base: ["EventDefinition", "Evidence", "RiskEvidenceSynthesis", "EffectEvidenceSynthesis", "ResearchElementDefinition", "Library", "TestScript", "ActivityDefinition", "EvidenceVariable", "Questionnaire", "ResearchDefinition", "Measure", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "ExampleScenario", "PlanDefinition", "ChargeItemDefinition"],
-            expression: "ChargeItemDefinition.useContext.code | PlanDefinition.useContext.code | ExampleScenario.useContext.code | CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code | Measure.useContext.code | ResearchDefinition.useContext.code | Questionnaire.useContext.code | EvidenceVariable.useContext.code | ActivityDefinition.useContext.code | TestScript.useContext.code | Library.useContext.code | ResearchElementDefinition.useContext.code | EffectEvidenceSynthesis.useContext.code | RiskEvidenceSynthesis.useContext.code | Evidence.useContext.code | EventDefinition.useContext.code"
+            base: ["ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "TestScript"],
+            expression: "ActivityDefinition.useContext.code | ActorDefinition.useContext.code | CapabilityStatement.useContext.code | ChargeItemDefinition.useContext.code | Citation.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | ConditionDefinition.useContext.code | EventDefinition.useContext.code | Evidence.useContext.code | EvidenceReport.useContext.code | EvidenceVariable.useContext.code | ExampleScenario.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | Library.useContext.code | Measure.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | PlanDefinition.useContext.code | Questionnaire.useContext.code | Requirements.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | TestScript.useContext.code | ValueSet.useContext.code"
         }
     ],
     "group-identifier": [
         {
             name: "group-identifier",
             'type: r5:TOKEN,
-            base: ["DeviceRequest", "RequestGroup", "CommunicationRequest", "Task"],
-            expression: "Task.groupIdentifier | CommunicationRequest.groupIdentifier | RequestGroup.groupIdentifier | DeviceRequest.groupIdentifier"
+            base: ["DeviceRequest", "MedicationRequest", "NutritionOrder", "RequestOrchestration", "CommunicationRequest", "Task"],
+            expression: "Task.groupIdentifier | CommunicationRequest.groupIdentifier | RequestOrchestration.groupIdentifier | NutritionOrder.groupIdentifier | MedicationRequest.groupIdentifier | DeviceRequest.groupIdentifier"
         }
     ],
     "based-on": [
         {
             name: "based-on",
             'type: r5:REFERENCE,
-            base: ["CommunicationRequest", "ServiceRequest", "Appointment", "Encounter", "Task", "Procedure", "Communication", "QuestionnaireResponse", "CarePlan", "Media", "Observation", "DiagnosticReport", "DeviceRequest"],
-            expression: "DeviceRequest.basedOn | DiagnosticReport.basedOn | Observation.basedOn | Media.basedOn | CarePlan.basedOn | QuestionnaireResponse.basedOn | Communication.basedOn | Procedure.basedOn | Task.basedOn | Encounter.basedOn | Appointment.basedOn | ServiceRequest.basedOn | CommunicationRequest.basedOn"
+            base: ["CommunicationRequest", "AuditEvent", "ServiceRequest", "RequestOrchestration", "ImagingSelection", "Appointment", "Encounter", "Provenance", "Task", "Procedure", "Communication", "QuestionnaireResponse", "CarePlan", "Observation", "ImagingStudy", "DiagnosticReport", "DocumentReference", "DeviceRequest"],
+            expression: "DeviceRequest.basedOn | DocumentReference.basedOn | DiagnosticReport.basedOn | ImagingStudy.basedOn | Observation.basedOn | CarePlan.basedOn | QuestionnaireResponse.basedOn | Communication.basedOn | Procedure.basedOn | Task.basedOn | Provenance.basedOn | Encounter.basedOn | Appointment.basedOn | ImagingSelection.basedOn | RequestOrchestration.basedOn | ServiceRequest.basedOn | AuditEvent.basedOn | CommunicationRequest.basedOn"
+        }
+    ],
+    "date-start": [
+        {
+            name: "date-start",
+            'type: r5:DATE,
+            base: ["Encounter"],
+            expression: "Encounter.actualPeriod.start"
         }
     ],
     "telecom": [
@@ -3167,15 +3869,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "telecom",
             'type: r5:TOKEN,
             base: ["Patient", "Person", "Practitioner", "PractitionerRole", "RelatedPerson", "NamingSystem", "OrganizationAffiliation"],
-            expression: "OrganizationAffiliation.telecom | NamingSystem.contact.telecom | Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom"
+            expression: "OrganizationAffiliation.contact.telecom | NamingSystem.contact.telecom | Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom"
         }
     ],
     "event": [
         {
             name: "event",
             'type: r5:TOKEN,
-            base: ["AdverseEvent", "MessageDefinition", "DocumentReference", "MessageHeader"],
-            expression: "MessageHeader.event | DocumentReference.context.event | MessageDefinition.event | AdverseEvent.event"
+            base: ["SubscriptionTopic", "MessageDefinition", "MessageHeader"],
+            expression: "MessageHeader.event.ofType(Coding) | MessageHeader.event.ofType(canonical) | MessageDefinition.event.ofType(Coding) | SubscriptionTopic.eventTrigger.event"
         }
     ],
     "address-city": [
@@ -3183,7 +3885,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "address-city",
             'type: r5:STRING,
             base: ["InsurancePlan", "Organization", "Patient", "Person", "Practitioner", "RelatedPerson", "Location"],
-            expression: "Location.address.city | Patient.address.city | Person.address.city | Practitioner.address.city | RelatedPerson.address.city | Organization.address.city | InsurancePlan.contact.address.city"
+            expression: "Location.address.city | Patient.address.city | Person.address.city | Practitioner.address.city | RelatedPerson.address.city | Organization.contact.address.city | InsurancePlan.contact.address.city"
         }
     ],
     "managing-entity": [
@@ -3199,13 +3901,13 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "performer",
             'type: r5:TOKEN,
             base: ["Task"],
-            expression: "Task.performerType"
+            expression: "Task.requestedPerformer.concept"
         },
         {
             name: "performer",
             'type: r5:REFERENCE,
-            base: ["MedicationDispense", "DiagnosticReport", "Immunization", "DeviceRequest", "CarePlan", "ServiceRequest", "MedicationAdministration", "Observation", "Procedure", "ImagingStudy", "RiskAssessment"],
-            expression: "RiskAssessment.performer | ImagingStudy.series.performer.actor | Procedure.performer.actor | Observation.performer | MedicationAdministration.performer.actor | ServiceRequest.performer | CarePlan.activity.detail.performer | DeviceRequest.performer | Immunization.performer.actor | DiagnosticReport.performer | MedicationDispense.performer.actor"
+            base: ["MedicationDispense", "DiagnosticReport", "ClinicalImpression", "Immunization", "BiologicallyDerivedProductDispense", "DeviceRequest", "ServiceRequest", "MedicationAdministration", "Observation", "Procedure", "ImagingStudy", "RiskAssessment"],
+            expression: "RiskAssessment.performer | ImagingStudy.series.performer.actor | Procedure.performer.actor | Observation.performer | MedicationAdministration.performer.actor.reference | ServiceRequest.performer | DeviceRequest.performer.reference | BiologicallyDerivedProductDispense.performer.actor | Immunization.performer.actor | ClinicalImpression.performer | DiagnosticReport.performer | MedicationDispense.performer.actor"
         }
     ],
     "resource-profile": [
@@ -3222,6 +3924,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:REFERENCE,
             base: ["InsurancePlan"],
             expression: "InsurancePlan.ownedBy"
+        }
+    ],
+    "substance-code": [
+        {
+            name: "substance-code",
+            'type: r5:TOKEN,
+            base: ["Ingredient"],
+            expression: "Ingredient.substance.code.concept"
         }
     ],
     "data-absent-reason": [
@@ -3256,18 +3966,28 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "ImmunizationEvaluation.immunizationEvent"
         }
     ],
+    "careteam": [
+        {
+            name: "careteam",
+            'type: r5:REFERENCE,
+            base: ["Encounter"],
+            expression: "Encounter.careTeam"
+        }
+    ],
     "site": [
         {
             name: "site",
             'type: r5:REFERENCE,
             base: ["ResearchStudy"],
             expression: "ResearchStudy.site"
-        },
+        }
+    ],
+    "ExampleSearchParameter": [
         {
-            name: "site",
-            'type: r5:TOKEN,
-            base: ["AuditEvent", "Media"],
-            expression: "Media.bodySite | AuditEvent.source.site"
+            name: "ExampleSearchParameter",
+            'type: r5:REFERENCE,
+            base: ["Condition"],
+            expression: "Condition.subject"
         }
     ],
     "prescription": [
@@ -3282,8 +4002,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "organization",
             'type: r5:REFERENCE,
-            base: ["Device", "EpisodeOfCare", "PractitionerRole", "Endpoint", "Patient", "Location", "HealthcareService", "Person", "Consent"],
-            expression: "Consent.organization | Person.managingOrganization | HealthcareService.providedBy | Location.managingOrganization | Patient.managingOrganization | Endpoint.managingOrganization | PractitionerRole.organization | EpisodeOfCare.managingOrganization | Device.owner"
+            base: ["Device", "EpisodeOfCare", "DeviceDefinition", "PractitionerRole", "Endpoint", "Patient", "Location", "HealthcareService", "Person"],
+            expression: "Person.managingOrganization | HealthcareService.providedBy | Location.managingOrganization | Patient.managingOrganization | Endpoint.managingOrganization | PractitionerRole.organization | DeviceDefinition.owner | EpisodeOfCare.managingOrganization | Device.owner"
         }
     ],
     "testscript": [
@@ -3298,8 +4018,16 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "body-site",
             'type: r5:TOKEN,
-            base: ["Condition", "ServiceRequest"],
-            expression: "ServiceRequest.bodySite | Condition.bodySite"
+            base: ["Condition", "ServiceRequest", "ImagingSelection", "ImagingStudy"],
+            expression: "ImagingStudy.series.bodySite.concept | ImagingSelection.bodySite.concept | ServiceRequest.bodySite | Condition.bodySite"
+        }
+    ],
+    "_text": [
+        {
+            name: "_text",
+            'type: r5:STRING,
+            base: ["Resource"],
+            expression: "$searchParam.getExpression()"
         }
     ],
     "facility": [
@@ -3307,7 +4035,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "facility",
             'type: r5:TOKEN,
             base: ["DocumentReference"],
-            expression: "DocumentReference.context.facilityType"
+            expression: "DocumentReference.facilityType"
         },
         {
             name: "facility",
@@ -3321,15 +4049,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "combo-value-concept",
             'type: r5:TOKEN,
             base: ["Observation"],
-            expression: "(Observation.value as CodeableConcept) | (Observation.component.value as CodeableConcept)"
+            expression: "Observation.value.ofType(CodeableConcept) | Observation.component.value.ofType(CodeableConcept)"
         }
     ],
     "date": [
         {
             name: "date",
             'type: r5:DATE,
-            base: ["ExampleScenario", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "ImmunizationRecommendation", "RiskEvidenceSynthesis", "AuditEvent", "Questionnaire", "Library", "EvidenceVariable", "DocumentReference", "EffectEvidenceSynthesis", "ActivityDefinition", "ResearchStudy", "PlanDefinition", "TestScript", "Appointment", "Invoice", "ChargeItemDefinition", "AllergyIntolerance", "CarePlan", "CareTeam", "ClinicalImpression", "Composition", "Consent", "DiagnosticReport", "Encounter", "EpisodeOfCare", "FamilyMemberHistory", "Flag", "Immunization", "List", "Observation", "Procedure", "RiskAssessment", "SupplyRequest", "MeasureReport", "MedicationRequest", "Schedule", "Evidence", "ImmunizationEvaluation", "ResearchSubject", "Measure", "PractitionerRole", "ResearchDefinition", "ResearchElementDefinition", "OrganizationAffiliation", "AdverseEvent", "EventDefinition"],
-            expression: "EventDefinition.date | AdverseEvent.date | OrganizationAffiliation.period | ResearchElementDefinition.date | ResearchDefinition.date | PractitionerRole.period | Measure.date | ResearchSubject.period | ImmunizationEvaluation.date | Evidence.date | Schedule.planningHorizon | MedicationRequest.dosageInstruction.timing.event | MeasureReport.date | AllergyIntolerance.recordedDate | CarePlan.period | CareTeam.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.performed | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn | ChargeItemDefinition.date | Invoice.date | Appointment.start | TestScript.date | PlanDefinition.date | ResearchStudy.period | ActivityDefinition.date | EffectEvidenceSynthesis.date | DocumentReference.date | EvidenceVariable.date | Library.date | Questionnaire.date | AuditEvent.recorded | RiskEvidenceSynthesis.date | ImmunizationRecommendation.date | CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date | ExampleScenario.date"
+            base: ["ArtifactAssessment", "ResearchStudy", "AdverseEvent", "AllergyIntolerance", "Appointment", "AuditEvent", "CarePlan", "CareTeam", "ClinicalImpression", "Composition", "Consent", "DiagnosticReport", "DocumentReference", "Encounter", "EpisodeOfCare", "FamilyMemberHistory", "Flag", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation", "Invoice", "List", "MeasureReport", "NutritionIntake", "Observation", "Procedure", "ResearchSubject", "RiskAssessment", "SupplyRequest", "MedicationAdministration", "Schedule", "ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "SubscriptionTopic", "TerminologyCapabilities", "TestScript", "PractitionerRole", "OrganizationAffiliation"],
+            expression: "OrganizationAffiliation.period | PractitionerRole.period | ActivityDefinition.date | ActorDefinition.date | CapabilityStatement.date | ChargeItemDefinition.date | Citation.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | ConditionDefinition.date | EventDefinition.date | Evidence.date | EvidenceVariable.date | ExampleScenario.date | GraphDefinition.date | ImplementationGuide.date | Library.date | Measure.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | PlanDefinition.date | Questionnaire.date | Requirements.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | SubscriptionTopic.date | TerminologyCapabilities.date | TestScript.date | ValueSet.date | Schedule.planningHorizon | MedicationAdministration.occurence.ofType(dateTime) | MedicationAdministration.occurence.ofType(Period) | AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn | ResearchStudy.period | ArtifactAssessment.date"
         }
     ],
     "instantiates": [
@@ -3340,12 +4068,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Contract.instantiatesUri"
         }
     ],
+    "addresses": [
+        {
+            name: "addresses",
+            'type: r5:REFERENCE,
+            base: ["Goal"],
+            expression: "Goal.addresses"
+        }
+    ],
     "address-state": [
         {
             name: "address-state",
             'type: r5:STRING,
             base: ["InsurancePlan", "Patient", "Person", "Practitioner", "RelatedPerson", "Location", "Organization"],
-            expression: "Organization.address.state | Location.address.state | Patient.address.state | Person.address.state | Practitioner.address.state | RelatedPerson.address.state | InsurancePlan.contact.address.state"
+            expression: "Organization.contact.address.state | Location.address.state | Patient.address.state | Person.address.state | Practitioner.address.state | RelatedPerson.address.state | InsurancePlan.contact.address.state"
         }
     ],
     "data": [
@@ -3379,10 +4115,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             base: ["Composition"],
             expression: "Composition.section.code"
         }
-    ]
-};
-//Number of search params in INTERNATIONAL_IG_SEARCH_PARAMS_5  = 55
-final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH_PARAMS_5 = {
+    ],
     "monograph-type": [
         {
             name: "monograph-type",
@@ -3391,20 +4124,36 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "MedicationKnowledge.monograph.type"
         }
     ],
-    "window-end": [
+    "reason-given-code": [
         {
-            name: "window-end",
-            'type: r5:NUMBER,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.referenceSeq.windowEnd"
+            name: "reason-given-code",
+            'type: r5:TOKEN,
+            base: ["MedicationAdministration"],
+            expression: "MedicationAdministration.reason.concept"
+        }
+    ],
+    "characteristic-type": [
+        {
+            name: "characteristic-type",
+            'type: r5:TOKEN,
+            base: ["MedicinalProductDefinition"],
+            expression: "MedicinalProductDefinition.characteristic.type"
         }
     ],
     "depends-on": [
         {
             name: "depends-on",
             'type: r5:REFERENCE,
-            base: ["ActivityDefinition", "ResearchDefinition", "ImplementationGuide", "Library", "PlanDefinition", "Evidence", "EvidenceVariable", "EventDefinition", "ResearchElementDefinition", "Measure"],
-            expression: "Measure.relatedArtifact.where(type='depends-on').resource | Measure.library | ResearchElementDefinition.relatedArtifact.where(type='depends-on').resource | ResearchElementDefinition.library | EventDefinition.relatedArtifact.where(type='depends-on').resource | EvidenceVariable.relatedArtifact.where(type='depends-on').resource | Evidence.relatedArtifact.where(type='depends-on').resource | PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library | Library.relatedArtifact.where(type='depends-on').resource | ImplementationGuide.dependsOn.uri | ResearchDefinition.relatedArtifact.where(type='depends-on').resource | ResearchDefinition.library | ActivityDefinition.relatedArtifact.where(type='depends-on').resource | ActivityDefinition.library"
+            base: ["ImplementationGuide", "ActivityDefinition", "EventDefinition", "EvidenceVariable", "Library", "Measure", "PlanDefinition"],
+            expression: "ActivityDefinition.relatedArtifact.where(type='depends-on').resource | ActivityDefinition.library | EventDefinition.relatedArtifact.where(type='depends-on').resource | EvidenceVariable.relatedArtifact.where(type='depends-on').resource | Library.relatedArtifact.where(type='depends-on').resource | Measure.relatedArtifact.where(type='depends-on').resource | Measure.library | PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library | ImplementationGuide.dependsOn.uri"
+        }
+    ],
+    "doc-status": [
+        {
+            name: "doc-status",
+            'type: r5:TOKEN,
+            base: ["DocumentReference"],
+            expression: "DocumentReference.docStatus"
         }
     ],
     "protocol": [
@@ -3415,12 +4164,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "ResearchStudy.protocol"
         }
     ],
-    "entity-name": [
+    "code-reference": [
         {
-            name: "entity-name",
-            'type: r5:STRING,
-            base: ["AuditEvent"],
-            expression: "AuditEvent.entity.name"
+            name: "code-reference",
+            'type: r5:REFERENCE,
+            base: ["ServiceRequest", "Substance"],
+            expression: "Substance.code.reference | ServiceRequest.code.reference"
+        }
+    ],
+    "format-canonical": [
+        {
+            name: "format-canonical",
+            'type: r5:REFERENCE,
+            base: ["DocumentReference"],
+            expression: "(DocumentReference.content.profile.value.ofType(canonical))"
         }
     ],
     "price-override": [
@@ -3428,7 +4185,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "price-override",
             'type: r5:QUANTITY,
             base: ["ChargeItem"],
-            expression: "ChargeItem.priceOverride"
+            expression: "ChargeItem.totalPriceComponent.amount"
         }
     ],
     "monitoring-program-type": [
@@ -3447,20 +4204,36 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "ExplanationOfBenefit.procedure.udi | Claim.procedure.udi"
         }
     ],
+    "group": [
+        {
+            name: "group",
+            'type: r5:REFERENCE,
+            base: ["AppointmentResponse", "Appointment"],
+            expression: "Appointment.participant.actor.where(resolve() is Group) | Appointment.subject.where(resolve() is Group) | AppointmentResponse.actor.where(resolve() is Group)"
+        }
+    ],
+    "package": [
+        {
+            name: "package",
+            'type: r5:REFERENCE,
+            base: ["PackagedProductDefinition"],
+            expression: "PackagedProductDefinition.packaging.containedItem.item.reference"
+        }
+    ],
+    "qualification-period": [
+        {
+            name: "qualification-period",
+            'type: r5:DATE,
+            base: ["Practitioner"],
+            expression: "Practitioner.qualification.period"
+        }
+    ],
     "doseform": [
         {
             name: "doseform",
             'type: r5:TOKEN,
             base: ["MedicationKnowledge"],
-            expression: "MedicationKnowledge.doseForm"
-        }
-    ],
-    "individual": [
-        {
-            name: "individual",
-            'type: r5:REFERENCE,
-            base: ["ResearchSubject"],
-            expression: "ResearchSubject.individual"
+            expression: "MedicationKnowledge.definitional.doseForm"
         }
     ],
     "resource": [
@@ -3469,6 +4242,12 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:REFERENCE,
             base: ["ImplementationGuide"],
             expression: "ImplementationGuide.definition.resource.reference"
+        },
+        {
+            name: "resource",
+            'type: r5:URI,
+            base: ["SubscriptionTopic"],
+            expression: "SubscriptionTopic.resourceTrigger.resource | SubscriptionTopic.eventTrigger.resource | SubscriptionTopic.canFilterBy.resource | SubscriptionTopic.notificationShape.resource"
         },
         {
             name: "resource",
@@ -3481,32 +4260,60 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "created",
             'type: r5:DATE,
-            base: ["PaymentReconciliation", "CoverageEligibilityRequest", "DocumentManifest", "CoverageEligibilityResponse", "PaymentNotice", "Claim", "Basic", "Media", "ExplanationOfBenefit", "ClaimResponse"],
-            expression: "ClaimResponse.created | ExplanationOfBenefit.created | Media.created | Basic.created | Claim.created | PaymentNotice.created | CoverageEligibilityResponse.created | DocumentManifest.created | CoverageEligibilityRequest.created | PaymentReconciliation.created"
+            base: ["PaymentReconciliation", "CoverageEligibilityRequest", "CoverageEligibilityResponse", "PaymentNotice", "Claim", "Basic", "ExplanationOfBenefit", "ClaimResponse"],
+            expression: "ClaimResponse.created | ExplanationOfBenefit.created | Basic.created | Claim.created | PaymentNotice.created | CoverageEligibilityResponse.created | CoverageEligibilityRequest.created | PaymentReconciliation.created"
         }
     ],
     "kind": [
         {
             name: "kind",
             'type: r5:TOKEN,
-            base: ["OperationDefinition", "StructureDefinition", "NamingSystem"],
-            expression: "NamingSystem.kind | StructureDefinition.kind | OperationDefinition.kind"
+            base: ["OperationDefinition", "StructureDefinition", "NamingSystem", "ActivityDefinition"],
+            expression: "ActivityDefinition.kind | NamingSystem.kind | StructureDefinition.kind | OperationDefinition.kind"
         }
     ],
+    "verified-date": [
+        {
+            name: "verified-date",
+            'type: r5:DATE,
+            base: ["Consent"],
+            expression: "Consent.verification.verificationDate"
+        }
+    ],
+    "participant-actor": [
+        {
+            name: "participant-actor",
+            'type: r5:REFERENCE,
+            base: ["Condition"],
+            expression: "Condition.participant.actor"
+        }
+    ]
+};
+
+//Number of search params in FHIR_IG_SEARCH_PARAMS_6  = 51
+final readonly & map<r5:FHIRSearchParameterDefinition[]> FHIR_IG_SEARCH_PARAMS_6 = {
     "format": [
         {
             name: "format",
             'type: r5:TOKEN,
-            base: ["CapabilityStatement", "DocumentReference"],
-            expression: "DocumentReference.content.format | CapabilityStatement.format"
+            base: ["CapabilityStatement"],
+            expression: "CapabilityStatement.format"
         }
     ],
     "instantiates-canonical": [
         {
             name: "instantiates-canonical",
             'type: r5:REFERENCE,
-            base: ["CarePlan", "Communication", "DeviceRequest", "NutritionOrder", "Procedure", "ServiceRequest", "FamilyMemberHistory", "RequestGroup"],
-            expression: "RequestGroup.instantiatesCanonical | FamilyMemberHistory.instantiatesCanonical | ServiceRequest.instantiatesCanonical | Procedure.instantiatesCanonical | NutritionOrder.instantiatesCanonical | DeviceRequest.instantiatesCanonical | Communication.instantiatesCanonical | CarePlan.instantiatesCanonical"
+            base: ["CarePlan", "Communication", "DeviceRequest", "Procedure", "ServiceRequest", "RequestOrchestration", "FamilyMemberHistory"],
+            expression: "FamilyMemberHistory.instantiatesCanonical | RequestOrchestration.instantiatesCanonical | ServiceRequest.instantiatesCanonical | Procedure.instantiatesCanonical | DeviceRequest.instantiatesCanonical | Communication.instantiatesCanonical | CarePlan.instantiatesCanonical"
+        }
+    ],
+    "validator-organization": [
+        {
+            name: "validator-organization",
+            'type: r5:REFERENCE,
+            base: ["VerificationResult"],
+            expression: "VerificationResult.validator.organization"
         }
     ],
     "sent": [
@@ -3521,16 +4328,30 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "code-value-concept",
             'type: r5:COMPOSITE,
-            base: ["Observation"],
-            expression: "Observation"
+            base: ["Observation", "Device"],
+            expression: "Device | Observation"
         }
     ],
-    "asserter": [
+    "nutrition": [
         {
-            name: "asserter",
+            name: "nutrition",
             'type: r5:REFERENCE,
-            base: ["AllergyIntolerance", "Condition"],
-            expression: "Condition.asserter | AllergyIntolerance.asserter"
+            base: ["PackagedProductDefinition"],
+            expression: "PackagedProductDefinition.packaging.containedItem.item.reference"
+        },
+        {
+            name: "nutrition",
+            'type: r5:TOKEN,
+            base: ["NutritionIntake"],
+            expression: "NutritionIntake.consumedItem.nutritionProduct.concept"
+        }
+    ],
+    "body-structure": [
+        {
+            name: "body-structure",
+            'type: r5:REFERENCE,
+            base: ["ImagingSelection", "ServiceRequest", "ImagingStudy"],
+            expression: "ImagingStudy.series.bodySite.reference | ServiceRequest.bodyStructure | ImagingSelection.bodySite.reference"
         }
     ],
     "vaccine-code": [
@@ -3541,20 +4362,50 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Immunization.vaccineCode"
         }
     ],
+    "effect": [
+        {
+            name: "effect",
+            'type: r5:TOKEN,
+            base: ["ClinicalUseDefinition"],
+            expression: "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.concept"
+        }
+    ],
     "topic": [
         {
             name: "topic",
             'type: r5:TOKEN,
-            base: ["EventDefinition", "Library", "PlanDefinition", "ResearchElementDefinition", "Evidence", "Measure", "ActivityDefinition", "ResearchDefinition", "EvidenceVariable"],
-            expression: "EvidenceVariable.topic | ResearchDefinition.topic | ActivityDefinition.topic | Measure.topic | Evidence.topic | ResearchElementDefinition.topic | PlanDefinition.topic | Library.topic | EventDefinition.topic"
+            base: ["ActivityDefinition", "ConceptMap", "EventDefinition", "EvidenceVariable", "Library", "Measure", "NamingSystem", "PlanDefinition", "Communication"],
+            expression: "Communication.topic | ActivityDefinition.topic | CodeSystem.topic | ConceptMap.topic | EventDefinition.topic | Library.topic | Measure.topic | NamingSystem.topic | PlanDefinition.topic | ValueSet.topic"
+        },
+        {
+            name: "topic",
+            'type: r5:URI,
+            base: ["Subscription"],
+            expression: "Subscription.topic"
         }
     ],
     "publisher": [
         {
             name: "publisher",
             'type: r5:STRING,
-            base: ["ChargeItemDefinition", "TestScript", "CapabilityStatement", "CompartmentDefinition", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageDefinition", "NamingSystem", "OperationDefinition", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "ResearchDefinition", "ExampleScenario", "RiskEvidenceSynthesis", "ActivityDefinition", "Measure", "ResearchElementDefinition", "EvidenceVariable", "EventDefinition", "Questionnaire", "PlanDefinition", "EffectEvidenceSynthesis", "Library", "Evidence"],
-            expression: "Evidence.publisher | Library.publisher | EffectEvidenceSynthesis.publisher | PlanDefinition.publisher | Questionnaire.publisher | EventDefinition.publisher | EvidenceVariable.publisher | ResearchElementDefinition.publisher | Measure.publisher | ActivityDefinition.publisher | RiskEvidenceSynthesis.publisher | ExampleScenario.publisher | ResearchDefinition.publisher | CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher | TestScript.publisher | ChargeItemDefinition.publisher"
+            base: ["ActivityDefinition", "ActorDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "OperationDefinition", "PlanDefinition", "Questionnaire", "Requirements", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "TestScript"],
+            expression: "ActivityDefinition.publisher | ActorDefinition.publisher | CapabilityStatement.publisher | ChargeItemDefinition.publisher | Citation.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | ConditionDefinition.publisher | EventDefinition.publisher | Evidence.publisher | EvidenceReport.publisher | EvidenceVariable.publisher | ExampleScenario.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | Library.publisher | Measure.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | PlanDefinition.publisher | Questionnaire.publisher | Requirements.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | TestScript.publisher | ValueSet.publisher"
+        }
+    ],
+    "dose-form": [
+        {
+            name: "dose-form",
+            'type: r5:TOKEN,
+            base: ["ManufacturedItemDefinition", "AdministrableProductDefinition"],
+            expression: "AdministrableProductDefinition.administrableDoseForm | ManufacturedItemDefinition.manufacturedDoseForm"
+        }
+    ],
+    "allocation-encounter": [
+        {
+            name: "allocation-encounter",
+            'type: r5:REFERENCE,
+            base: ["PaymentReconciliation"],
+            expression: "PaymentReconciliation.allocation.encounter"
         }
     ],
     "relatesto": [
@@ -3565,6 +4416,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "DocumentReference.relatesTo.target"
         }
     ],
+    "value-canonical": [
+        {
+            name: "value-canonical",
+            'type: r5:URI,
+            base: ["Observation"],
+            expression: "Observation.value.ofType(canonical)"
+        }
+    ],
     "care-team": [
         {
             name: "care-team",
@@ -3573,26 +4432,26 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "ExplanationOfBenefit.careTeam.provider | CarePlan.careTeam | Claim.careTeam.provider"
         }
     ],
+    "contraindication-reference": [
+        {
+            name: "contraindication-reference",
+            'type: r5:REFERENCE,
+            base: ["ClinicalUseDefinition"],
+            expression: "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.reference"
+        }
+    ],
     "request": [
         {
             name: "request",
             'type: r5:REFERENCE,
-            base: ["CoverageEligibilityResponse", "MedicationAdministration", "PaymentReconciliation", "EnrollmentResponse", "ClaimResponse", "PaymentNotice"],
-            expression: "PaymentNotice.request | ClaimResponse.request | EnrollmentResponse.request | PaymentReconciliation.request | MedicationAdministration.request | CoverageEligibilityResponse.request"
+            base: ["CoverageEligibilityResponse", "MedicationAdministration", "BiologicallyDerivedProduct", "PaymentReconciliation", "EnrollmentResponse", "ClaimResponse", "PaymentNotice"],
+            expression: "PaymentNotice.request | ClaimResponse.request | EnrollmentResponse.request | PaymentReconciliation.request | BiologicallyDerivedProduct.request | MedicationAdministration.request | CoverageEligibilityResponse.request"
         },
         {
             name: "request",
             'type: r5:TOKEN,
             base: ["GuidanceResponse"],
             expression: "GuidanceResponse.requestIdentifier"
-        }
-    ],
-    "sponsor": [
-        {
-            name: "sponsor",
-            'type: r5:REFERENCE,
-            base: ["ResearchStudy"],
-            expression: "ResearchStudy.sponsor"
         }
     ],
     "agent-type": [
@@ -3607,8 +4466,8 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "purpose",
             'type: r5:TOKEN,
-            base: ["Consent"],
-            expression: "Consent.provision.purpose"
+            base: ["Consent", "AuditEvent"],
+            expression: "AuditEvent.authorization | AuditEvent.agent.authorization | Consent.provision.purpose"
         }
     ],
     "link": [
@@ -3617,6 +4476,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             'type: r5:REFERENCE,
             base: ["Patient", "Person"],
             expression: "Person.link.target | Patient.link.other"
+        }
+    ],
+    "membership": [
+        {
+            name: "membership",
+            'type: r5:TOKEN,
+            base: ["Group"],
+            expression: "Group.membership"
         }
     ],
     "network": [
@@ -3632,7 +4499,7 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "onset-date",
             'type: r5:DATE,
             base: ["Condition"],
-            expression: "Condition.onset.as(dateTime) | Condition.onset.as(Period)"
+            expression: "Condition.onset.ofType(dateTime) | Condition.onset.ofType(Period)"
         }
     ],
     "phonetic": [
@@ -3647,9 +4514,10 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
         {
             name: "patient",
             'type: r5:REFERENCE,
-            base: ["MeasureReport", "ClaimResponse", "Person", "ImmunizationEvaluation", "Account", "AppointmentResponse", "Device", "ChargeItem", "BodyStructure", "ResearchSubject", "RelatedPerson", "CoverageEligibilityRequest", "Provenance", "Specimen", "CommunicationRequest", "Communication", "Task", "QuestionnaireResponse", "Media", "AllergyIntolerance", "CarePlan", "CareTeam", "ClinicalImpression", "Composition", "Condition", "Consent", "DetectedIssue", "DeviceRequest", "DeviceUseStatement", "DiagnosticReport", "DocumentManifest", "DocumentReference", "Encounter", "EpisodeOfCare", "FamilyMemberHistory", "Flag", "Goal", "ImagingStudy", "Immunization", "List", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "NutritionOrder", "Observation", "Procedure", "RiskAssessment", "ServiceRequest", "SupplyDelivery", "VisionPrescription", "Appointment", "Invoice", "GuidanceResponse", "ImmunizationRecommendation", "AuditEvent", "RequestGroup", "CoverageEligibilityResponse", "EnrollmentRequest", "Coverage", "MolecularSequence", "ExplanationOfBenefit", "Basic", "Contract", "Claim"],
-            expression: "Claim.patient | Contract.subject.where(resolve() is Patient) | Basic.subject.where(resolve() is Patient) | ExplanationOfBenefit.patient | MolecularSequence.patient | Coverage.beneficiary | EnrollmentRequest.candidate | CoverageEligibilityResponse.patient | RequestGroup.subject.where(resolve() is Patient) | AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient) | ImmunizationRecommendation.patient | GuidanceResponse.subject.where(resolve() is Patient) | Invoice.subject.where(resolve() is Patient) | Appointment.participant.actor.where(resolve() is Patient) | AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient | Media.subject.where(resolve() is Patient) | QuestionnaireResponse.subject.where(resolve() is Patient) | Task.for.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | Provenance.target.where(resolve() is Patient) | CoverageEligibilityRequest.patient | RelatedPerson.patient | ResearchSubject.individual | BodyStructure.patient | ChargeItem.subject.where(resolve() is Patient) | Device.patient | AppointmentResponse.actor.where(resolve() is Patient) | Account.subject.where(resolve() is Patient) | ImmunizationEvaluation.patient | Person.link.target.where(resolve() is Patient) | ClaimResponse.patient | MeasureReport.subject.where(resolve() is Patient)"
+            base: ["GenomicStudy", "DeviceDispense", "DeviceAssociation", "EncounterHistory", "BiologicallyDerivedProductDispense", "Account", "AdverseEvent", "AllergyIntolerance", "Appointment", "AppointmentResponse", "AuditEvent", "Basic", "BodyStructure", "CarePlan", "CareTeam", "ChargeItem", "Claim", "ClaimResponse", "ClinicalImpression", "Communication", "CommunicationRequest", "Composition", "Condition", "Consent", "Contract", "Coverage", "CoverageEligibilityRequest", "CoverageEligibilityResponse", "DetectedIssue", "DeviceRequest", "DeviceUsage", "DiagnosticReport", "DocumentReference", "Encounter", "EnrollmentRequest", "EpisodeOfCare", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "Goal", "GuidanceResponse", "ImagingSelection", "ImagingStudy", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation", "Invoice", "List", "MeasureReport", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "MolecularSequence", "NutritionIntake", "NutritionOrder", "Observation", "Person", "Procedure", "Provenance", "QuestionnaireResponse", "RelatedPerson", "RequestOrchestration", "ResearchSubject", "RiskAssessment", "ServiceRequest", "Specimen", "SupplyDelivery", "SupplyRequest", "Task", "VisionPrescription"],
+            expression: "Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient | BiologicallyDerivedProductDispense.patient | EncounterHistory.subject.where(resolve() is Patient) | DeviceAssociation.subject.where(resolve() is Patient) | DeviceDispense.subject.where(resolve() is Patient) | GenomicStudy.subject.where(resolve() is Patient)"
         }
+
     ],
     "specimen": [
         {
@@ -3664,21 +4532,13 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "value",
             'type: r5:TOKEN,
             base: ["Group"],
-            expression: "(Group.characteristic.value as CodeableConcept) | (Group.characteristic.value as boolean)"
+            expression: "(Group.characteristic.value.ofType(CodeableConcept)) | (Group.characteristic.value.ofType(boolean))"
         },
         {
             name: "value",
             'type: r5:STRING,
             base: ["NamingSystem"],
             expression: "NamingSystem.uniqueId.value"
-        }
-    ],
-    "target-uri": [
-        {
-            name: "target-uri",
-            'type: r5:REFERENCE,
-            base: ["ConceptMap"],
-            expression: "(ConceptMap.target as uri)"
         }
     ],
     "reaction-date": [
@@ -3702,7 +4562,23 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "quantity",
             'type: r5:QUANTITY,
             base: ["ChargeItem", "Substance"],
-            expression: "Substance.instance.quantity | ChargeItem.quantity"
+            expression: "Substance.quantity | ChargeItem.quantity"
+        }
+    ],
+    "primarysource-date": [
+        {
+            name: "primarysource-date",
+            'type: r5:DATE,
+            base: ["VerificationResult"],
+            expression: "VerificationResult.primarySource.validationDate"
+        }
+    ],
+    "combo-code": [
+        {
+            name: "combo-code",
+            'type: r5:TOKEN,
+            base: ["Observation", "Questionnaire"],
+            expression: "Questionnaire.code | Questionnaire.item.code | Observation.code | Observation.component.code"
         }
     ],
     "totalgross": [
@@ -3713,14 +4589,6 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "Invoice.totalGross"
         }
     ],
-    "combo-code": [
-        {
-            name: "combo-code",
-            'type: r5:TOKEN,
-            base: ["Observation"],
-            expression: "Observation.code | Observation.component.code"
-        }
-    ],
     "actuality": [
         {
             name: "actuality",
@@ -3729,36 +4597,36 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "AdverseEvent.actuality"
         }
     ],
-    "chromosome": [
+    "adherence": [
         {
-            name: "chromosome",
+            name: "adherence",
             'type: r5:TOKEN,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.referenceSeq.chromosome"
+            base: ["MedicationStatement"],
+            expression: "MedicationStatement.adherence.code"
+        }
+    ],
+    "verified": [
+        {
+            name: "verified",
+            'type: r5:TOKEN,
+            base: ["Consent"],
+            expression: "Consent.verification.verified"
         }
     ],
     "encounter": [
         {
             name: "encounter",
             'type: r5:REFERENCE,
-            base: ["Communication", "Task", "ClinicalImpression", "ImagingStudy", "MedicationRequest", "Condition", "Composition", "DeviceRequest", "DiagnosticReport", "DocumentReference", "Flag", "List", "NutritionOrder", "Observation", "Procedure", "RiskAssessment", "ServiceRequest", "VisionPrescription", "Media", "ExplanationOfBenefit", "CommunicationRequest", "CarePlan", "QuestionnaireResponse", "CareTeam", "RequestGroup", "Claim"],
-            expression: "Claim.item.encounter | RequestGroup.encounter | CareTeam.encounter | QuestionnaireResponse.encounter | CarePlan.encounter | CommunicationRequest.encounter | ExplanationOfBenefit.item.encounter | Media.encounter | Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter | Condition.encounter | MedicationRequest.encounter | ImagingStudy.encounter | ClinicalImpression.encounter | Task.encounter | Communication.encounter"
+            base: ["MedicationAdministration", "MedicationRequest", "AuditEvent", "CarePlan", "ChargeItem", "Claim", "ClinicalImpression", "Communication", "CommunicationRequest", "Composition", "Condition", "DeviceRequest", "DiagnosticReport", "EncounterHistory", "ExplanationOfBenefit", "Flag", "ImagingStudy", "List", "MedicationDispense", "MedicationStatement", "NutritionIntake", "NutritionOrder", "Observation", "Procedure", "Provenance", "QuestionnaireResponse", "RequestOrchestration", "RiskAssessment", "ServiceRequest", "Task", "VisionPrescription"],
+            expression: "AuditEvent.encounter | CarePlan.encounter | ChargeItem.encounter | Claim.item.encounter | ClinicalImpression.encounter | Communication.encounter | CommunicationRequest.encounter | Composition.encounter | Condition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | EncounterHistory.encounter | ExplanationOfBenefit.item.encounter | Flag.encounter | ImagingStudy.encounter | List.encounter | MedicationDispense.encounter | MedicationStatement.encounter | NutritionIntake.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | Provenance.encounter | QuestionnaireResponse.encounter | RequestOrchestration.encounter | RiskAssessment.encounter | ServiceRequest.encounter | Task.encounter | VisionPrescription.encounter | MedicationAdministration.encounter | MedicationRequest.encounter"
         }
     ],
     "intent": [
         {
             name: "intent",
             'type: r5:TOKEN,
-            base: ["DeviceRequest", "MedicationRequest", "ServiceRequest", "CarePlan", "Task", "RequestGroup"],
-            expression: "RequestGroup.intent | Task.intent | CarePlan.intent | ServiceRequest.intent | MedicationRequest.intent | DeviceRequest.intent"
-        }
-    ],
-    "variant-end": [
-        {
-            name: "variant-end",
-            'type: r5:NUMBER,
-            base: ["MolecularSequence"],
-            expression: "MolecularSequence.variant.end"
+            base: ["RequestOrchestration", "DeviceRequest", "MedicationRequest", "ServiceRequest", "CarePlan", "Task"],
+            expression: "Task.intent | CarePlan.intent | ServiceRequest.intent | MedicationRequest.intent | DeviceRequest.intent | RequestOrchestration.intent"
         }
     ],
     "whenprepared": [
@@ -3785,6 +4653,14 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "DocumentReference.content.attachment.contentType"
         }
     ],
+    "manufactured-item": [
+        {
+            name: "manufactured-item",
+            'type: r5:REFERENCE,
+            base: ["PackagedProductDefinition", "AdministrableProductDefinition"],
+            expression: "AdministrableProductDefinition.producedFrom | PackagedProductDefinition.packaging.containedItem.item.reference"
+        }
+    ],
     "response": [
         {
             name: "response",
@@ -3793,12 +4669,20 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             expression: "PaymentNotice.response"
         }
     ],
-    "investigation": [
+    "target-scope-uri": [
         {
-            name: "investigation",
-            'type: r5:REFERENCE,
-            base: ["ClinicalImpression"],
-            expression: "ClinicalImpression.investigation.item"
+            name: "target-scope-uri",
+            'type: r5:URI,
+            base: ["ConceptMap"],
+            expression: "(ConceptMap.targetScope as uri)"
+        }
+    ],
+    "interaction": [
+        {
+            name: "interaction",
+            'type: r5:TOKEN,
+            base: ["ClinicalUseDefinition"],
+            expression: "ClinicalUseDefinition.interaction.type"
         }
     ],
     "derivation": [
@@ -3814,15 +4698,15 @@ final readonly & map<r5:FHIRSearchParameterDefinition[]> INTERNATIONAL_IG_SEARCH
             name: "component-value-concept",
             'type: r5:TOKEN,
             base: ["Observation"],
-            expression: "(Observation.component.value as CodeableConcept)"
+            expression: "Observation.component.value.ofType(CodeableConcept)"
         }
     ],
     "category": [
         {
             name: "category",
             'type: r5:TOKEN,
-            base: ["Observation", "MedicationStatement", "DeviceMetric", "Communication", "MessageDefinition", "CarePlan", "ResearchStudy", "SupplyRequest", "DiagnosticReport", "Procedure", "ServiceRequest", "CommunicationRequest", "Condition", "CareTeam", "Consent", "AdverseEvent", "AllergyIntolerance", "Composition", "MedicationRequest", "Substance", "Goal", "DocumentReference"],
-            expression: "DocumentReference.category | Goal.category | Substance.category | MedicationRequest.category | Composition.category | AllergyIntolerance.category | AdverseEvent.category | Consent.category | CareTeam.category | Condition.category | CommunicationRequest.category | ServiceRequest.category | Procedure.category | DiagnosticReport.category | SupplyRequest.category | ResearchStudy.category | CarePlan.category | MessageDefinition.category | Communication.category | DeviceMetric.category | MedicationStatement.category | Observation.category"
+            base: ["Observation", "MedicationStatement", "DeviceMetric", "Communication", "Flag", "MessageDefinition", "CarePlan", "SupplyRequest", "DiagnosticReport", "Procedure", "ServiceRequest", "CommunicationRequest", "Condition", "CareTeam", "Consent", "AdverseEvent", "AllergyIntolerance", "AuditEvent", "Composition", "MedicationRequest", "DetectedIssue", "Substance", "Goal", "ObservationDefinition", "DocumentReference"],
+            expression: "DocumentReference.category | ObservationDefinition.category | Goal.category | Substance.category | DetectedIssue.category | MedicationRequest.category | Composition.category | AuditEvent.category | AllergyIntolerance.category | AdverseEvent.category | Consent.category | CareTeam.category | Condition.category | CommunicationRequest.category | ServiceRequest.category | Procedure.category | DiagnosticReport.category | SupplyRequest.category | CarePlan.category | MessageDefinition.category | Flag.category | Communication.category | DeviceMetric.category | MedicationStatement.category | Observation.category"
         }
     ],
     "account": [

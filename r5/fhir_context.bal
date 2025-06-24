@@ -193,7 +193,7 @@ public isolated class FHIRContext {
     }
 
     # Get pagination info from fhir context.
-    #
+    # 
     # + return - Pagination context
     public isolated function getPaginationContext() returns PaginationContext? {
         lock {

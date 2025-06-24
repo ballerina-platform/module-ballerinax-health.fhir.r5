@@ -20,72 +20,705 @@
 import ballerinax/health.fhir.r5;
 
 @r5:DataTypeDefinition {
-    name: "MonetaryComponent",
+    name: "DataElement constraint on ElementDefinition data type",
     baseType: (),
     elements: {
-    
-        "amount": {
-            name: "amount",
-            dataType: r5:Money,
+        "versioning": {
+            name: "versioning",
+            dataType: ElementdefinitionDeTypeVersioning,
             min: 0,
             max: 1,
             isArray: false,
-            description: "Explicit value amount to be used.",
-            path: "MonetaryComponent.amount"
-        },    
-        "code": {
-            name: "code",
-            dataType: r5:CodeableConcept,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Codes may be used to differentiate between kinds of taxes, surcharges, discounts etc.",
-            path: "MonetaryComponent.code"
-        },    
-        "factor": {
-            name: "factor",
-            dataType: decimal,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Factor used for calculating this component.",
-            path: "MonetaryComponent.factor"
-        },    
-        "'type": {
-            name: "'type",
-            dataType: MonetaryComponentType,
+            description: "Whether this reference needs to be version specific or version independent, or whether either can be used.",
+            path: "ElementDefinition.type.versioning"
+        },
+
+        "strength": {
+            name: "strength",
+            dataType: ElementdefinitionDeBindingStrength,
             min: 1,
             max: 1,
             isArray: false,
-            description: "base | surcharge | deduction | discount | tax | informational.",
-            path: "MonetaryComponent.type"
-        }        },
+            description: "Indicates the degree of conformance expectations associated with this binding - that is, the degree to which the provided value set must be adhered to in the instances.",
+            path: "ElementDefinition.binding.strength"
+        },
+
+        "modifierExtension": {
+            name: "modifierExtension",
+            dataType: r5:Extension,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions. Modifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).",
+            path: "ElementDefinition.modifierExtension"
+        },
+
+        "usage": {
+            name: "usage",
+            dataType: r5:UsageContext,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "Qualifies the usage of the binding. Typically bindings are qualified by jurisdiction, but they may also be qualified by gender, workflow status, clinical domain etc. The information to decide whether a usege context applies is usually outside the resource, determined by context, and this might present challenges for validation tooling.",
+            path: "ElementDefinition.binding.additional.usage"
+        },
+
+        "binding": {
+            name: "binding",
+            dataType: r5:ElementBinding,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Binds to a value set if this element is coded (code, Coding, CodeableConcept, Quantity), or the data types (string, uri).",
+            path: "ElementDefinition.binding"
+        },
+
+        "rules": {
+            name: "rules",
+            dataType: ElementdefinitionDeSlicingRules,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "Whether additional slices are allowed or not. When the slices are ordered, profile authors can also say that additional slices are only allowed at the end.",
+            path: "ElementDefinition.slicing.rules"
+        },
+
+        "language": {
+            name: "language",
+            dataType: r5:code,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Identifies the computable language in which mapping.map is expressed.",
+            path: "ElementDefinition.mapping.language"
+        },
+
+        "path": {
+            name: "path",
+            dataType: string,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base.",
+            path: "ElementDefinition.base.path"
+        },
+
+        "mustHaveValue": {
+            name: "mustHaveValue",
+            dataType: boolean,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Specifies for a primitive data type that the value of the data type cannot be replaced by an extension.",
+            path: "ElementDefinition.mustHaveValue"
+        },
+
+        "fixedBase64Binary": {
+            name: "fixedBase64Binary",
+            dataType: r5:base64Binary,
+            min: 0,
+            max: 0,
+            isArray: false,
+            description: "Specifies a value that SHALL be exactly the value for this element in the instance, if present. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.",
+            path: "ElementDefinition.fixed[x]"
+        },
+
+        "'source": {
+            name: "'source",
+            dataType: r5:canonical,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "A reference to the original source of the constraint, for traceability purposes.",
+            path: "ElementDefinition.constraint.source"
+        },
+
+        "defaultValueBase64Binary": {
+            name: "defaultValueBase64Binary",
+            dataType: r5:base64Binary,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').",
+            path: "ElementDefinition.defaultValue[x]"
+        },
+
+        "mapping": {
+            name: "mapping",
+            dataType: r5:ElementMapping,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "Identifies a concept from an external specification that roughly corresponds to this element.",
+            path: "ElementDefinition.mapping"
+        },
+
+        "isModifier": {
+            name: "isModifier",
+            dataType: boolean,
+            min: 0,
+            max: 0,
+            isArray: false,
+            description: "If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system. When used on the root element in an extension definition, this indicates whether or not the extension is a modifier extension.",
+            path: "ElementDefinition.isModifier"
+        },
+
+        "profile": {
+            name: "profile",
+            dataType: r5:canonical,
+            min: 0,
+            max: 0,
+            isArray: true,
+            description: "Identifies a profile structure or implementation Guide that applies to the datatype this element refers to. If any profiles are specified, then the content must conform to at least one of them. The URL can be a local reference - to a contained StructureDefinition, or a reference to another StructureDefinition or Implementation Guide by a canonical URL. When an implementation guide is specified, the type SHALL conform to at least one profile defined in the implementation guide.",
+            path: "ElementDefinition.type.profile"
+        },
+
+        "documentation": {
+            name: "documentation",
+            dataType: r5:markdown,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Documentation of the purpose of use of the bindingproviding additional information about how it is intended to be used.",
+            path: "ElementDefinition.binding.additional.documentation"
+        },
+
+        "valueAlternatives": {
+            name: "valueAlternatives",
+            dataType: r5:canonical,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "Specifies a list of extensions that can appear in place of a primitive value.",
+            path: "ElementDefinition.valueAlternatives"
+        },
+
+        "isSummary": {
+            name: "isSummary",
+            dataType: boolean,
+            min: 0,
+            max: 0,
+            isArray: false,
+            description: "Whether the element should be included if a client requests a search with the parameter _summary=true.",
+            path: "ElementDefinition.isSummary"
+        },
+
+        "condition": {
+            name: "condition",
+            dataType: r5:id,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "A reference to an invariant that may make additional statements about the cardinality or value in the instance.",
+            path: "ElementDefinition.condition"
+        },
+
+        "patternBase64Binary": {
+            name: "patternBase64Binary",
+            dataType: r5:base64Binary,
+            min: 0,
+            max: 0,
+            isArray: false,
+            description: "Specifies a value that each occurrence of the element in the instance SHALL follow - that is, any value in the pattern must be found in the instance, if the element has a value. Other additional values may be found too. This is effectively constraint by example. When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly. When an element within a pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] must (recursively) match at least one element from the instance array. When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e., 1. If primitive: it must match exactly the pattern value 2. If a complex object: it must match (recursively) the pattern value 3. If an array: it must match (recursively) the pattern value If a pattern[x] is declared on a repeating element, the pattern applies to all repetitions. If the desire is for a pattern to apply to only one element or a subset of elements, slicing must be used. See [Examples of Patterns](elementdefinition-examples.html#pattern-examples) for examples of pattern usage and the effect it will have.",
+            path: "ElementDefinition.pattern[x]"
+        },
+
+        "orderMeaning": {
+            name: "orderMeaning",
+            dataType: string,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "If present, indicates that the order of the repeating element has meaning and describes what that meaning is. If absent, it means that the order of the element has no meaning.",
+            path: "ElementDefinition.orderMeaning"
+        },
+
+        "targetProfile": {
+            name: "targetProfile",
+            dataType: r5:canonical,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "Used when the type is 'Reference' or 'canonical', and identifies a profile structure or implementation Guide that applies to the target of the reference this element refers to. If any profiles are specified, then the content must conform to at least one of them. The URL can be a local reference - to a contained StructureDefinition, or a reference to another StructureDefinition or Implementation Guide by a canonical URL. When an implementation guide is specified, the target resource SHALL conform to at least one profile defined in the implementation guide.",
+            path: "ElementDefinition.type.targetProfile"
+        },
+
+        "meaningWhenMissing": {
+            name: "meaningWhenMissing",
+            dataType: r5:markdown,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "The Implicit meaning that is to be understood when this element is missing (e.g. 'when this element is missing, the period is ongoing').",
+            path: "ElementDefinition.meaningWhenMissing"
+        },
+
+        "'type": {
+            name: "'type",
+            dataType: r5:ElementType,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "The data type or resource that the value of this element is permitted to be.",
+            path: "ElementDefinition.type"
+        },
+
+        "isModifierReason": {
+            name: "isModifierReason",
+            dataType: string,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Explains how that element affects the interpretation of the resource or element that contains it.",
+            path: "ElementDefinition.isModifierReason"
+        },
+
+        "maxLength": {
+            name: "maxLength",
+            dataType: r5:integer,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics](http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-type-characteristics.html)).",
+            path: "ElementDefinition.maxLength"
+        },
+
+        "valueBase64Binary": {
+            name: "valueBase64Binary",
+            dataType: r5:base64Binary,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "The actual value for the element, which must be one of the types allowed for this element.",
+            path: "ElementDefinition.example.value[x]"
+        },
+
+        "code": {
+            name: "code",
+            dataType: r5:uri,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "URL of Data type or Resource that is a(or the) type used for this element. References are URLs that are relative to http://hl7.org/fhir/StructureDefinition e.g. 'string' is a reference to http://hl7.org/fhir/StructureDefinition/string. Absolute URLs are only allowed in logical models.",
+            path: "ElementDefinition.type.code"
+        },
+
+        "valueSet": {
+            name: "valueSet",
+            dataType: r5:canonical,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "The valueSet that is being bound for the purpose.",
+            path: "ElementDefinition.binding.additional.valueSet"
+        },
+
+        "maxValueDate": {
+            name: "maxValueDate",
+            dataType: r5:date,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.",
+            path: "ElementDefinition.maxValue[x]"
+        },
+
+        "shortDoco": {
+            name: "shortDoco",
+            dataType: string,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Concise documentation - for summary tables.",
+            path: "ElementDefinition.binding.additional.shortDoco"
+        },
+
+        "purpose": {
+            name: "purpose",
+            dataType: ElementdefinitionDeBindingAdditionalPurpose,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "The use of this additional binding.",
+            path: "ElementDefinition.binding.additional.purpose"
+        },
+
+        "'map": {
+            name: "'map",
+            dataType: string,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "Expresses what part of the target specification corresponds to this element.",
+            path: "ElementDefinition.mapping.map"
+        },
+
+        "additional": {
+            name: "additional",
+            dataType: r5:Element,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "Additional bindings that help applications implementing this element. Additional bindings do not replace the main binding but provide more information and/or context.",
+            path: "ElementDefinition.binding.additional"
+        },
+
+        "description": {
+            name: "description",
+            dataType: r5:markdown,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Describes the intended use of this particular set of codes.",
+            path: "ElementDefinition.binding.description"
+        },
+
+        "aggregation": {
+            name: "aggregation",
+            dataType: ElementdefinitionDeTypeAggregation,
+            min: 0,
+            max: 0,
+            isArray: true,
+            description: "If the type is a reference to another resource, how the resource is or can be aggregated - is it a contained resource, or a reference, and if the context is a bundle, is it included in the bundle.",
+            path: "ElementDefinition.type.aggregation"
+        },
+
+        "minValueDate": {
+            name: "minValueDate",
+            dataType: r5:date,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.",
+            path: "ElementDefinition.minValue[x]"
+        },
+
+        "representation": {
+            name: "representation",
+            dataType: ElementdefinitionDeRepresentation,
+            min: 0,
+            max: 0,
+            isArray: true,
+            description: "Codes that define how this element is represented in instances, when the deviation varies from the normal case. No extensions are allowed on elements with a representation of 'xmlAttr', no matter what FHIR serialization format is used.",
+            path: "ElementDefinition.representation"
+        },
+
+        "example": {
+            name: "example",
+            dataType: r5:ElementExample,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "A sample value for this element demonstrating the type of information that would typically be found in the element.",
+            path: "ElementDefinition.example"
+        },
+
+        "min": {
+            name: "min",
+            dataType: r5:unsignedInt,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "Minimum cardinality of the base element identified by the path.",
+            path: "ElementDefinition.base.min"
+        },
+
+        "identity": {
+            name: "identity",
+            dataType: r5:id,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "An internal reference to the definition of a mapping.",
+            path: "ElementDefinition.mapping.identity"
+        },
+
+        "alias": {
+            name: "alias",
+            dataType: string,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "Identifies additional names by which this element might also be known.",
+            path: "ElementDefinition.alias"
+        },
+
+        "definition": {
+            name: "definition",
+            dataType: r5:markdown,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Provides a complete explanation of the meaning of the data element for human readability. For the case of elements derived from existing elements (e.g. constraints), the definition SHALL be consistent with the base definition, but convey the meaning of the element in the particular context of use of the resource. (Note: The text you are reading is specified in ElementDefinition.definition).",
+            path: "ElementDefinition.definition"
+        },
+
+        "human": {
+            name: "human",
+            dataType: string,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "Text that can be used to describe the constraint in messages identifying that the constraint has been violated.",
+            path: "ElementDefinition.constraint.human"
+        },
+
+        "sliceIsConstraining": {
+            name: "sliceIsConstraining",
+            dataType: boolean,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "If true, indicates that this slice definition is constraining a slice definition with the same name in an inherited profile. If false, the slice is not overriding any slice in an inherited profile. If missing, the slice might or might not be overriding a slice in an inherited profile, depending on the sliceName.",
+            path: "ElementDefinition.sliceIsConstraining"
+        },
+
+        "key": {
+            name: "key",
+            dataType: r5:id,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "Allows identification of which elements have their cardinalities impacted by the constraint. Will not be referenced for constraints that do not affect cardinality.",
+            path: "ElementDefinition.constraint.key"
+        },
+
+        "severity": {
+            name: "severity",
+            dataType: ElementdefinitionDeConstraintSeverity,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "Identifies the impact constraint violation has on the conformance of the instance.",
+            path: "ElementDefinition.constraint.severity"
+        },
+
+        "slicing": {
+            name: "slicing",
+            dataType: r5:ElementSlicing,
+            min: 0,
+            max: 0,
+            isArray: false,
+            description: "Indicates that the element is sliced into a set of alternative definitions (i.e. in a structure definition, there are multiple different constraints on a single element in the base resource). Slicing can be used in any resource that has cardinality ..* on the base resource, or any resource with a choice of types. The set of slices is any elements that come after this in the element sequence that have the same path, until a shorter path occurs (the shorter path terminates the set).",
+            path: "ElementDefinition.slicing"
+        },
+
+        "ordered": {
+            name: "ordered",
+            dataType: boolean,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "If the matching elements have to occur in the same order as defined in the profile.",
+            path: "ElementDefinition.slicing.ordered"
+        },
+
+        "requirements": {
+            name: "requirements",
+            dataType: r5:markdown,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Description of why this constraint is necessary or appropriate.",
+            path: "ElementDefinition.constraint.requirements"
+        },
+
+        "expression": {
+            name: "expression",
+            dataType: string,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "A [FHIRPath](fhirpath.html) expression of constraint that can be executed to see if this constraint is met.",
+            path: "ElementDefinition.constraint.expression"
+        },
+
+        "mustSupport": {
+            name: "mustSupport",
+            dataType: boolean,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "If true, implementations that produce or consume resources SHALL provide 'support' for the element in some meaningful way. Note that this is being phased out and replaced by obligations (see below). If false, the element may be ignored and not supported. If false, whether to populate or use the data element in any way is at the discretion of the implementation.",
+            path: "ElementDefinition.mustSupport"
+        },
+
+        "max": {
+            name: "max",
+            dataType: string,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "Maximum cardinality of the base element identified by the path.",
+            path: "ElementDefinition.base.max"
+        },
+
+        "label": {
+            name: "label",
+            dataType: string,
+            min: 1,
+            max: 1,
+            isArray: false,
+            description: "Describes the purpose of this example among the set of examples.",
+            path: "ElementDefinition.example.label"
+        },
+
+        "suppress": {
+            name: "suppress",
+            dataType: boolean,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "If true, indicates that the warning or best practice guideline should be suppressed.",
+            path: "ElementDefinition.constraint.suppress"
+        },
+
+        "discriminator": {
+            name: "discriminator",
+            dataType: r5:ElementDiscriminator,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "Designates which child elements are used to discriminate between the slices when processing an instance. If one or more discriminators are provided, the value of the child elements in the instance data SHALL completely distinguish which slice the element in the resource matches based on the allowed values for those elements in each of the slices.",
+            path: "ElementDefinition.slicing.discriminator"
+        },
+
+        "sliceName": {
+            name: "sliceName",
+            dataType: string,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "The name of this element definition slice, when slicing is working. The name must be a token with no dots or spaces. This is a unique name referring to a specific set of constraints applied to this element, used to provide a name to different slices of the same element.",
+            path: "ElementDefinition.sliceName"
+        },
+
+        "contentReference": {
+            name: "contentReference",
+            dataType: r5:uri,
+            min: 0,
+            max: 0,
+            isArray: false,
+            description: "Identifies an element defined elsewhere in the definition whose content rules should be applied to the current element. ContentReferences bring across all the rules that are in the ElementDefinition for the element, including definitions, cardinality constraints, bindings, invariants etc.",
+            path: "ElementDefinition.contentReference"
+        },
+
+        "'any": {
+            name: "'any",
+            dataType: boolean,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Whether the binding applies to all repeats, or just to any one of them. This is only relevant for elements that can repeat.",
+            path: "ElementDefinition.binding.additional.any"
+        },
+
+        "short": {
+            name: "short",
+            dataType: string,
+            min: 0,
+            max: 0,
+            isArray: false,
+            description: "A concise description of what this element means (e.g. for use in autogenerated summaries).",
+            path: "ElementDefinition.short"
+        },
+
+        "comment": {
+            name: "comment",
+            dataType: r5:markdown,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Comments that provide information about the mapping or its use.",
+            path: "ElementDefinition.mapping.comment"
+        },
+
+        "constraint": {
+            name: "constraint",
+            dataType: r5:ElementConstraint,
+            min: 0,
+            max: int:MAX_VALUE,
+            isArray: true,
+            description: "Formal constraints such as co-occurrence and other constraints that can be computationally evaluated within the context of the instance.",
+            path: "ElementDefinition.constraint"
+        },
+
+        "base": {
+            name: "base",
+            dataType: r5:ElementBase,
+            min: 0,
+            max: 1,
+            isArray: false,
+            description: "Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - e.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.",
+            path: "ElementDefinition.base"
+        }
+
+    },
     serializers: {
         'xml: r5:complexDataTypeXMLSerializer,
         'json: r5:complexDataTypeJsonSerializer
     }
 }
-public type MonetaryComponent record {|
-    *r5:Element;
-
+public type ElementdefinitionDe record {|
+    *r5:ElementDefinition;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
     string id?;
     r5:Extension[] extension?;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-    r5:Money amount?;
-    r5:CodeableConcept code?;
-    decimal factor?;
-    MonetaryComponentType 'type;
+    ElementdefinitionDeTypeVersioning versioning?;
+    ElementdefinitionDeBindingStrength strength;
+    r5:Extension[] modifierExtension?;
+    r5:UsageContext[] usage?;
+    r5:ElementBinding binding?;
+    ElementdefinitionDeSlicingRules rules;
+    r5:code language?;
+    string path;
+    boolean mustHaveValue?;
+    r5:canonical 'source?;
+    r5:base64Binary defaultValueBase64Binary?;
+    r5:ElementMapping[] mapping?;
+    r5:markdown documentation?;
+    r5:canonical[] valueAlternatives?;
+    r5:id[] condition?;
+    string orderMeaning?;
+    r5:canonical[] targetProfile?;
+    r5:markdown meaningWhenMissing?;
+    r5:ElementType[] 'type;
+    string isModifierReason?;
+    r5:integer maxLength?;
+    r5:base64Binary valueBase64Binary;
+    r5:Coding[] code?;
+    r5:canonical valueSet?;
+    r5:date maxValueDate?;
+    string shortDoco?;
+    ElementdefinitionDeBindingAdditionalPurpose purpose;
+    string 'map;
+    r5:Element[] additional?;
+    string description?;
+    r5:date minValueDate?;
+    r5:ElementExample[] example?;
+    r5:unsignedInt min?;
+    r5:id identity;
+    string[] alias?;
+    r5:markdown definition?;
+    string human;
+    boolean sliceIsConstraining?;
+    r5:id key;
+    ElementdefinitionDeConstraintSeverity severity;
+    boolean ordered?;
+    r5:markdown requirements?;
+    string expression?;
+    boolean mustSupport?;
+    string max?;
+    string label?;
+    boolean suppress?;
+    r5:ElementDiscriminator[] discriminator?;
+    string sliceName?;
+    boolean 'any?;
+    r5:markdown comment?;
+    r5:ElementConstraint[] constraint?;
+    r5:ElementBase base?;
 |};
-
-public enum MonetaryComponentType {
-    CODE_MONETARYCOMPONENTTYPE_SURCHARGE = "surcharge",
-    CODE_MONETARYCOMPONENTTYPE_DEDUCTION = "deduction",
-    CODE_MONETARYCOMPONENTTYPE_DISCOUNT = "discount",
-    CODE_MONETARYCOMPONENTTYPE_TAX = "tax",
-    CODE_MONETARYCOMPONENTTYPE_INFORMATIONAL = "informational",
-    CODE_MONETARYCOMPONENTTYPE_BASE = "base"
-};
 
 public enum ElementdefinitionDeConstraintSeverity {
     CODE_ELEMENTDEFINITIONDECONSTRAINTSEVERITY_WARNING = "warning",
@@ -146,292 +779,10 @@ public enum ElementdefinitionDeSlicingDiscriminatorType {
     CODE_ELEMENTDEFINITIONDESLICINGDISCRIMINATORTYPE_VALUE = "value"
 };
 
-
-@r5:DataTypeDefinition {
-    name: "DataType",
-    baseType: (),
-    elements: {
-        },
-    serializers: {
-        'xml: r5:complexDataTypeXMLSerializer,
-        'json: r5:complexDataTypeJsonSerializer
-    }
-}
-public type DataType record {|
-    *r5:Element;
-
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
-    string id?;
-    r5:Extension[] extension?;
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-|};
-
-
-@r5:DataTypeDefinition {
-    name: "Availability",
-    baseType: (),
-    elements: {
-    
-        "notAvailableTime": {
-            name: "notAvailableTime",
-            dataType: r5:Element,
-            min: 0,
-            max: int:MAX_VALUE,
-            isArray: true,
-            description: "Not available during this time due to provided reason.",
-            path: "Availability.notAvailableTime"
-        },    
-        "allDay": {
-            name: "allDay",
-            dataType: boolean,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Always available? i.e. 24 hour service.",
-            path: "Availability.availableTime.allDay"
-        },    
-        "availableTime": {
-            name: "availableTime",
-            dataType: r5:Element,
-            min: 0,
-            max: int:MAX_VALUE,
-            isArray: true,
-            description: "Times the {item} is available.",
-            path: "Availability.availableTime"
-        },    
-        "availableEndTime": {
-            name: "availableEndTime",
-            dataType: r5:time,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Closing time of day (ignored if allDay = true).",
-            path: "Availability.availableTime.availableEndTime"
-        },    
-        "description": {
-            name: "description",
-            dataType: string,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Reason presented to the user explaining why time not available.",
-            path: "Availability.notAvailableTime.description"
-        },    
-        "during": {
-            name: "during",
-            dataType: r5:Period,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Service not available during this period.",
-            path: "Availability.notAvailableTime.during"
-        },    
-        "daysOfWeek": {
-            name: "daysOfWeek",
-            dataType: AvailabilityAvailableTimeDaysOfWeek,
-            min: 0,
-            max: int:MAX_VALUE,
-            isArray: true,
-            description: "mon | tue | wed | thu | fri | sat | sun.",
-            path: "Availability.availableTime.daysOfWeek"
-        },    
-        "availableStartTime": {
-            name: "availableStartTime",
-            dataType: r5:time,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Opening time of day (ignored if allDay = true).",
-            path: "Availability.availableTime.availableStartTime"
-        }        },
-    serializers: {
-        'xml: r5:complexDataTypeXMLSerializer,
-        'json: r5:complexDataTypeJsonSerializer
-    }
-}
-public type Availability record {|
-    *r5:Element;
-
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
-    string id?;
-    r5:Extension[] extension?;
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-    r5:Element[] notAvailableTime?;
-    boolean allDay?;
-    r5:Element[] availableTime?;
-    r5:time availableEndTime?;
-    string description?;
-    r5:Period during?;
-    AvailabilityAvailableTimeDaysOfWeek[] daysOfWeek?;
-    r5:time availableStartTime?;
-|};
-
-public enum AvailabilityAvailableTimeDaysOfWeek {
-    CODE_AVAILABILITYAVAILABLETIMEDAYSOFWEEK_THU = "thu",
-    CODE_AVAILABILITYAVAILABLETIMEDAYSOFWEEK_TUE = "tue",
-    CODE_AVAILABILITYAVAILABLETIMEDAYSOFWEEK_WED = "wed",
-    CODE_AVAILABILITYAVAILABLETIMEDAYSOFWEEK_SAT = "sat",
-    CODE_AVAILABILITYAVAILABLETIMEDAYSOFWEEK_FRI = "fri",
-    CODE_AVAILABILITYAVAILABLETIMEDAYSOFWEEK_MON = "mon",
-    CODE_AVAILABILITYAVAILABLETIMEDAYSOFWEEK_SUN = "sun"
-};
-
-
-@r5:DataTypeDefinition {
-    name: "ExtendedContactDetail",
-    baseType: (),
-    elements: {
-    
-        "period": {
-            name: "period",
-            dataType: r5:Period,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Period that this contact was valid for usage.",
-            path: "ExtendedContactDetail.period"
-        },    
-        "address": {
-            name: "address",
-            dataType: r5:Address,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Address for the contact.",
-            path: "ExtendedContactDetail.address"
-        },    
-        "purpose": {
-            name: "purpose",
-            dataType: r5:CodeableConcept,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "The purpose/type of contact.",
-            path: "ExtendedContactDetail.purpose"
-        },    
-        "organization": {
-            name: "organization",
-            dataType: r5:Reference,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "This contact detail is handled/monitored by a specific organization. If the name is provided in the contact, then it is referring to the named individual within this organization.",
-            path: "ExtendedContactDetail.organization"
-        },    
-        "name": {
-            name: "name",
-            dataType: r5:HumanName,
-            min: 0,
-            max: int:MAX_VALUE,
-            isArray: true,
-            description: "The name of an individual to contact, some types of contact detail are usually blank.",
-            path: "ExtendedContactDetail.name"
-        },    
-        "telecom": {
-            name: "telecom",
-            dataType: r5:ContactPoint,
-            min: 0,
-            max: int:MAX_VALUE,
-            isArray: true,
-            description: "The contact details application for the purpose defined.",
-            path: "ExtendedContactDetail.telecom"
-        }        },
-    serializers: {
-        'xml: r5:complexDataTypeXMLSerializer,
-        'json: r5:complexDataTypeJsonSerializer
-    }
-}
-public type ExtendedContactDetail record {|
-    *r5:Element;
-
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
-    string id?;
-    r5:Extension[] extension?;
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-    r5:Period period?;
-    r5:Address address?;
-    r5:CodeableConcept purpose?;
-    r5:Reference organization?;
-    r5:HumanName[] name?;
-    r5:ContactPoint[] telecom?;
-|};
-
-
-@r5:DataTypeDefinition {
-    name: "RatioRange",
-    baseType: (),
-    elements: {
-    
-        "lowNumerator": {
-            name: "lowNumerator",
-            dataType: r5:Quantity,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "The value of the low limit numerator.",
-            path: "RatioRange.lowNumerator"
-        },    
-        "highNumerator": {
-            name: "highNumerator",
-            dataType: r5:Quantity,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "The value of the high limit numerator.",
-            path: "RatioRange.highNumerator"
-        },    
-        "denominator": {
-            name: "denominator",
-            dataType: r5:Quantity,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "The value of the denominator.",
-            path: "RatioRange.denominator"
-        }        },
-    serializers: {
-        'xml: r5:complexDataTypeXMLSerializer,
-        'json: r5:complexDataTypeJsonSerializer
-    }
-}
-public type RatioRange record {|
-    *r5:Element;
-
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
-    string id?;
-    r5:Extension[] extension?;
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-    r5:Quantity lowNumerator?;
-    r5:Quantity highNumerator?;
-    r5:Quantity denominator?;
-|};
-
-
-@r5:DataTypeDefinition {
-    name: "PrimitiveType",
-    baseType: (),
-    elements: {
-        },
-    serializers: {
-        'xml: r5:complexDataTypeXMLSerializer,
-        'json: r5:complexDataTypeJsonSerializer
-    }
-}
-public type PrimitiveType record {|
-    *r5:Element;
-
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
-    string id?;
-    r5:Extension[] extension?;
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-|};
-
-
 @r5:DataTypeDefinition {
     name: "MarketingStatus",
     baseType: (),
     elements: {
-    
         "country": {
             name: "country",
             dataType: r5:CodeableConcept,
@@ -440,7 +791,8 @@ public type PrimitiveType record {|
             isArray: false,
             description: "The country in which the marketing authorization has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.",
             path: "MarketingStatus.country"
-        },    
+        },
+
         "dateRange": {
             name: "dateRange",
             dataType: r5:Period,
@@ -449,7 +801,8 @@ public type PrimitiveType record {|
             isArray: false,
             description: "The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.",
             path: "MarketingStatus.dateRange"
-        },    
+        },
+
         "modifierExtension": {
             name: "modifierExtension",
             dataType: r5:Extension,
@@ -458,7 +811,8 @@ public type PrimitiveType record {|
             isArray: true,
             description: "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions. Modifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).",
             path: "MarketingStatus.modifierExtension"
-        },    
+        },
+
         "jurisdiction": {
             name: "jurisdiction",
             dataType: r5:CodeableConcept,
@@ -467,7 +821,8 @@ public type PrimitiveType record {|
             isArray: false,
             description: "Where a Medicines Regulatory Agency has granted a marketing authorization for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.",
             path: "MarketingStatus.jurisdiction"
-        },    
+        },
+
         "status": {
             name: "status",
             dataType: r5:CodeableConcept,
@@ -476,7 +831,8 @@ public type PrimitiveType record {|
             isArray: false,
             description: "This attribute provides information on the status of the marketing of the medicinal product See ISO/TS 20443 for more information and examples.",
             path: "MarketingStatus.status"
-        },    
+        },
+
         "restoreDate": {
             name: "restoreDate",
             dataType: r5:dateTime,
@@ -485,7 +841,8 @@ public type PrimitiveType record {|
             isArray: false,
             description: "The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.",
             path: "MarketingStatus.restoreDate"
-        }        },
+        }
+    },
     serializers: {
         'xml: r5:complexDataTypeXMLSerializer,
         'json: r5:complexDataTypeJsonSerializer
@@ -493,7 +850,6 @@ public type PrimitiveType record {|
 }
 public type MarketingStatus record {|
     *r5:MarketingStatus;
-
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
     string id?;
     r5:Extension[] extension?;
@@ -506,82 +862,57 @@ public type MarketingStatus record {|
     r5:dateTime restoreDate?;
 |};
 
-
 @r5:DataTypeDefinition {
-    name: "VirtualServiceDetail",
+    name: "BackboneElement",
     baseType: (),
     elements: {
-    
-        "sessionKey": {
-            name: "sessionKey",
-            dataType: string,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Session Key required by the virtual service.",
-            path: "VirtualServiceDetail.sessionKey"
-        },    
-        "addressUrl": {
-            name: "addressUrl",
-            dataType: r5:urlType,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "What address or number needs to be used for a user to connect to the virtual service to join. The channelType informs as to which datatype is appropriate to use (requires knowledge of the specific type).",
-            path: "VirtualServiceDetail.address[x]"
-        },    
-        "additionalInfo": {
-            name: "additionalInfo",
-            dataType: r5:urlType,
+        "modifierExtension": {
+            name: "modifierExtension",
+            dataType: r5:Extension,
             min: 0,
             max: int:MAX_VALUE,
             isArray: true,
-            description: "Address to see alternative connection details.",
-            path: "VirtualServiceDetail.additionalInfo"
-        },    
-        "channelType": {
-            name: "channelType",
-            dataType: r5:Coding,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "The type of virtual service to connect to (i.e. Teams, Zoom, Specific VMR technology, WhatsApp).",
-            path: "VirtualServiceDetail.channelType"
-        },    
-        "maxParticipants": {
-            name: "maxParticipants",
-            dataType: r5:positiveInt,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "Maximum number of participants supported by the virtual service.",
-            path: "VirtualServiceDetail.maxParticipants"
-        }        },
+            description: "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions. Modifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).",
+            path: "BackboneElement.modifierExtension"
+        }
+
+    },
     serializers: {
         'xml: r5:complexDataTypeXMLSerializer,
         'json: r5:complexDataTypeJsonSerializer
     }
 }
-public type VirtualServiceDetail record {|
-    *r5:Element;
-
+public type BackboneElement record {|
+    *r5:BackboneElement;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
     string id?;
     r5:Extension[] extension?;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-    string sessionKey?;
-    r5:urlType addressUrl?;
-    r5:urlType[] additionalInfo?;
-    r5:Coding channelType?;
-    r5:positiveInt maxParticipants?;
+    r5:Extension[] modifierExtension?;
 |};
 
+@r5:DataTypeDefinition {
+    name: "Element",
+    baseType: (),
+    elements: {
+    },
+    serializers: {
+        'xml: r5:complexDataTypeXMLSerializer,
+        'json: r5:complexDataTypeJsonSerializer
+    }
+}
+public type Element record {|
+    *r5:Element;
+    //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
+    string id?;
+    r5:Extension[] extension?;
+    //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
+|};
 
 @r5:DataTypeDefinition {
     name: "ProductShelfLife",
     baseType: (),
     elements: {
-    
         "periodDuration": {
             name: "periodDuration",
             dataType: r5:Duration,
@@ -590,7 +921,8 @@ public type VirtualServiceDetail record {|
             isArray: false,
             description: "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.",
             path: "ProductShelfLife.period[x]"
-        },    
+        },
+
         "specialPrecautionsForStorage": {
             name: "specialPrecautionsForStorage",
             dataType: r5:CodeableConcept,
@@ -599,7 +931,8 @@ public type VirtualServiceDetail record {|
             isArray: true,
             description: "Special precautions for storage, if any, can be specified using an appropriate controlled vocabulary The controlled term and the controlled term identifier shall be specified.",
             path: "ProductShelfLife.specialPrecautionsForStorage"
-        },    
+        },
+
         "modifierExtension": {
             name: "modifierExtension",
             dataType: r5:Extension,
@@ -608,7 +941,8 @@ public type VirtualServiceDetail record {|
             isArray: true,
             description: "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions. Modifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).",
             path: "ProductShelfLife.modifierExtension"
-        },    
+        },
+
         "'type": {
             name: "'type",
             dataType: r5:CodeableConcept,
@@ -617,7 +951,8 @@ public type VirtualServiceDetail record {|
             isArray: false,
             description: "This describes the shelf life, taking into account various scenarios such as shelf life of the packaged Medicinal Product itself, shelf life after transformation where necessary and shelf life after the first opening of a bottle, etc. The shelf life type shall be specified using an appropriate controlled vocabulary The controlled term and the controlled term identifier shall be specified.",
             path: "ProductShelfLife.type"
-        }        },
+        }
+    },
     serializers: {
         'xml: r5:complexDataTypeXMLSerializer,
         'json: r5:complexDataTypeJsonSerializer
@@ -625,7 +960,6 @@ public type VirtualServiceDetail record {|
 }
 public type ProductShelfLife record {|
     *r5:ProductShelfLife;
-
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
     string id?;
     r5:Extension[] extension?;
@@ -635,95 +969,3 @@ public type ProductShelfLife record {|
     r5:Extension[] modifierExtension?;
     r5:CodeableConcept 'type?;
 |};
-
-
-@r5:DataTypeDefinition {
-    name: "Base",
-    baseType: (),
-    elements: {
-        },
-    serializers: {
-        'xml: r5:complexDataTypeXMLSerializer,
-        'json: r5:complexDataTypeJsonSerializer
-    }
-}
-public type Base record {|
-    *r5:Element;
-
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
-    string id?;
-    r5:Extension[] extension?;
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-|};
-
-
-@r5:DataTypeDefinition {
-    name: "CodeableReference",
-    baseType: (),
-    elements: {
-    
-        "reference": {
-            name: "reference",
-            dataType: r5:Reference,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "A reference to a resource the provides exact details about the information being referenced.",
-            path: "CodeableReference.reference"
-        },    
-        "concept": {
-            name: "concept",
-            dataType: r5:CodeableConcept,
-            min: 0,
-            max: 1,
-            isArray: false,
-            description: "A reference to a concept - e.g. the information is identified by its general class to the degree of precision found in the terminology.",
-            path: "CodeableReference.concept"
-        }        },
-    serializers: {
-        'xml: r5:complexDataTypeXMLSerializer,
-        'json: r5:complexDataTypeJsonSerializer
-    }
-}
-public type CodeableReference record {|
-    *r5:CodeableReference;
-
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
-    string id?;
-    r5:Extension[] extension?;
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-    r5:Reference reference?;
-    r5:CodeableConcept concept?;
-|};
-
-
-@r5:DataTypeDefinition {
-    name: "BackboneType",
-    baseType: (),
-    elements: {
-    
-        "modifierExtension": {
-            name: "modifierExtension",
-            dataType: r5:Extension,
-            min: 0,
-            max: int:MAX_VALUE,
-            isArray: true,
-            description: "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions. Modifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).",
-            path: "BackboneType.modifierExtension"
-        }        },
-    serializers: {
-        'xml: r5:complexDataTypeXMLSerializer,
-        'json: r5:complexDataTypeJsonSerializer
-    }
-}
-public type BackboneType record {|
-    *r5:Element;
-
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
-    string id?;
-    r5:Extension[] extension?;
-    //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
-    r5:Extension[] modifierExtension?;
-|};
-
-

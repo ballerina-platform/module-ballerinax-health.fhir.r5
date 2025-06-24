@@ -7,15 +7,3 @@ authors = ["Ballerina"]
 keywords = ["Healthcare", "FHIR", "R5", "Parser"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-health.fhir.r5"
 export = ["health.fhir.r5.parser"]
-
-[[dependency]]
-org = "ballerinax"
-name = "health.fhir.r5"
-version = "0.9.3"
-repository = "local"
-
-[[dependency]]
-org = "ballerinax"
-name = "health.fhir.r5.international500"
-version = "1.0.0"
-repository = "local"
