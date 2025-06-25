@@ -530,7 +530,7 @@ public enum ChargeItemDefinitionStatus {
         },
         "priceComponent": {
             name: "priceComponent",
-            dataType: MonetaryComponent,
+            dataType: r5:MonetaryComponent,
             min: 0,
             max: int:MAX_VALUE,
             isArray: true,
@@ -549,6 +549,6 @@ public type ChargeItemDefinitionPropertyGroup record {|
     r5:Extension[] extension?;
     r5:Extension[] modifierExtension?;
     string id?;
-    MonetaryComponent[] priceComponent?;
+    r5:MonetaryComponent[] priceComponent?;
 |};
 

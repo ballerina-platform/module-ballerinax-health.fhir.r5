@@ -1423,7 +1423,7 @@ public type ObservationheartrateTriggeredBy record {|
 public type ObservationheartrateValue record {|
     *r5:Quantity;
 
-    r5:QuantityComparatorCode comparator?;
+    ObservationheartrateValueComparator comparator?;
     r5:Extension[] extension?;
     string unit;
     r5:code code = "/min";

@@ -110,7 +110,7 @@ public const RESOURCE_NAME_ENCOUNTER = "Encounter";
         },
         "virtualService" : {
             name: "virtualService",
-            dataType: VirtualServiceDetail,
+            dataType: r5:VirtualServiceDetail,
             min: 0,
             max: int:MAX_VALUE,
             isArray: true,
@@ -380,7 +380,7 @@ public type Encounter record {|
     EncounterReason[] reason?;
     r5:Extension[] extension?;
     r5:CodeableConcept[] specialArrangement?;
-    VirtualServiceDetail[] virtualService?;
+    r5:VirtualServiceDetail[] virtualService?;
     r5:Reference subject?;
     r5:Extension[] modifierExtension?;
     r5:CodeableConcept[] dietPreference?;

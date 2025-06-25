@@ -1,5 +1,7 @@
 // Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
 
+import ballerina/constraint;
+
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License.
@@ -25,6 +27,7 @@
 # + unit - Unit representation 
 # + system - System that defines coded unit form 
 # + code - Coded form of the unit
+
 @DataTypeDefinition {
     name: "Quantity",
     baseType: Element,
@@ -84,7 +87,11 @@ public type Quantity record {|
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
 
     decimal value?;
-    QuantityComparatorCode comparator?;
+    @constraint:String {
+        pattern: re `^(<|<=|>|>=)$`
+    }
+    string|QuantityComparatorCode comparator?;
+
     string unit?;
     uri system?;
     code code?;

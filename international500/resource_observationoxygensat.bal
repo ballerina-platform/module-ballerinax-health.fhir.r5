@@ -1040,7 +1040,7 @@ public type ObservationoxygensatCode record {|
 public type ObservationoxygensatValue record {|
     *r5:Quantity;
 
-    r5:QuantityComparatorCode comparator?;
+    ObservationoxygensatValueComparator comparator?;
     r5:Extension[] extension?;
     string unit;
     r5:code code = "%";

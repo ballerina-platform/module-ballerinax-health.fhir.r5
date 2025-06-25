@@ -1,4 +1,5 @@
 // Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
+import ballerina/constraint;
 
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -185,6 +186,11 @@
 
 }
 
+@constraint:String {
+    pattern: re `^(mon|tue|wed|thu|fri|sat|sun)$`
+}
+type DayCodeTypes string;
+
 public type ElementRepeat record {
     *Element;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
@@ -199,13 +205,23 @@ public type ElementRepeat record {
     positiveInt countMax?;
     decimal duration?;
     decimal durationMax?;
-    Timecode durationUnit?;
+
+    @constraint:String {
+        pattern: re `^(s|min|h|d|wk|mo|a)$`
+    }
+    string|Timecode durationUnit?;
+
     positiveInt frequency?;
     positiveInt frequencyMax?;
     decimal period?;
     decimal periodMax?;
-    Timecode periodUnit?;
-    Daycode[] dayOfWeek?;
+
+    @constraint:String {
+        pattern: re `^(s|min|h|d|wk|mo|a)$`
+    }
+    string|Timecode periodUnit?;
+
+    DayCodeTypes|Daycode[] dayOfWeek?;
     time[] timeOfDay?;
     code[] when?;
     unsignedInt offset?;
@@ -238,7 +254,7 @@ public enum Daycode {
 # + elementContextDefinition - Element context definition
 # + return - FHIRValidationError array if validation fails, else nil
 public isolated function repeatElementDataTypeValidationFunction(anydata data,
-                    ElementAnnotationDefinition elementContextDefinition) returns (FHIRValidationError)? {
+        ElementAnnotationDefinition elementContextDefinition) returns (FHIRValidationError)? {
     DataTypeDefinitionRecord? dataTypeDefinition = (typeof data).@DataTypeDefinition;
     if dataTypeDefinition != () {
         map<anydata> mapObj = {};
@@ -248,7 +264,7 @@ public isolated function repeatElementDataTypeValidationFunction(anydata data,
             string diagnosticMsg = string `Error occurred while casting data of type: ${(typeof data).toBalString()} to map representation`;
             return <FHIRValidationError>createInternalFHIRError(
                             "Error occurred while casting data to map representation", FATAL, PROCESSING,
-                            diagnostic = diagnosticMsg, cause = e);
+                    diagnostic = diagnosticMsg, cause = e);
 
         }
         Duration? boundsDurationVal = ();
@@ -267,8 +283,8 @@ public isolated function repeatElementDataTypeValidationFunction(anydata data,
         boolean boundsRangeValCheck = boundsRangeVal is ();
         boolean boundsPeriodValCheck = boundsPeriodVal is ();
 
-        boolean expression = (boundsDurationValCheck) && (boundsRangeValCheck) && (!boundsPeriodValCheck) 
-                        || (boundsDurationValCheck) && (!boundsRangeValCheck) && (boundsPeriodValCheck) || (!boundsDurationValCheck) 
+        boolean expression = (boundsDurationValCheck) && (boundsRangeValCheck) && (!boundsPeriodValCheck)
+                        || (boundsDurationValCheck) && (!boundsRangeValCheck) && (boundsPeriodValCheck) || (!boundsDurationValCheck)
                         && (boundsRangeValCheck) && (boundsPeriodValCheck);
 
         if (expression) {
@@ -278,7 +294,7 @@ public isolated function repeatElementDataTypeValidationFunction(anydata data,
             string diagnosticMsg = "Error occurred due to incorrect definition of bounds element according to FHIR Specificatio";
             return <FHIRValidationError>createInternalFHIRError(
                             "Error occurred due to incorrect data type definition", FATAL, PROCESSING,
-                            diagnostic = diagnosticMsg);
+                    diagnostic = diagnosticMsg);
         }
 
     }

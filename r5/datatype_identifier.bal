@@ -1,4 +1,5 @@
 // Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
+import ballerina/constraint;
 
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +29,7 @@
     name: "Identifier",
     baseType: Element,
     elements: {
-        "use" : {
+        "use": {
             name: "use",
             dataType: IdentifierUse,
             min: 0,
@@ -36,7 +37,7 @@
             isArray: false,
             description: "usual | official | temp | secondary | old (If known) IdentifierUse (Required)"
         },
-        "type" : {
+        "type": {
             name: "type",
             dataType: CodeableConcept,
             min: 0,
@@ -44,7 +45,7 @@
             isArray: false,
             description: "Description of identifier"
         },
-        "system" : {
+        "system": {
             name: "system",
             dataType: string,
             min: 0,
@@ -52,7 +53,7 @@
             isArray: false,
             description: "The namespace for the identifier value"
         },
-        "value" : {
+        "value": {
             name: "value",
             dataType: string,
             min: 0,
@@ -60,7 +61,7 @@
             isArray: false,
             description: "The value that is unique"
         },
-        "period" : {
+        "period": {
             name: "period",
             dataType: Period,
             min: 0,
@@ -68,7 +69,7 @@
             isArray: false,
             description: "Time period when id is/was valid for use"
         },
-        "assigner" : {
+        "assigner": {
             name: "assigner",
             dataType: Reference,
             min: 0,
@@ -78,7 +79,7 @@
         }
     },
     serializers: {
-        'xml: complexDataTypeXMLSerializer, 
+        'xml: complexDataTypeXMLSerializer,
         'json: complexDataTypeJsonSerializer
     }
 }
@@ -90,7 +91,11 @@ public type Identifier record {|
     Extension[] extension?;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (END)
 
-    IdentifierUse use?;
+    @constraint:String {
+        pattern: re `^(usual|official|temp|secondary|old)$`
+    }
+    string|IdentifierUse use?;
+
     CodeableConcept 'type?;
     uri system?;
     string value?;
