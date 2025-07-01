@@ -78,11 +78,6 @@ import ballerina/constraint;
     }
 }
 
-@constraint:String {
-    pattern: re `^(contained|referenced|bundled)$`
-}
-type TypeAggregationTypes string;
-
 public type ElementType record {|
     *Element;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
@@ -93,7 +88,7 @@ public type ElementType record {|
     uri code;
     canonical[] profile?;
     canonical[] targetProfile?;
-    TypeAggregationTypes|TypeAggregation[] aggregation?;
+    TypeAggregation[] aggregation?;
 
     @constraint:String {
         pattern: re `^(contained|referenced|bundled)$`
