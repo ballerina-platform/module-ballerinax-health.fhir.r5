@@ -1092,7 +1092,7 @@ public type MedicationKnowledgeIndicationGuidelineDosingGuidelineDosage record {
         "costMoney": {
             name: "costMoney",
             dataType: r5:Money,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The price or representation of the cost (for example, Band A, Band B or $, $$) of the medication.",
@@ -1128,7 +1128,7 @@ public type MedicationKnowledgeIndicationGuidelineDosingGuidelineDosage record {
         "costCodeableConcept": {
             name: "costCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The price or representation of the cost (for example, Band A, Band B or $, $$) of the medication.",
@@ -1580,7 +1580,7 @@ public type MedicationKnowledgeRegulatorySubstitution record {|
         "valueMedicationKnowledgeRange": {
             name: "valueMedicationKnowledgeRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Value associated to the setting. E.g., 40° – 50°F for temperature.",
@@ -1589,7 +1589,7 @@ public type MedicationKnowledgeRegulatorySubstitution record {|
         "valueMedicationKnowledgeQuantity": {
             name: "valueMedicationKnowledgeQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Value associated to the setting. E.g., 40° – 50°F for temperature.",
@@ -1625,7 +1625,7 @@ public type MedicationKnowledgeRegulatorySubstitution record {|
         "valueMedicationKnowledgeCodeableConcept": {
             name: "valueMedicationKnowledgeCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Value associated to the setting. E.g., 40° – 50°F for temperature.",

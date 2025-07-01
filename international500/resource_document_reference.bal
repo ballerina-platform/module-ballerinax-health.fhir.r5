@@ -400,7 +400,7 @@ public type DocumentReference record {|
         "valueDocumentReferenceCoding": {
             name: "valueDocumentReferenceCoding",
             dataType: r5:Coding,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Code|uri|canonical.",
@@ -418,7 +418,7 @@ public type DocumentReference record {|
         "valueDocumentReferenceUri": {
             name: "valueDocumentReferenceUri",
             dataType: r5:uri,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Code|uri|canonical.",
@@ -427,7 +427,7 @@ public type DocumentReference record {|
         "valueDocumentReferenceCanonical": {
             name: "valueDocumentReferenceCanonical",
             dataType: r5:canonical,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Code|uri|canonical.",

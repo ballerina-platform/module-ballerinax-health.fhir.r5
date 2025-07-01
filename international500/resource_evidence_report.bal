@@ -773,7 +773,7 @@ public enum EvidenceReportSectionMode {
         "valueEvidenceReportQuantity": {
             name: "valueEvidenceReportQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Characteristic value.",
@@ -809,7 +809,7 @@ public enum EvidenceReportSectionMode {
         "valueEvidenceReportCodeableConcept": {
             name: "valueEvidenceReportCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Characteristic value.",
@@ -818,7 +818,7 @@ public enum EvidenceReportSectionMode {
         "valueEvidenceReportReference": {
             name: "valueEvidenceReportReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Characteristic value.",
@@ -827,7 +827,7 @@ public enum EvidenceReportSectionMode {
         "valueEvidenceReportRange": {
             name: "valueEvidenceReportRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Characteristic value.",
@@ -863,7 +863,7 @@ public enum EvidenceReportSectionMode {
         "valueEvidenceReportBoolean": {
             name: "valueEvidenceReportBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Characteristic value.",

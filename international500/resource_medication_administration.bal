@@ -155,7 +155,7 @@ public const RESOURCE_NAME_MEDICATIONADMINISTRATION = "MedicationAdministration"
         "occurenceTiming" : {
             name: "occurenceTiming",
             dataType: r5:Timing,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "MedicationAdministration.occurence[x]"
@@ -203,7 +203,7 @@ public const RESOURCE_NAME_MEDICATIONADMINISTRATION = "MedicationAdministration"
         "occurenceDateTime" : {
             name: "occurenceDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "MedicationAdministration.occurence[x]"
@@ -269,7 +269,7 @@ public const RESOURCE_NAME_MEDICATIONADMINISTRATION = "MedicationAdministration"
         "occurencePeriod" : {
             name: "occurencePeriod",
             dataType: r5:Period,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "MedicationAdministration.occurence[x]"

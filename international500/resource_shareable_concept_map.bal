@@ -526,7 +526,7 @@ public enum ShareableConceptMapGroupUnmappedMode {
         "valueConceptMapDateTime": {
             name: "valueConceptMapDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -544,7 +544,7 @@ public enum ShareableConceptMapGroupUnmappedMode {
         "valueConceptMapString": {
             name: "valueConceptMapString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -553,7 +553,7 @@ public enum ShareableConceptMapGroupUnmappedMode {
         "valueConceptMapCoding": {
             name: "valueConceptMapCoding",
             dataType: r5:Coding,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -562,7 +562,7 @@ public enum ShareableConceptMapGroupUnmappedMode {
         "valueConceptMapInteger": {
             name: "valueConceptMapInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -580,7 +580,7 @@ public enum ShareableConceptMapGroupUnmappedMode {
         "valueConceptMapBoolean": {
             name: "valueConceptMapBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -589,7 +589,7 @@ public enum ShareableConceptMapGroupUnmappedMode {
         "valueConceptMapDecimal": {
             name: "valueConceptMapDecimal",
             dataType: decimal,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -607,7 +607,7 @@ public enum ShareableConceptMapGroupUnmappedMode {
         "valueConceptMapCode": {
             name: "valueConceptMapCode",
             dataType: r5:code,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",

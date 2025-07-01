@@ -471,7 +471,7 @@ public type Device record {|
         "valueCodeableConcept": {
             name: "valueCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -480,7 +480,7 @@ public type Device record {|
         "valueBoolean": {
             name: "valueBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -498,7 +498,7 @@ public type Device record {|
         "valueAttachment": {
             name: "valueAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -507,7 +507,7 @@ public type Device record {|
         "valueString": {
             name: "valueString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -516,7 +516,7 @@ public type Device record {|
         "valueRange": {
             name: "valueRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -552,7 +552,7 @@ public type Device record {|
         "valueInteger": {
             name: "valueInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -561,7 +561,7 @@ public type Device record {|
         "valueQuantity": {
             name: "valueQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",

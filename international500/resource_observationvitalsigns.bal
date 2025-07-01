@@ -210,7 +210,7 @@ public const RESOURCE_NAME_OBSERVATIONVITALSIGNS = "Observation";
         "effectivePeriod" : {
             name: "effectivePeriod",
             dataType: r5:Period,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "Observation.effective[x]"
@@ -463,7 +463,7 @@ public const RESOURCE_NAME_OBSERVATIONVITALSIGNS = "Observation";
         "effectiveDateTime" : {
             name: "effectiveDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "Observation.effective[x]"

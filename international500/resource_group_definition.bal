@@ -282,7 +282,7 @@ public enum GroupDefinitionType {
         "valueCodeableConcept": {
             name: "valueCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",
@@ -291,7 +291,7 @@ public enum GroupDefinitionType {
         "valueBoolean": {
             name: "valueBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",
@@ -327,7 +327,7 @@ public enum GroupDefinitionType {
         "valueReference": {
             name: "valueReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",
@@ -336,7 +336,7 @@ public enum GroupDefinitionType {
         "valueRange": {
             name: "valueRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",
@@ -372,7 +372,7 @@ public enum GroupDefinitionType {
         "valueQuantity": {
             name: "valueQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",

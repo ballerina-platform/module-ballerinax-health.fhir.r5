@@ -396,7 +396,7 @@ public enum CommunicationRequestPriority {
         "contentCodeableConcept": {
             name: "contentCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The communicated content (or for multi-part communications, one portion of the communication).",
@@ -414,7 +414,7 @@ public enum CommunicationRequestPriority {
         "contentReference": {
             name: "contentReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The communicated content (or for multi-part communications, one portion of the communication).",
@@ -432,7 +432,7 @@ public enum CommunicationRequestPriority {
         "contentAttachment": {
             name: "contentAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The communicated content (or for multi-part communications, one portion of the communication).",

@@ -957,7 +957,7 @@ public type ClaimSupportingInfo record {|
         "whenDateTime": {
             name: "whenDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "A date or period in the past or future indicating when the event occurred or is expectd to occur.",
@@ -966,7 +966,7 @@ public type ClaimSupportingInfo record {|
         "whenPeriod": {
             name: "whenPeriod",
             dataType: r5:Period,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "A date or period in the past or future indicating when the event occurred or is expectd to occur.",
@@ -1143,7 +1143,7 @@ public type ClaimItemBodySite record {|
         "procedureCodeableConcept": {
             name: "procedureCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The code or reference to a Procedure resource which identifies the clinical intervention performed.",
@@ -1161,7 +1161,7 @@ public type ClaimItemBodySite record {|
         "procedureReference": {
             name: "procedureReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The code or reference to a Procedure resource which identifies the clinical intervention performed.",
@@ -1379,7 +1379,7 @@ public type ClaimAccident record {|
         "diagnosisReference": {
             name: "diagnosisReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The nature of illness or problem in a coded form or as a reference to an external defined Condition.",
@@ -1388,7 +1388,7 @@ public type ClaimAccident record {|
         "diagnosisCodeableConcept": {
             name: "diagnosisCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The nature of illness or problem in a coded form or as a reference to an external defined Condition.",

@@ -334,7 +334,7 @@ public const RESOURCE_NAME_IMMUNIZATION = "Immunization";
         "occurrenceDateTime" : {
             name: "occurrenceDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "Immunization.occurrence[x]"
@@ -342,7 +342,7 @@ public const RESOURCE_NAME_IMMUNIZATION = "Immunization";
         "occurrenceString" : {
             name: "occurrenceString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "Immunization.occurrence[x]"

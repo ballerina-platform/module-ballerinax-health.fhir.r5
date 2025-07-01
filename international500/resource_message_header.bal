@@ -69,7 +69,7 @@ public const RESOURCE_NAME_MESSAGEHEADER = "MessageHeader";
         "eventCanonical" : {
             name: "eventCanonical",
             dataType: r5:canonical,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "MessageHeader.event[x]"
@@ -126,7 +126,7 @@ public const RESOURCE_NAME_MESSAGEHEADER = "MessageHeader";
         "eventCoding" : {
             name: "eventCoding",
             dataType: r5:Coding,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "MessageHeader.event[x]"

@@ -374,7 +374,7 @@ public type BiologicallyDerivedProductCollection record {|
         "valueBoolean": {
             name: "valueBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Property values.",
@@ -392,7 +392,7 @@ public type BiologicallyDerivedProductCollection record {|
         "valueRange": {
             name: "valueRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Property values.",
@@ -419,7 +419,7 @@ public type BiologicallyDerivedProductCollection record {|
         "valueCodeableConcept": {
             name: "valueCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Property values.",
@@ -428,7 +428,7 @@ public type BiologicallyDerivedProductCollection record {|
         "valueRatio": {
             name: "valueRatio",
             dataType: r5:Ratio,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Property values.",
@@ -437,7 +437,7 @@ public type BiologicallyDerivedProductCollection record {|
         "valueAttachment": {
             name: "valueAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Property values.",
@@ -446,7 +446,7 @@ public type BiologicallyDerivedProductCollection record {|
         "valueString": {
             name: "valueString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Property values.",
@@ -455,7 +455,7 @@ public type BiologicallyDerivedProductCollection record {|
         "valuePeriod": {
             name: "valuePeriod",
             dataType: r5:Period,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Property values.",
@@ -473,7 +473,7 @@ public type BiologicallyDerivedProductCollection record {|
         "valueInteger": {
             name: "valueInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Property values.",
@@ -482,7 +482,7 @@ public type BiologicallyDerivedProductCollection record {|
         "valueQuantity": {
             name: "valueQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Property values.",

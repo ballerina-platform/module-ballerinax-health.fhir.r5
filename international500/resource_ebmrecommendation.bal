@@ -103,7 +103,7 @@ public const RESOURCE_NAME_EBMRECOMMENDATION = "ArtifactAssessment";
         "artifactReference" : {
             name: "artifactReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "ArtifactAssessment.artifact[x]"
@@ -111,7 +111,7 @@ public const RESOURCE_NAME_EBMRECOMMENDATION = "ArtifactAssessment";
         "artifactCanonical" : {
             name: "artifactCanonical",
             dataType: r5:canonical,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "ArtifactAssessment.artifact[x]"
@@ -226,7 +226,7 @@ public const RESOURCE_NAME_EBMRECOMMENDATION = "ArtifactAssessment";
         "artifactUri" : {
             name: "artifactUri",
             dataType: r5:uri,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "ArtifactAssessment.artifact[x]"

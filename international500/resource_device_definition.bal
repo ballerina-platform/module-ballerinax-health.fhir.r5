@@ -1309,7 +1309,7 @@ public enum DeviceDefinitionDeviceNameType {
         "valueCodeableConcept": {
             name: "valueCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -1318,7 +1318,7 @@ public enum DeviceDefinitionDeviceNameType {
         "valueBoolean": {
             name: "valueBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -1336,7 +1336,7 @@ public enum DeviceDefinitionDeviceNameType {
         "valueAttachment": {
             name: "valueAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -1345,7 +1345,7 @@ public enum DeviceDefinitionDeviceNameType {
         "valueString": {
             name: "valueString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -1354,7 +1354,7 @@ public enum DeviceDefinitionDeviceNameType {
         "valueRange": {
             name: "valueRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -1390,7 +1390,7 @@ public enum DeviceDefinitionDeviceNameType {
         "valueInteger": {
             name: "valueInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",
@@ -1399,7 +1399,7 @@ public enum DeviceDefinitionDeviceNameType {
         "valueQuantity": {
             name: "valueQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the property specified by the associated property.type code.",

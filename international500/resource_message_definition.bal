@@ -208,7 +208,7 @@ public const RESOURCE_NAME_MESSAGEDEFINITION = "MessageDefinition";
         "eventUri" : {
             name: "eventUri",
             dataType: r5:uri,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "MessageDefinition.event[x]",
@@ -242,7 +242,7 @@ public const RESOURCE_NAME_MESSAGEDEFINITION = "MessageDefinition";
         "eventCoding" : {
             name: "eventCoding",
             dataType: r5:Coding,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "MessageDefinition.event[x]",

@@ -664,7 +664,7 @@ public type AuditEventEntity record {|
         "valueAuditEventPeriod": {
             name: "valueAuditEventPeriod",
             dataType: r5:Period,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -673,7 +673,7 @@ public type AuditEventEntity record {|
         "valueAuditEventBase64Binary": {
             name: "valueAuditEventBase64Binary",
             dataType: r5:base64Binary,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -691,7 +691,7 @@ public type AuditEventEntity record {|
         "valueAuditEventString": {
             name: "valueAuditEventString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -700,7 +700,7 @@ public type AuditEventEntity record {|
         "valueAuditEventInteger": {
             name: "valueAuditEventInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -727,7 +727,7 @@ public type AuditEventEntity record {|
         "valueAuditEventTime": {
             name: "valueAuditEventTime",
             dataType: r5:time,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -736,7 +736,7 @@ public type AuditEventEntity record {|
         "valueAuditEventCodeableConcept": {
             name: "valueAuditEventCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -745,7 +745,7 @@ public type AuditEventEntity record {|
         "valueAuditEventRange": {
             name: "valueAuditEventRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -754,7 +754,7 @@ public type AuditEventEntity record {|
         "valueAuditEventDateTime": {
             name: "valueAuditEventDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -763,7 +763,7 @@ public type AuditEventEntity record {|
         "valueAuditEventBoolean": {
             name: "valueAuditEventBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -781,7 +781,7 @@ public type AuditEventEntity record {|
         "valueAuditEventRatio": {
             name: "valueAuditEventRatio",
             dataType: r5:Ratio,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",
@@ -790,7 +790,7 @@ public type AuditEventEntity record {|
         "valueAuditEventQuantity": {
             name: "valueAuditEventQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the extra detail.",

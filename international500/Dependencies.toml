@@ -311,7 +311,7 @@ dependencies = [
 [[package]]
 org = "ballerinax"
 name = "health.fhir.r5"
-version = "0.9.2"
+version = "0.9.3"
 dependencies = [
 	{org = "ballerina", name = "constraint"},
 	{org = "ballerina", name = "http"},

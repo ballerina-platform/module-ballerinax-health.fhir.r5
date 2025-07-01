@@ -506,7 +506,7 @@ public type Contract record {|
         "contentReference": {
             name: "contentReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Contract legal text in human renderable form.",
@@ -524,7 +524,7 @@ public type Contract record {|
         "contentAttachment": {
             name: "contentAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Contract legal text in human renderable form.",
@@ -1220,7 +1220,7 @@ public enum ContractStatus {
         "valueContractCoding": {
             name: "valueContractCoding",
             dataType: r5:Coding,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1229,7 +1229,7 @@ public enum ContractStatus {
         "valueContractInteger": {
             name: "valueContractInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1238,7 +1238,7 @@ public enum ContractStatus {
         "valueContractBoolean": {
             name: "valueContractBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1256,7 +1256,7 @@ public enum ContractStatus {
         "valueContractUri": {
             name: "valueContractUri",
             dataType: r5:uri,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1265,7 +1265,7 @@ public enum ContractStatus {
         "valueContractDate": {
             name: "valueContractDate",
             dataType: r5:date,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1274,7 +1274,7 @@ public enum ContractStatus {
         "valueContractAttachment": {
             name: "valueContractAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1283,7 +1283,7 @@ public enum ContractStatus {
         "valueContractTime": {
             name: "valueContractTime",
             dataType: r5:time,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1301,7 +1301,7 @@ public enum ContractStatus {
         "valueContractDecimal": {
             name: "valueContractDecimal",
             dataType: decimal,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1310,7 +1310,7 @@ public enum ContractStatus {
         "valueContractDateTime": {
             name: "valueContractDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1319,7 +1319,7 @@ public enum ContractStatus {
         "valueContractString": {
             name: "valueContractString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1328,7 +1328,7 @@ public enum ContractStatus {
         "valueContractQuantity": {
             name: "valueContractQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1337,7 +1337,7 @@ public enum ContractStatus {
         "valueContractReference": {
             name: "valueContractReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Response to an offer clause or question text, which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.",
@@ -1574,7 +1574,7 @@ public type ContractTerm record {|
         "contentReference": {
             name: "contentReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.",
@@ -1592,7 +1592,7 @@ public type ContractTerm record {|
         "contentAttachment": {
             name: "contentAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.",
@@ -2318,7 +2318,7 @@ public type ContractTermAction record {|
         "contentReference": {
             name: "contentReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).",
@@ -2336,7 +2336,7 @@ public type ContractTermAction record {|
         "contentAttachment": {
             name: "contentAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).",

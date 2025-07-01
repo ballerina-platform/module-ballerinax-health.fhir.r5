@@ -745,7 +745,7 @@ public enum ServiceRequestStatus {
         "valueServiceRequestCodeableConcept": {
             name: "valueServiceRequestCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Indicates a value for the order detail.",
@@ -754,7 +754,7 @@ public enum ServiceRequestStatus {
         "valueServiceRequestRange": {
             name: "valueServiceRequestRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Indicates a value for the order detail.",
@@ -763,7 +763,7 @@ public enum ServiceRequestStatus {
         "valueServiceRequestPeriod": {
             name: "valueServiceRequestPeriod",
             dataType: r5:Period,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Indicates a value for the order detail.",
@@ -772,7 +772,7 @@ public enum ServiceRequestStatus {
         "valueServiceRequestQuantity": {
             name: "valueServiceRequestQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Indicates a value for the order detail.",
@@ -790,7 +790,7 @@ public enum ServiceRequestStatus {
         "valueServiceRequestRatio": {
             name: "valueServiceRequestRatio",
             dataType: r5:Ratio,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Indicates a value for the order detail.",
@@ -799,7 +799,7 @@ public enum ServiceRequestStatus {
         "valueServiceRequestString": {
             name: "valueServiceRequestString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Indicates a value for the order detail.",
@@ -808,7 +808,7 @@ public enum ServiceRequestStatus {
         "valueServiceRequestBoolean": {
             name: "valueServiceRequestBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Indicates a value for the order detail.",
