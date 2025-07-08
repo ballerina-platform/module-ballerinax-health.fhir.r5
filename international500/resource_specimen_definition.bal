@@ -714,7 +714,7 @@ public type SpecimenDefinitionTypeTestedHandling record {|
         "additiveSpecimenDefinitionReference": {
             name: "additiveSpecimenDefinitionReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.",
@@ -741,7 +741,7 @@ public type SpecimenDefinitionTypeTestedHandling record {|
         "additiveSpecimenDefinitionCodeableConcept": {
             name: "additiveSpecimenDefinitionCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.",

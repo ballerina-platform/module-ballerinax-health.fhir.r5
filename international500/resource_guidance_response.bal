@@ -130,7 +130,7 @@ public const RESOURCE_NAME_GUIDANCERESPONSE = "GuidanceResponse";
         "moduleCodeableConcept" : {
             name: "moduleCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "GuidanceResponse.module[x]",
@@ -163,7 +163,7 @@ public const RESOURCE_NAME_GUIDANCERESPONSE = "GuidanceResponse";
         "moduleCanonical" : {
             name: "moduleCanonical",
             dataType: r5:canonical,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "GuidanceResponse.module[x]",
@@ -228,7 +228,7 @@ public const RESOURCE_NAME_GUIDANCERESPONSE = "GuidanceResponse";
         "moduleUri" : {
             name: "moduleUri",
             dataType: r5:uri,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             path: "GuidanceResponse.module[x]",

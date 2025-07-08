@@ -552,7 +552,7 @@ public type InventoryItemInstance record {|
         "valueBoolean": {
             name: "valueBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -570,7 +570,7 @@ public type InventoryItemInstance record {|
         "valueRange": {
             name: "valueRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -597,7 +597,7 @@ public type InventoryItemInstance record {|
         "valueDecimal": {
             name: "valueDecimal",
             dataType: decimal,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -606,7 +606,7 @@ public type InventoryItemInstance record {|
         "valueUrl": {
             name: "valueUrl",
             dataType: r5:urlType,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -615,7 +615,7 @@ public type InventoryItemInstance record {|
         "valueAddress": {
             name: "valueAddress",
             dataType: r5:Address,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -624,7 +624,7 @@ public type InventoryItemInstance record {|
         "valueCodeableConcept": {
             name: "valueCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -633,7 +633,7 @@ public type InventoryItemInstance record {|
         "valueRatio": {
             name: "valueRatio",
             dataType: r5:Ratio,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -642,7 +642,7 @@ public type InventoryItemInstance record {|
         "valueString": {
             name: "valueString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -651,7 +651,7 @@ public type InventoryItemInstance record {|
         "valueDateTime": {
             name: "valueDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -660,7 +660,7 @@ public type InventoryItemInstance record {|
         "valueDuration": {
             name: "valueDuration",
             dataType: r5:Duration,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -678,7 +678,7 @@ public type InventoryItemInstance record {|
         "valueInteger": {
             name: "valueInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -687,7 +687,7 @@ public type InventoryItemInstance record {|
         "valueQuantity": {
             name: "valueQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",
@@ -696,7 +696,7 @@ public type InventoryItemInstance record {|
         "valueAnnotation": {
             name: "valueAnnotation",
             dataType: r5:Annotation,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the attribute.",

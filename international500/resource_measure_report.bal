@@ -897,7 +897,7 @@ public type MeasureReportGroupStratifier record {|
         "valueMeasureReportCodeableConcept": {
             name: "valueMeasureReportCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The stratum component value.",
@@ -906,7 +906,7 @@ public type MeasureReportGroupStratifier record {|
         "valueMeasureReportRange": {
             name: "valueMeasureReportRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The stratum component value.",
@@ -915,7 +915,7 @@ public type MeasureReportGroupStratifier record {|
         "valueMeasureReportReference": {
             name: "valueMeasureReportReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The stratum component value.",
@@ -942,7 +942,7 @@ public type MeasureReportGroupStratifier record {|
         "valueMeasureReportBoolean": {
             name: "valueMeasureReportBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The stratum component value.",
@@ -969,7 +969,7 @@ public type MeasureReportGroupStratifier record {|
         "valueMeasureReportQuantity": {
             name: "valueMeasureReportQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The stratum component value.",

@@ -269,7 +269,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseReference": {
             name: "valueQuestionnaireResponseReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -287,7 +287,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseAttachment": {
             name: "valueQuestionnaireResponseAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -296,7 +296,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseTime": {
             name: "valueQuestionnaireResponseTime",
             dataType: r5:time,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -305,7 +305,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseQuantity": {
             name: "valueQuestionnaireResponseQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -323,7 +323,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseBoolean": {
             name: "valueQuestionnaireResponseBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -332,7 +332,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseString": {
             name: "valueQuestionnaireResponseString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -341,7 +341,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseUri": {
             name: "valueQuestionnaireResponseUri",
             dataType: r5:uri,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -350,7 +350,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseCoding": {
             name: "valueQuestionnaireResponseCoding",
             dataType: r5:Coding,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -359,7 +359,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseDecimal": {
             name: "valueQuestionnaireResponseDecimal",
             dataType: decimal,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -377,7 +377,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseInteger": {
             name: "valueQuestionnaireResponseInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -386,7 +386,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseDate": {
             name: "valueQuestionnaireResponseDate",
             dataType: r5:date,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",
@@ -395,7 +395,7 @@ public enum QuestionnaireResponseStatus {
         "valueQuestionnaireResponseDateTime": {
             name: "valueQuestionnaireResponseDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The answer (or one of the answers) provided by the respondent to the question.",

@@ -794,7 +794,7 @@ public type ClinicalUseDefinitionIndication record {|
         "itemClinicalUseDefinitionReference": {
             name: "itemClinicalUseDefinitionReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The specific medication, product, food, substance etc. or laboratory test that interacts.",
@@ -821,7 +821,7 @@ public type ClinicalUseDefinitionIndication record {|
         "itemClinicalUseDefinitionCodeableConcept": {
             name: "itemClinicalUseDefinitionCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The specific medication, product, food, substance etc. or laboratory test that interacts.",

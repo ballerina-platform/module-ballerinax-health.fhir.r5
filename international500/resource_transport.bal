@@ -614,7 +614,7 @@ public enum TransportIntent {
         "valueTime": {
             name: "valueTime",
             dataType: r5:time,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -623,7 +623,7 @@ public enum TransportIntent {
         "valueTriggerDefinition": {
             name: "valueTriggerDefinition",
             dataType: r5:TriggerDefinition,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -632,7 +632,7 @@ public enum TransportIntent {
         "valueMoney": {
             name: "valueMoney",
             dataType: r5:Money,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -641,7 +641,7 @@ public enum TransportIntent {
         "valueSignature": {
             name: "valueSignature",
             dataType: r5:Signature,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -668,7 +668,7 @@ public enum TransportIntent {
         "valueUuid": {
             name: "valueUuid",
             dataType: r5:uuid,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -677,7 +677,7 @@ public enum TransportIntent {
         "valueRatio": {
             name: "valueRatio",
             dataType: r5:Ratio,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -686,7 +686,7 @@ public enum TransportIntent {
         "valueInteger64": {
             name: "valueInteger64",
             dataType: r5:integer64,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -695,7 +695,7 @@ public enum TransportIntent {
         "valueParameterDefinition": {
             name: "valueParameterDefinition",
             dataType: r5:ParameterDefinition,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -713,7 +713,7 @@ public enum TransportIntent {
         "valueInteger": {
             name: "valueInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -722,7 +722,7 @@ public enum TransportIntent {
         "valueUnsignedInt": {
             name: "valueUnsignedInt",
             dataType: r5:unsignedInt,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -731,7 +731,7 @@ public enum TransportIntent {
         "valueQuantity": {
             name: "valueQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -740,7 +740,7 @@ public enum TransportIntent {
         "valueCanonical": {
             name: "valueCanonical",
             dataType: r5:canonical,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -749,7 +749,7 @@ public enum TransportIntent {
         "valueCount": {
             name: "valueCount",
             dataType: r5:Count,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -758,7 +758,7 @@ public enum TransportIntent {
         "valueId": {
             name: "valueId",
             dataType: r5:id,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -767,7 +767,7 @@ public enum TransportIntent {
         "valueRatioRange": {
             name: "valueRatioRange",
             dataType: r5:RatioRange,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -776,7 +776,7 @@ public enum TransportIntent {
         "valueCode": {
             name: "valueCode",
             dataType: r5:code,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -785,7 +785,7 @@ public enum TransportIntent {
         "valueAddress": {
             name: "valueAddress",
             dataType: r5:Address,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -794,7 +794,7 @@ public enum TransportIntent {
         "valueContactPoint": {
             name: "valueContactPoint",
             dataType: r5:ContactPoint,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -803,7 +803,7 @@ public enum TransportIntent {
         "valuePeriod": {
             name: "valuePeriod",
             dataType: r5:Period,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -812,7 +812,7 @@ public enum TransportIntent {
         "valueSampledData": {
             name: "valueSampledData",
             dataType: r5:SampledData,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -821,7 +821,7 @@ public enum TransportIntent {
         "valueTiming": {
             name: "valueTiming",
             dataType: r5:Timing,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -830,7 +830,7 @@ public enum TransportIntent {
         "valueInstant": {
             name: "valueInstant",
             dataType: r5:instant,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -839,7 +839,7 @@ public enum TransportIntent {
         "valueAge": {
             name: "valueAge",
             dataType: r5:Age,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -848,7 +848,7 @@ public enum TransportIntent {
         "valueDosage": {
             name: "valueDosage",
             dataType: r5:Dosage,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -857,7 +857,7 @@ public enum TransportIntent {
         "valueBase64Binary": {
             name: "valueBase64Binary",
             dataType: r5:base64Binary,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -866,7 +866,7 @@ public enum TransportIntent {
         "valueBoolean": {
             name: "valueBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -875,7 +875,7 @@ public enum TransportIntent {
         "valueCoding": {
             name: "valueCoding",
             dataType: r5:Coding,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -893,7 +893,7 @@ public enum TransportIntent {
         "valueIdentifier": {
             name: "valueIdentifier",
             dataType: r5:Identifier,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -902,7 +902,7 @@ public enum TransportIntent {
         "valueExpression": {
             name: "valueExpression",
             dataType: r5:Expression,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -911,7 +911,7 @@ public enum TransportIntent {
         "valueReference": {
             name: "valueReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -920,7 +920,7 @@ public enum TransportIntent {
         "valueRange": {
             name: "valueRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -929,7 +929,7 @@ public enum TransportIntent {
         "valueUri": {
             name: "valueUri",
             dataType: r5:uri,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -938,7 +938,7 @@ public enum TransportIntent {
         "valueDistance": {
             name: "valueDistance",
             dataType: r5:Distance,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -947,7 +947,7 @@ public enum TransportIntent {
         "valueUrl": {
             name: "valueUrl",
             dataType: r5:urlType,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -956,7 +956,7 @@ public enum TransportIntent {
         "valueCodeableReference": {
             name: "valueCodeableReference",
             dataType: r5:CodeableReference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -965,7 +965,7 @@ public enum TransportIntent {
         "valueContactDetail": {
             name: "valueContactDetail",
             dataType: r5:ContactDetail,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -974,7 +974,7 @@ public enum TransportIntent {
         "valueMeta": {
             name: "valueMeta",
             dataType: r5:Meta,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -983,7 +983,7 @@ public enum TransportIntent {
         "valueCodeableConcept": {
             name: "valueCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -992,7 +992,7 @@ public enum TransportIntent {
         "valueMarkdown": {
             name: "valueMarkdown",
             dataType: r5:markdown,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1001,7 +1001,7 @@ public enum TransportIntent {
         "valueAttachment": {
             name: "valueAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1010,7 +1010,7 @@ public enum TransportIntent {
         "valueUsageContext": {
             name: "valueUsageContext",
             dataType: r5:UsageContext,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1019,7 +1019,7 @@ public enum TransportIntent {
         "valueDateTime": {
             name: "valueDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1028,7 +1028,7 @@ public enum TransportIntent {
         "valueHumanName": {
             name: "valueHumanName",
             dataType: r5:HumanName,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1037,7 +1037,7 @@ public enum TransportIntent {
         "valueRelatedArtifact": {
             name: "valueRelatedArtifact",
             dataType: r5:RelatedArtifact,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1046,7 +1046,7 @@ public enum TransportIntent {
         "valueAvailability": {
             name: "valueAvailability",
             dataType: r5:Availability,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1055,7 +1055,7 @@ public enum TransportIntent {
         "valueDecimal": {
             name: "valueDecimal",
             dataType: decimal,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1064,7 +1064,7 @@ public enum TransportIntent {
         "valueDate": {
             name: "valueDate",
             dataType: r5:date,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1073,7 +1073,7 @@ public enum TransportIntent {
         "valueOid": {
             name: "valueOid",
             dataType: r5:oid,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1082,7 +1082,7 @@ public enum TransportIntent {
         "valueExtendedContactDetail": {
             name: "valueExtendedContactDetail",
             dataType: r5:ExtendedContactDetail,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1091,7 +1091,7 @@ public enum TransportIntent {
         "valueString": {
             name: "valueString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1100,7 +1100,7 @@ public enum TransportIntent {
         "valuePositiveInt": {
             name: "valuePositiveInt",
             dataType: r5:positiveInt,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1109,7 +1109,7 @@ public enum TransportIntent {
         "valueDuration": {
             name: "valueDuration",
             dataType: r5:Duration,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1118,7 +1118,7 @@ public enum TransportIntent {
         "valueDataRequirement": {
             name: "valueDataRequirement",
             dataType: r5:DataRequirement,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1127,7 +1127,7 @@ public enum TransportIntent {
         "valueAnnotation": {
             name: "valueAnnotation",
             dataType: r5:Annotation,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the input parameter as a basic type.",
@@ -1287,7 +1287,7 @@ public enum TransportStatus {
         "valueTime": {
             name: "valueTime",
             dataType: r5:time,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1296,7 +1296,7 @@ public enum TransportStatus {
         "valueTriggerDefinition": {
             name: "valueTriggerDefinition",
             dataType: r5:TriggerDefinition,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1305,7 +1305,7 @@ public enum TransportStatus {
         "valueMoney": {
             name: "valueMoney",
             dataType: r5:Money,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1314,7 +1314,7 @@ public enum TransportStatus {
         "valueSignature": {
             name: "valueSignature",
             dataType: r5:Signature,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1332,7 +1332,7 @@ public enum TransportStatus {
         "type": {
             name: "type",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The name of the Output parameter.",
@@ -1341,7 +1341,7 @@ public enum TransportStatus {
         "valueUuid": {
             name: "valueUuid",
             dataType: r5:uuid,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1350,7 +1350,7 @@ public enum TransportStatus {
         "valueRatio": {
             name: "valueRatio",
             dataType: r5:Ratio,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1359,7 +1359,7 @@ public enum TransportStatus {
         "valueInteger64": {
             name: "valueInteger64",
             dataType: r5:integer64,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1368,7 +1368,7 @@ public enum TransportStatus {
         "valueParameterDefinition": {
             name: "valueParameterDefinition",
             dataType: r5:ParameterDefinition,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1386,7 +1386,7 @@ public enum TransportStatus {
         "valueInteger": {
             name: "valueInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1395,7 +1395,7 @@ public enum TransportStatus {
         "valueUnsignedInt": {
             name: "valueUnsignedInt",
             dataType: r5:unsignedInt,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1404,7 +1404,7 @@ public enum TransportStatus {
         "valueQuantity": {
             name: "valueQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1413,7 +1413,7 @@ public enum TransportStatus {
         "valueCanonical": {
             name: "valueCanonical",
             dataType: r5:canonical,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1422,7 +1422,7 @@ public enum TransportStatus {
         "valueCount": {
             name: "valueCount",
             dataType: r5:Count,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1431,7 +1431,7 @@ public enum TransportStatus {
         "valueId": {
             name: "valueId",
             dataType: r5:id,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1440,7 +1440,7 @@ public enum TransportStatus {
         "valueRatioRange": {
             name: "valueRatioRange",
             dataType: r5:RatioRange,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1449,7 +1449,7 @@ public enum TransportStatus {
         "valueCode": {
             name: "valueCode",
             dataType: r5:code,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1458,7 +1458,7 @@ public enum TransportStatus {
         "valueAddress": {
             name: "valueAddress",
             dataType: r5:Address,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1467,7 +1467,7 @@ public enum TransportStatus {
         "valueContactPoint": {
             name: "valueContactPoint",
             dataType: r5:ContactPoint,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1476,7 +1476,7 @@ public enum TransportStatus {
         "valuePeriod": {
             name: "valuePeriod",
             dataType: r5:Period,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1485,7 +1485,7 @@ public enum TransportStatus {
         "valueSampledData": {
             name: "valueSampledData",
             dataType: r5:SampledData,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1494,7 +1494,7 @@ public enum TransportStatus {
         "valueTiming": {
             name: "valueTiming",
             dataType: r5:Timing,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1503,7 +1503,7 @@ public enum TransportStatus {
         "valueInstant": {
             name: "valueInstant",
             dataType: r5:instant,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1512,7 +1512,7 @@ public enum TransportStatus {
         "valueAge": {
             name: "valueAge",
             dataType: r5:Age,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1521,7 +1521,7 @@ public enum TransportStatus {
         "valueDosage": {
             name: "valueDosage",
             dataType: r5:Dosage,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1530,7 +1530,7 @@ public enum TransportStatus {
         "valueBase64Binary": {
             name: "valueBase64Binary",
             dataType: r5:base64Binary,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1539,7 +1539,7 @@ public enum TransportStatus {
         "valueBoolean": {
             name: "valueBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1548,7 +1548,7 @@ public enum TransportStatus {
         "valueCoding": {
             name: "valueCoding",
             dataType: r5:Coding,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1566,7 +1566,7 @@ public enum TransportStatus {
         "valueIdentifier": {
             name: "valueIdentifier",
             dataType: r5:Identifier,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1575,7 +1575,7 @@ public enum TransportStatus {
         "valueExpression": {
             name: "valueExpression",
             dataType: r5:Expression,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1584,7 +1584,7 @@ public enum TransportStatus {
         "valueReference": {
             name: "valueReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1593,7 +1593,7 @@ public enum TransportStatus {
         "valueRange": {
             name: "valueRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1602,7 +1602,7 @@ public enum TransportStatus {
         "valueUri": {
             name: "valueUri",
             dataType: r5:uri,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1611,7 +1611,7 @@ public enum TransportStatus {
         "valueDistance": {
             name: "valueDistance",
             dataType: r5:Distance,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1620,7 +1620,7 @@ public enum TransportStatus {
         "valueUrl": {
             name: "valueUrl",
             dataType: r5:urlType,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1629,7 +1629,7 @@ public enum TransportStatus {
         "valueCodeableReference": {
             name: "valueCodeableReference",
             dataType: r5:CodeableReference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1638,7 +1638,7 @@ public enum TransportStatus {
         "valueContactDetail": {
             name: "valueContactDetail",
             dataType: r5:ContactDetail,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1647,7 +1647,7 @@ public enum TransportStatus {
         "valueMeta": {
             name: "valueMeta",
             dataType: r5:Meta,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1656,7 +1656,7 @@ public enum TransportStatus {
         "valueCodeableConcept": {
             name: "valueCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1665,7 +1665,7 @@ public enum TransportStatus {
         "valueMarkdown": {
             name: "valueMarkdown",
             dataType: r5:markdown,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1674,7 +1674,7 @@ public enum TransportStatus {
         "valueAttachment": {
             name: "valueAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1683,7 +1683,7 @@ public enum TransportStatus {
         "valueUsageContext": {
             name: "valueUsageContext",
             dataType: r5:UsageContext,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1692,7 +1692,7 @@ public enum TransportStatus {
         "valueDateTime": {
             name: "valueDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1701,7 +1701,7 @@ public enum TransportStatus {
         "valueHumanName": {
             name: "valueHumanName",
             dataType: r5:HumanName,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1710,7 +1710,7 @@ public enum TransportStatus {
         "valueRelatedArtifact": {
             name: "valueRelatedArtifact",
             dataType: r5:RelatedArtifact,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1719,7 +1719,7 @@ public enum TransportStatus {
         "valueAvailability": {
             name: "valueAvailability",
             dataType: r5:Availability,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1728,7 +1728,7 @@ public enum TransportStatus {
         "valueDecimal": {
             name: "valueDecimal",
             dataType: decimal,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1737,7 +1737,7 @@ public enum TransportStatus {
         "valueDate": {
             name: "valueDate",
             dataType: r5:date,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1746,7 +1746,7 @@ public enum TransportStatus {
         "valueOid": {
             name: "valueOid",
             dataType: r5:oid,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1755,7 +1755,7 @@ public enum TransportStatus {
         "valueExtendedContactDetail": {
             name: "valueExtendedContactDetail",
             dataType: r5:ExtendedContactDetail,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1764,7 +1764,7 @@ public enum TransportStatus {
         "valueString": {
             name: "valueString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1773,7 +1773,7 @@ public enum TransportStatus {
         "valuePositiveInt": {
             name: "valuePositiveInt",
             dataType: r5:positiveInt,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1782,7 +1782,7 @@ public enum TransportStatus {
         "valueDuration": {
             name: "valueDuration",
             dataType: r5:Duration,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1791,7 +1791,7 @@ public enum TransportStatus {
         "valueDataRequirement": {
             name: "valueDataRequirement",
             dataType: r5:DataRequirement,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",
@@ -1800,7 +1800,7 @@ public enum TransportStatus {
         "valueAnnotation": {
             name: "valueAnnotation",
             dataType: r5:Annotation,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the Output parameter as a basic type.",

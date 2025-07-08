@@ -360,7 +360,7 @@ public enum GroupMembership {
         "valueCodeableConcept": {
             name: "valueCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",
@@ -369,7 +369,7 @@ public enum GroupMembership {
         "valueBoolean": {
             name: "valueBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",
@@ -405,7 +405,7 @@ public enum GroupMembership {
         "valueReference": {
             name: "valueReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",
@@ -414,7 +414,7 @@ public enum GroupMembership {
         "valueRange": {
             name: "valueRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",
@@ -450,7 +450,7 @@ public enum GroupMembership {
         "valueQuantity": {
             name: "valueQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.",

@@ -733,7 +733,7 @@ public enum MedicationRequestIntent {
         "allowedCodeableConcept": {
             name: "allowedCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "True if the prescriber allows a different drug to be dispensed from what was prescribed.",
@@ -769,7 +769,7 @@ public enum MedicationRequestIntent {
         "allowedBoolean": {
             name: "allowedBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "True if the prescriber allows a different drug to be dispensed from what was prescribed.",

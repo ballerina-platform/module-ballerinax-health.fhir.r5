@@ -251,7 +251,7 @@ public type Substance record {|
         "substanceCodeableConcept": {
             name: "substanceCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Another substance that is a component of this substance.",
@@ -278,7 +278,7 @@ public type Substance record {|
         "substanceReference": {
             name: "substanceReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Another substance that is a component of this substance.",

@@ -320,7 +320,7 @@ public type NutritionProductIngredient record {|
         "valueCodeableConcept": {
             name: "valueCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The actual characteristic value corresponding to the type.",
@@ -329,7 +329,7 @@ public type NutritionProductIngredient record {|
         "valueBase64Binary": {
             name: "valueBase64Binary",
             dataType: r5:base64Binary,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The actual characteristic value corresponding to the type.",
@@ -338,7 +338,7 @@ public type NutritionProductIngredient record {|
         "valueBoolean": {
             name: "valueBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The actual characteristic value corresponding to the type.",
@@ -356,7 +356,7 @@ public type NutritionProductIngredient record {|
         "valueAttachment": {
             name: "valueAttachment",
             dataType: r5:Attachment,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The actual characteristic value corresponding to the type.",
@@ -365,7 +365,7 @@ public type NutritionProductIngredient record {|
         "valueString": {
             name: "valueString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The actual characteristic value corresponding to the type.",
@@ -401,7 +401,7 @@ public type NutritionProductIngredient record {|
         "valueQuantity": {
             name: "valueQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The actual characteristic value corresponding to the type.",

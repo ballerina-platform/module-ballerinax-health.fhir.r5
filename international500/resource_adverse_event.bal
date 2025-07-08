@@ -411,7 +411,7 @@ public enum AdverseEventActuality {
         "itemReference": {
             name: "itemReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The ameliorating action taken after the adverse event occured in order to reduce the extent of harm.",
@@ -429,7 +429,7 @@ public enum AdverseEventActuality {
         "itemCodeableConcept": {
             name: "itemCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The ameliorating action taken after the adverse event occured in order to reduce the extent of harm.",
@@ -563,7 +563,7 @@ public type AdverseEventParticipant record {|
         "itemReference": {
             name: "itemReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The action that contributed to avoiding the adverse event.",
@@ -581,7 +581,7 @@ public type AdverseEventParticipant record {|
         "itemCodeableConcept": {
             name: "itemCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The action that contributed to avoiding the adverse event.",
@@ -635,7 +635,7 @@ public type AdverseEventPreventiveAction record {|
         "itemReference": {
             name: "itemReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Relevant past history for the subject. In a clinical care context, an example being a patient had an adverse event following a pencillin administration and the patient had a previously documented penicillin allergy. In a clinical trials context, an example is a bunion or rash that was present prior to the study. Additionally, the supporting item can be a document that is relevant to this instance of the adverse event that is not part of the subject's medical history. For example, a clinical note, staff list, or material safety data sheet (MSDS). Supporting information is not a contributing factor, preventive action, or mitigating action.",
@@ -653,7 +653,7 @@ public type AdverseEventPreventiveAction record {|
         "itemCodeableConcept": {
             name: "itemCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Relevant past history for the subject. In a clinical care context, an example being a patient had an adverse event following a pencillin administration and the patient had a previously documented penicillin allergy. In a clinical trials context, an example is a bunion or rash that was present prior to the study. Additionally, the supporting item can be a document that is relevant to this instance of the adverse event that is not part of the subject's medical history. For example, a clinical note, staff list, or material safety data sheet (MSDS). Supporting information is not a contributing factor, preventive action, or mitigating action.",
@@ -809,7 +809,7 @@ public type AdverseEventSuspectEntityCausality record {|
         "instanceReference": {
             name: "instanceReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Identifies the actual instance of what caused the adverse event. May be a substance, medication, medication administration, medication statement or a device.",
@@ -836,7 +836,7 @@ public type AdverseEventSuspectEntityCausality record {|
         "instanceCodeableConcept": {
             name: "instanceCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Identifies the actual instance of what caused the adverse event. May be a substance, medication, medication administration, medication statement or a device.",
@@ -873,7 +873,7 @@ public type AdverseEventSuspectEntity record {|
         "itemReference": {
             name: "itemReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The item that is suspected to have increased the probability or severity of the adverse event.",
@@ -891,7 +891,7 @@ public type AdverseEventSuspectEntity record {|
         "itemCodeableConcept": {
             name: "itemCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The item that is suspected to have increased the probability or severity of the adverse event.",

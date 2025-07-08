@@ -737,7 +737,7 @@ public type CoverageEligibilityRequestItem record {|
         "whenDateTime": {
             name: "whenDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "A date or period in the past or future indicating when the event occurred or is expectd to occur.",
@@ -746,7 +746,7 @@ public type CoverageEligibilityRequestItem record {|
         "whenPeriod": {
             name: "whenPeriod",
             dataType: r5:Period,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "A date or period in the past or future indicating when the event occurred or is expectd to occur.",

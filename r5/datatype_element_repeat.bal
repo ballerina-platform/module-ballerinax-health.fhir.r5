@@ -186,11 +186,6 @@ import ballerina/constraint;
 
 }
 
-@constraint:String {
-    pattern: re `^(mon|tue|wed|thu|fri|sat|sun)$`
-}
-type DayCodeTypes string;
-
 public type ElementRepeat record {
     *Element;
     //Inherited child element from "Element" (Redefining to maintain order when serialize) (START)
@@ -221,7 +216,7 @@ public type ElementRepeat record {
     }
     string|Timecode periodUnit?;
 
-    DayCodeTypes|Daycode[] dayOfWeek?;
+    Daycode[] dayOfWeek?;
     time[] timeOfDay?;
     code[] when?;
     unsignedInt offset?;

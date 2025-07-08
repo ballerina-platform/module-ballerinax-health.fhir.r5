@@ -569,7 +569,7 @@ public type EvidenceVariableCharacteristicDefinitionByCombination record {|
         "valueEvidenceVariableBoolean": {
             name: "valueEvidenceVariableBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Defines the characteristic when paired with characteristic.type.",
@@ -587,7 +587,7 @@ public type EvidenceVariableCharacteristicDefinitionByCombination record {|
         "valueEvidenceVariableReference": {
             name: "valueEvidenceVariableReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Defines the characteristic when paired with characteristic.type.",
@@ -596,7 +596,7 @@ public type EvidenceVariableCharacteristicDefinitionByCombination record {|
         "valueEvidenceVariableId": {
             name: "valueEvidenceVariableId",
             dataType: r5:id,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Defines the characteristic when paired with characteristic.type.",
@@ -605,7 +605,7 @@ public type EvidenceVariableCharacteristicDefinitionByCombination record {|
         "valueEvidenceVariableQuantity": {
             name: "valueEvidenceVariableQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Defines the characteristic when paired with characteristic.type.",
@@ -623,7 +623,7 @@ public type EvidenceVariableCharacteristicDefinitionByCombination record {|
         "valueEvidenceVariableCodeableConcept": {
             name: "valueEvidenceVariableCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Defines the characteristic when paired with characteristic.type.",
@@ -632,7 +632,7 @@ public type EvidenceVariableCharacteristicDefinitionByCombination record {|
         "valueEvidenceVariableRange": {
             name: "valueEvidenceVariableRange",
             dataType: r5:Range,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Defines the characteristic when paired with characteristic.type.",

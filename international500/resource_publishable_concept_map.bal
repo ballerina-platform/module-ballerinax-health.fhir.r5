@@ -877,7 +877,7 @@ public type PublishableConceptMapProperty record {|
         "valueConceptMapDateTime": {
             name: "valueConceptMapDateTime",
             dataType: r5:dateTime,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -895,7 +895,7 @@ public type PublishableConceptMapProperty record {|
         "valueConceptMapString": {
             name: "valueConceptMapString",
             dataType: string,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -904,7 +904,7 @@ public type PublishableConceptMapProperty record {|
         "valueConceptMapCoding": {
             name: "valueConceptMapCoding",
             dataType: r5:Coding,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -913,7 +913,7 @@ public type PublishableConceptMapProperty record {|
         "valueConceptMapInteger": {
             name: "valueConceptMapInteger",
             dataType: r5:integer,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -931,7 +931,7 @@ public type PublishableConceptMapProperty record {|
         "valueConceptMapBoolean": {
             name: "valueConceptMapBoolean",
             dataType: boolean,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -940,7 +940,7 @@ public type PublishableConceptMapProperty record {|
         "valueConceptMapDecimal": {
             name: "valueConceptMapDecimal",
             dataType: decimal,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",
@@ -958,7 +958,7 @@ public type PublishableConceptMapProperty record {|
         "valueConceptMapCode": {
             name: "valueConceptMapCode",
             dataType: r5:code,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The value of this property. If the type chosen for this element is 'code', then the property SHALL be defined in a ConceptMap.property element.",

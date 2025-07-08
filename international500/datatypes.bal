@@ -20,7 +20,7 @@
 import ballerinax/health.fhir.r5;
 
 @r5:DataTypeDefinition {
-    name: "DataElement constraint on ElementDefinition data type",
+    name: "ElementdefinitionDe",
     baseType: (),
     elements: {
         "versioning": {

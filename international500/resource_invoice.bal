@@ -406,7 +406,7 @@ public type InvoiceParticipant record {|
         "chargeItemCodeableConcept": {
             name: "chargeItemCodeableConcept",
             dataType: r5:CodeableConcept,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.",
@@ -478,7 +478,7 @@ public type InvoiceParticipant record {|
         "chargeItemReference": {
             name: "chargeItemReference",
             dataType: r5:Reference,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.",

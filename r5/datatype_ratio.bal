@@ -23,7 +23,7 @@
 # + numerator - Numerator value 
 # + denominator - Denominator value
 @DataTypeDefinition {
-    name: "Range",
+    name: "Ratio",
     baseType: Element,
     elements: {
         "numerator": {

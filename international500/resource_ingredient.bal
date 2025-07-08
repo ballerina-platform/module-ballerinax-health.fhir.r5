@@ -344,7 +344,7 @@ public enum IngredientStatus {
         "strengthIngredientRatio": {
             name: "strengthIngredientRatio",
             dataType: r5:Ratio,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Strength expressed in terms of a reference substance.",
@@ -362,7 +362,7 @@ public enum IngredientStatus {
         "strengthIngredientQuantity": {
             name: "strengthIngredientQuantity",
             dataType: r5:Quantity,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Strength expressed in terms of a reference substance.",
@@ -380,7 +380,7 @@ public enum IngredientStatus {
         "strengthIngredientRatioRange": {
             name: "strengthIngredientRatioRange",
             dataType: r5:RatioRange,
-            min: 1,
+            min: 0,
             max: 1,
             isArray: false,
             description: "Strength expressed in terms of a reference substance.",
