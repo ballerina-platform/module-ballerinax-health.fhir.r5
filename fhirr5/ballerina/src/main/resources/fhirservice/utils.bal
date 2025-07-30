@@ -11,6 +11,17 @@
 // specific language governing permissions and limitations
 // under the License.
 import ballerinax/health.fhir.r5;
+import ballerinax/health.fhir.r5.parser;
+import ballerina/http;
+import ballerina/log;
+
+isolated http:Client? conditionalInvokationClient = ();
+
+isolated function createConditionalInvokationClient(int port) returns error? {
+    lock {
+	    conditionalInvokationClient = check new ("http://localhost:" + port.toBalString());
+    }
+}
 
 isolated function addPagination(r5:PaginationContext paginationContext, map<r5:RequestSearchParameter[]> requestSearchParameters,
         r5:Bundle bundle, string path) returns r5:Bundle {
@@ -81,4 +92,73 @@ isolated function handleBundleInfo(r5:Bundle bundle, r5:FHIRContext fhirCtx, str
         }
     }
     return bundle;
+}
+
+// TODO: Need to optimize this function
+// This function use http client to handle conditional search requests
+// Have to find a way to handle conditional search without using http client (in programming level)
+isolated function handleConditionalHeader(string conditionalUrl, string resourcePath) returns r5:FHIRError? {
+    int? indexOfSearchParams = conditionalUrl.indexOf("?");
+
+    // construct the request path by appending the search parameters if they exist
+    string requestPath = resourcePath + (indexOfSearchParams is int ? conditionalUrl.substring(indexOfSearchParams) : "");
+
+    do {
+        r5:Bundle bundle;
+        http:Response? response = ();
+
+        lock {
+            if conditionalInvokationClient is () {
+                return;
+            }
+
+            // send a http request to the resourcePath
+            response = check (<http:Client>conditionalInvokationClient)->get(requestPath);
+        }
+
+        if response is http:Response {
+            // if and only if, the resource is not found, the request response will be 404
+            if response.statusCode == http:STATUS_NOT_FOUND {
+                // allow to create a new resource if no entries are found
+                log:printDebug("No existing resource found for the given search criteria, allowing creation of a new resource");
+                return;
+            } 
+
+            // Extract the entity and decode to r5:Bundle
+            bundle = check parser:parse(check response.getJsonPayload()).ensureType();
+        } else {
+            return r5:createFHIRError("Failed to get a valid HTTP response", r5:ERROR, r5:INVALID);
+        }
+
+        r5:BundleEntry[]? entries = bundle.entry;
+        if entries is r5:BundleEntry[] {
+            // check the bundle entry count
+            if entries.length() == 0 {
+                // allow to create a new resource if no entries are found
+                log:printDebug("No existing resource found for the given search criteria, allowing creation of a new resource");
+                return;
+            } else if entries.length() == 1 {
+                // exising resource found, return 200
+                log:printDebug("Existing resource found for the given search criteria, returning 200 OK");
+                return r5:createFHIRError(
+                        "Resource already exists for the given search criteria",
+                        r5:INFORMATION,
+                        r5:PROCESSING_DUPLICATE,
+                        httpStatusCode = http:STATUS_OK);
+            } else {
+                // return 412 Precondition Failed if more than one entry is found
+                log:printDebug("Multiple resources found for the given search criteria, returning 412 Precondition Failed");
+                return r5:createFHIRError(
+                        "Multiple resources found for the given search criteria",
+                        r5:ERROR,
+                        r5:INVALID,
+                        httpStatusCode = http:STATUS_PRECONDITION_FAILED);
+            }
+        } else {
+            return r5:createFHIRError("Invalid response received while handling conditional search", r5:ERROR, r5:INVALID);
+        }
+    } on fail var e {
+        // log the error and return a FHIR error
+    	return r5:createFHIRError("Error while handling conditional search: " + e.message(), r5:ERROR, r5:INVALID);
+    }
 }
