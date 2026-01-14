@@ -1,0 +1,8 @@
+[package]
+org = "ballerinax"
+name = "health.fhir.r5.validator"
+version = "1.0.0"
+distribution = "2201.12.8"
+authors = ["Ballerina"]
+keywords = ["Healthcare", "FHIR", "R5", "Validator"]
+repository = "https://github.com/ballerina-platform/module-ballerinax-health.fhir.r5"
