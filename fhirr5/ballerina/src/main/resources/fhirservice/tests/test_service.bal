@@ -45,20 +45,44 @@ Service fhirService = service object {
         }
     }
 
-    // search
+// search
     resource function get fhir/r5/Patient(r5:FHIRContext fhirCtx) returns r5:Bundle|error {
         r5:FHIRInteraction interaction = fhirCtx.getInteraction();
         if interaction is FHIRSearchInteraction {
-            r5:DomainResource[] patients = [
-                {
-                    resourceType: "Patient",
-                    id: "1"
-                },
-                {
-                    resourceType: "Patient",
-                    id: "2"
+            r5:RequestSearchParameter[]? id = fhirCtx.getRequestSearchParameter("_id");
+            // check whether the _id search parameter is present
+            r5:DomainResource[] patients = [];
+            if id !is () {
+                string idValue = id[0].value;
+
+                if idValue == "New" {
+                    // return not found error if the id is not "New"
+                    return r5:createFHIRError(
+                        "Resource not found",
+                        r5:ERROR,
+                        r5:INVALID,
+                        httpStatusCode = http:STATUS_NOT_FOUND
+                    );
+                } else {
+                    patients = [
+                        {
+                            resourceType: "Patient",
+                            id: idValue
+                        }
+                    ];
                 }
-            ];
+            } else {
+                patients = [
+                    {
+                        resourceType: "Patient",
+                        id: "1"
+                    },
+                    {
+                        resourceType: "Patient",
+                        id: "2"
+                    }
+                ];
+            }
             return r5:createFhirBundle(r5:BUNDLE_TYPE_SEARCHSET, patients);
         } else {
             return error ServiceTestError("Incorrect interation engaged!");
